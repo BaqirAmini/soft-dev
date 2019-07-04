@@ -1,0 +1,95 @@
+
+.modal-dialog {
+    background: green;
+    border-radius: 5px;
+}
+/* for login-page */
+.login-box {
+    min-height: 200px;
+    min-width: 300px;
+    background: white;
+    text-align: center;
+    padding: 20px 15px;
+    margin-top: 130px !important;
+}
+.login-box-body {
+    background: white !important;
+}
+
+/* user-reg_for */
+#reg_user {
+    margin: auto;
+}
+
+.sale-list > div {
+    padding: 3px;
+}
+/* /.sale-lists */
+
+/* select-element for choosing customers */
+#choose-customer {
+    margin: auto;
+}
+/* Customer-profile */
+#customer-profile-form {
+    padding: 10px;
+}
+/* Customer-profile, about area */
+.invoice-info address strong {
+    color:rgb(95, 132, 201);
+}
+.invoice-col > b#inv-id {
+    color:rgb(95, 132, 201) !important;
+}
+
+/*=============================================
+=            MODALS            =
+=============================================*/
+h5 {
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/*=============================================
+=            Header of any modal            =
+=============================================*/
+
+.modal-header {
+    background: rgb(80, 139, 179);
+    color:white;
+}
+
+/*=====  End of Header of any modal  ======*/
+
+/* ============= User-profile ================ */
+.modal-body input[type="file"] {
+    display: none;
+}
+.custom-upload {
+    padding: 20px;
+    color:  gray;
+    background: rgb(238, 236, 236);
+    border-radius: 5px;
+}
+.custom-upload:hover {
+    border: 1px solid rgb(238, 236, 236);
+    box-shadow: 1px 1px 2px grey;
+}
+
+#choose-profile-photo {
+    margin: auto;
+    text-align: center;
+}
+#user_avatar {
+    border-radius: 50%;
+    border: 1px solid rgb(80, 139, 179);
+    padding: 5px;
+}
+
+
+
+
+
+
+
