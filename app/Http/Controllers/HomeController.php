@@ -25,6 +25,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        # ================ Inventories ========= #
+        $compId = Auth::user()->comp_id;
+        $ctgs = DB::table('categories')->where('categories.comp_id', $compId)->get();
+        $items = DB::table('items')
+            ->join('categories', 'categories.ctg_id', '=', 'items.ctg_id')
+            ->select('items.*',  'categories.ctg_name')
+            ->where('items.comp_id',  $compId)
+            ->get();
+        # ============== /. Intories =========== #
         $users = DB::table('users')->where('comp_id', Auth::user()->comp_id);
         // Order of aggregate function like SUM() is important so, it should come after  WHERE()
         $sales = DB::table('sales')->where('comp_id', Auth::user()->comp_id)->sum('subtotal');
@@ -39,6 +48,6 @@ class HomeController extends Controller
         $usersCount = $users->count();
         # To return list of COMPANIES to Dashboard
         $companies = DB::table('companies')->get();
-        return view('dashboard', compact(['usersCount', 'sales', 'custCount', 'invenTotal', 'compCount', 'allUsers', 'companies']) );
+        return view('dashboard', compact(['usersCount', 'sales', 'custCount', 'invenTotal', 'compCount', 'allUsers', 'companies', 'items', 'ctgs']) );
     }
 }
