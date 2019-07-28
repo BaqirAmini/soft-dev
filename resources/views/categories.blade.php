@@ -17,38 +17,41 @@
               <div class="box">
                   <div class="box-header">
                       <span id="msg"></span>
-                      <!-- Datatables -->
-                      <table id="data_tbl4" class="table table-striped col-md-12 col-xs-6 table-bordered">
-                        <thead>
-                          <tr>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Reg. Date</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          @foreach($ctgs as $ctg)
-                          <tr>
-                            <td>{{ $ctg->ctg_name }}</td>
-                            <td>{{ $ctg->ctg_desc }}</td>
-                            <td>{{ $ctg->created_at }}</td>
-                            <td>
-                              <button class="btn btn-danger btn-sm btn-delete-ctg" data-ctg-id="{{ $ctg->ctg_id }}" data-toggle="modal"
-                                data-target="#modal-delete-category">
-                                <i class="fa fa-trash"></i>
-                              </button>
-                              <button class="btn btn-warning btn-sm btn-edit-ctg" data-ctg-id="{{ $ctg->ctg_id }}"
-                                data-ctg-name="{{ $ctg->ctg_name }}" data-ctg-desc="{{ $ctg->ctg_desc }}" data-toggle="modal"
-                                data-target="#modal-edit-category">
-                                <i class="fa fa-pencil"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          @endforeach
-                        </tbody>
-                      </table>
                   </div>
+                   <div class="box-body">
+                        <!-- Datatables -->
+                        <table id="data_tbl4" class="table table-striped col-md-12 col-xs-6 table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Category</th>
+                              <th>Description</th>
+                              <th>Reg. Date</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach($ctgs as $ctg)
+                            <tr>
+                              <td>{{ $ctg->ctg_name }}</td>
+                              <td>{{ $ctg->ctg_desc }}</td>
+                              <td>{{ $ctg->created_at }}</td>
+                              <td>
+                                <button class="btn btn-danger btn-sm btn-delete-ctg" data-ctg-id="{{ $ctg->ctg_id }}" data-toggle="modal"
+                                  data-target="#modal-delete-category">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm btn-edit-ctg" data-ctg-id="{{ $ctg->ctg_id }}"
+                                  data-ctg-name="{{ $ctg->ctg_name }}" data-ctg-desc="{{ $ctg->ctg_desc }}" data-toggle="modal"
+                                  data-target="#modal-edit-category">
+                                  <i class="fa fa-pencil"></i>
+                                </button>
+                              </td>
+                            </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                   </div>
+                 
               </div>
       
           </div>
@@ -95,28 +98,31 @@
         <div class="modal-body">
             
             <div class="register-box-body">
-                <ul id="ctg_message">
+                <ul id="ctg_message" style="display: none">
                     <li>Message</li>
                 </ul>
-                <form id="new_ctg_form">
+                <form class="form-horizontal" id="new_ctg_form">
                   @csrf
                
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
-                        </div>
+                    <div class="form-group">
+                            <label for="ctg-name" class="col-sm-2 control-label">Category Name</label>
+                            <div class="col-sm-9">
+                              <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
+                            </div>
+                            <div class="col-sm-1">
+                              <span class="asterisk">*</span>
+                            </div>
                     </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description">
-                        </div>
+                    <div class="form-group">
+                            <label for="ctg-desc" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-9">
+                              <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description">
+                            </div>
                     </div>
             
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                      <button type="submit" id="btn_add_ctg" class="btn btn-primary">Add Now</button>
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                      <button type="submit" id="btn_add_ctg" class="btn btn-primary pull-left">Add Now</button>
                   </div>
             </form>
             </div>
@@ -141,26 +147,29 @@
         <div class="modal-body">
             <div class="register-box-body">
                 <p class="login-box-msg">Edit Category</p>
-                <form id="edit-category-form">
+                <form class="form-horizontal" id="edit-category-form">
                   @csrf
                 <input type="hidden" name="ctgId" id="ctgId">
-                    <div class="form-group has-feedback">
+                    <div class="form-group">
                            <!-- Category Name -->
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
-                        </div>
+                            <label for="ctg-name" class="col-sm-2 control-label">Category Name</label>
+                            <div class="col-sm-9">
+                              <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
+                            </div>
+                            <div class="col-sm-1">
+                              <span class="asterisk">*</span>
+                            </div>
                     </div>
-                    <div class="form-group has-feedback">
+                    <div class="form-group">
                            <!-- Category description -->
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description">
-                        </div>
+                            <label for="ctg-desc" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-9">
+                              <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description">
+                            </div>
                     </div>
             
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                       <button type="submit" id="btn_edit_ctg" class="btn btn-primary pull-left">Edit</button>
                   </div>
             </form>
@@ -187,81 +196,101 @@
     <div class="modal-body">
         <div class="register-box-body">
             <ul id="item_message" style="display:none">
-                <li>Item Message</li>
             </ul>
-            <form  enctype="multipart/form-data" id="item_form_data">
+            <form class="form-horizontal" enctype="multipart/form-data" id="item_form_data">
               @csrf
-                <div class="input-group">
-                    <span class="input-group-addon"><strong>Category:</strong></span>
-                   <select name="item_category" id="item_category" class="form-control" required autofocus>
-                       @foreach($ctgs as $ctg)
-                            <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
-                       @endforeach
-                   </select>
-                </div><br>
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Item Name:</strong></span>
-                        <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
+               <div class="form-group">
+                  <label for="category" class="col-sm-2 control-label">Category</label>
+                  <div class="col-sm-9">
+                    <select name="item_category" id="item_category" class="form-control" required autofocus>
+                      @foreach($ctgs as $ctg)
+                      <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
+               </div>
+                <div class="form-group">
+                        <label for="item" class="col-sm-2 control-label">Item</label>
+                        <div class="col-sm-9">
+                          <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
+                        </div>
+                        <div class="col-sm-1">
+                          <span class="asterisk">*</span>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="desc" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-9">
+                      <input id="item_desc" type="text" class="form-control" name="item_desc" placeholder="Description (Optional)">
                     </div>
                 </div>
-                <div class="form-group has-feedback">
-                  <div class="input-group">
-                    <span class="input-group-addon"><strong>Description:</strong></span>
-                    <input id="item_desc" type="text" class="form-control" name="item_desc" placeholder="Description (Optional)">
+                  <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Image</label>
+                    <div class="col-sm-9">
+                      <div class="input-group col-sm-12 col-md-12">
+                        <input type="text" class="form-control" disabled>
+                        <div class="input-group-addon">
+                          <label class="logo-custom-upload">
+                            <span class="glyphicon glyphicon-picture"></span>
+                            <input type="file" id="company_logo" class="upload logo-file-input form-control" name="item_image">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="form-group">
+                        <label for="quantity" class="col-sm-2 control-label">Quantity</label>
+                        <div class="col-sm-9">
+                          <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
+                        </div>
+                        <div class="col-sm-1">
+                          <span class="asterisk">*</span>
+                        </div>
+                </div>
+                <div class="form-group">
+                        <label for="barcode" class="col-sm-2 control-label">Barcode</label>
+                        <div class="col-sm-9">
+                          <input id="barcode" type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
+                        </div>
+                </div>
+                <div class="form-group">
+                        <label for="purchase-price" class="col-sm-2 control-label">Purchase Price</label>
+                        <div class="col-sm-9">
+                          <input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
+                        </div>
+                        <div class="col-sm-1">
+                          <span class="asterisk">*</span>
+                        </div>
+                </div>
+                <div class="form-group">
+                  <label for="sell-price" class="col-sm-2 control-label">Sell Price</label>
+                  <div class="col-sm-9">
+                    <input id="sell_price" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
                   </div>
                 </div>
-                <div class="form-group has-feedback">
-                    <label class="custom-upload">
-                     <span class="glyphicon glyphicon-picture"></span> Image
-                      <input type="file" id="user_photo" class="upload customer-file-input form-control" name="item_image">
-                    </label>
-                </div>
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Quantity:</strong></span>
-                        <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
-                    </div>
-                </div>
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Barcode:</strong></span>
-                        <input id="barcode" type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
-                    </div>
-                </div>
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Purchase Price:</strong></span>
-                        <input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
-                        <span class="input-group-addon"><strong>Sell Price:</strong></span>
-                        <input id="sell_price" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
-                    </div>
-                </div>
-            <div class="form-group has-feedback">
-                <div class="input-group">
-                    <span class="input-group-addon"><strong>Discount:</strong></span>
-                    <input id="discount" type="number" class="form-control" name="discount" placeholder="Discount">
-                </div>
-            </div>
             <!-- Tax -->
-            <div class="form-group has-feedback">
-                <div class="input-group">
-                    <span class="input-group-addon"><strong></strong>Taxable:</strong></span>
-                    <select name="taxable" id="taxable" class="form-control">
+            <div class="form-group">
+                    <label for="taxable" class="col-sm-2 control-label">Taxable</label>
+                  <div class="col-sm-9">
+                      <select name="taxable" id="taxable" class="form-control">
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
-                    </select>
-                </div>
+                      </select>
+                  </div>
             </div>
             <!-- tax -->
-                
-        </div>
-        </div>
-
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                   <button type="submit" id="btn_add_item" class="btn btn-primary pull-left">Add Now</button>
-              </div>
+                </div>
+        </div>
+        </div>
         </form>
           </div>
     </div>

@@ -295,7 +295,7 @@ class AndroidAPIController extends Controller
         } elseif ($time == 3) {
             $query =  DB::table('payments')
                 ->select('*')
-                ->where('comp_id', 3)
+                ->where('comp_id', $request->compId)
                 ->whereDate('created_at', '>=', Carbon::now()->subDays(30))
                 ->get();
             # to calculate total of credit-card, debit-card, or cash of LAST 30 DAYS

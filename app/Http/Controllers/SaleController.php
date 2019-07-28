@@ -7,6 +7,7 @@ use App\Item;
 use App\Customer;
 use App\Sale;
 use DB;
+use Gate;
 use Cart;
 use Auth;
 use App\Payment;
@@ -29,23 +30,29 @@ class SaleController extends Controller
      */
     public function index()
     {
-        #cart
-            $carts = Cart::content();
-            $total = Cart::total();
-            $subTotal = Cart::subtotal();
-            $tax = Cart::tax();
-        # /.cart
-            $sales = DB::table('companies')
-                ->join('items', 'companies.company_id', '=', 'items.comp_id')
-                ->join('sales', 'items.item_id', '=', 'sales.item_id')
-                ->join('invoices', 'invoices.inv_id', '=', 'sales.inv_id')
-                ->select('sales.*', 'items.item_name', 'companies.*', 'invoices.*')
-                ->where('items.comp_id', Auth::user()->comp_id)
-                ->get();
+            if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
+                    #cart
+                    $carts = Cart::content();
+                    $total = Cart::total();
+                    $subTotal = Cart::subtotal();
+                    $tax = Cart::tax();
+                    # /.cart
+                    $sales = DB::table('companies')
+                        ->join('items', 'companies.company_id', '=', 'items.comp_id')
+                        ->join('sales', 'items.item_id', '=', 'sales.item_id')
+                        ->join('invoices', 'invoices.inv_id', '=', 'sales.inv_id')
+                        ->select('sales.*', 'items.item_name', 'companies.*', 'invoices.*')
+                        ->where('items.comp_id', Auth::user()->comp_id)
+                        ->get();
 
-        $customers = Customer::all()->where('comp_id', Auth::user()->comp_id);
-        $items = Item::all()->where('comp_id', Auth::user()->comp_id);
-        return view('create_sale', compact(['items', 'customers', 'sales', 'carts', 'total', 'subTotal', 'tax']));
+                    $customers = Customer::all()->where('comp_id', Auth::user()->comp_id);
+                    $items = Item::all()->where('comp_id', Auth::user()->comp_id);
+                    return view('create_sale', compact(['items', 'customers', 'sales', 'carts', 'total', 'subTotal', 'tax']));
+
+            } else {
+                abort(403, 'This action is unauthorized.');
+            }
+            
     }
 
     public function invoice()
@@ -155,12 +162,18 @@ class SaleController extends Controller
      */
     public function destroy(Request $request)
     {
-         $deleteSale = Sale::destroy('sale_id', $request->saleID);
-         if ($deleteSale) {
-             echo "Sale deleted!";
-         } else {
-             echo "Sorry, sale not deleted!";
-         }
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
+            $deleteSale = Sale::destroy('sale_id', $request->saleID);
+            if ($deleteSale) {
+                echo "Sale deleted!";
+            } else {
+                echo "Sorry, sale not deleted!";
+            }
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
+        
+        
          
     }
 }

@@ -36,8 +36,8 @@ class AuthServiceProvider extends ServiceProvider
             return $user->role === 'System Admin';
         });
         // super user 
-         Gate::define('isStoreManager', function($user){
-            return $user->role === 'Store Manager';
+         Gate::define('isStockManager', function($user){
+            return $user->role === 'Stock Manager';
         });
         // user
         Gate::define('isCashier', function($user){

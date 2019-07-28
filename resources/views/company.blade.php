@@ -14,7 +14,7 @@
                 
             <div class="box">
               <div class="box-header">
-                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-new-company" id="btn-new-company">New Company</button>
+                <button class="btn btn-primary pull-left" data-toggle="modal" data-target="#modal-new-company" id="btn-new-company">New Company</button>
               </div>
               <!-- /.box-header -->
               <div class="box-body" id="box-user">
@@ -34,13 +34,12 @@
                   <tbody>
                 @foreach($companies as $company)
                   <tr>
-                    <td>{{ $company->comp_name }}</td>
+                    <td><a href="#" class="company-detail-link" data-comp-id="{{ $company->company_id }}">{{ $company->comp_name }}</a></td>
                     <td>{{ $company->comp_state }}</td>
                     <td>{{ $company->comp_city }}</td>
                     <td>{{ $company->comp_address }}</td>
                     <td>{{ $company->contact_no }}</td>
                     <td>{{ $company->email }}</td>
-                    @csrf
                     <td><button class="btn-set-status @if($company->comp_status == 0) btn-xs btn btn-danger @elseif($company->comp_status == 1) btn-xs btn btn-success @endif" 
                       data-comp-status-value="{{ $company->comp_status }}"
                       data-comp-id = "{{ $company->company_id }}">@if($company->comp_status == 0) Inactive @elseif($company->comp_status == 1)Active @endif</button></td>
@@ -115,72 +114,72 @@
       <div class="modal-body">
         <p id="status-msg" style="text-align:center;display: none"></p>
         <div class="register-box-body">
-          <form id="system_admin_form">
+          <form class="form-horizontal" id="system_admin_form">
             @csrf
             <!-- roles -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
-                <select name="company" class="form-control">
-                  @foreach($companies as $c)
-                  <option value="{{ $c->company_id }}" name="company" active>{{ $c->comp_name }}</option>
-                  @endforeach
-                </select>
+            <div class="form-group">
+                <label for="company" class="col-sm-2 control-label">Company</label>
+              <div class="col-sm-10">
+                  <select name="company" class="form-control">
+                    @foreach($companies as $c)
+                    <option value="{{ $c->company_id }}" name="company" active>{{ $c->comp_name }}</option>
+                    @endforeach
+                  </select>
               </div>
             </div>
             <!-- first-name -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name">
-              </div>
+            <div class="form-group">
+                <label for="firstname" class="col-sm-2 control-label">First Name</label>
+                <div class="col-sm-10">
+                  <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name">
+                </div>
             </div>
             <!-- /. first-name -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Lastname">
-              </div>
+            <div class="form-group">
+                <label for="lastname" class="col-sm-2 control-label">Last Name</label>
+                <div class="col-sm-10">
+                  <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Lastname">
+                </div>
             </div>
             <!-- phone -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
-                <input id="phone" type="number" class="form-control" name="phone" placeholder="Phone">
-              </div>
+            <div class="form-group">
+                <label for="phone" class="col-sm-2 control-label">Phone</label>
+                <div class="col-sm-10">
+                  <input id="phone" type="number" class="form-control" name="phone" placeholder="Phone">
+                </div>
             </div>
             <!-- email -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                <input id="email" type="email" class="form-control" name="email" placeholder="Email (Optional)">
-              </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                  <input id="email" type="email" class="form-control" name="email" placeholder="Email (Optional)">
+                </div>
             </div>
 
             <!-- roles -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
-                <select name="role" class="form-control">
-                  <option value="System Admin" name="role" readonly>System Admin</option>
-                </select>
-              </div>
+            <div class="form-group">
+                <label for="role" class="col-sm-2 control-label">Role</label>
+                <div class="col-sm-10">
+                  <select name="role" class="form-control">
+                    <option value="System Admin" name="role" readonly>System Admin</option>
+                  </select>
+                </div>
             </div>
 
             <!-- /roles -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-              </div>
+            <div class="form-group">
+                <label for="Password" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10 control-label">
+                  <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+                </div>
             </div>
             <!-- confirm-password -->
-            <div class="form-group has-feedback">
-              <div class="input-group has-feedback">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                <input id="confirm_password" type="password" class="form-control" name="password_confirmation"
-                  placeholder="Retype Password">
-              </div>
+            <div class="form-group">
+                <label for="confirm" class="col-sm-2 control-label">Confirm Password</label>
+               <div class="col-sm-10">
+                  <input id="confirm_password" type="password" class="form-control" name="password_confirmation"
+                    placeholder="Retype Password">
+               </div>
             </div>
 
             <div class="modal-footer">
@@ -213,73 +212,88 @@
         <ul id="role-msg" style="display: block">
         </ul>
           <div class="register-box-body">
-              <form id="new_company_form">
+              <form class="form-horizontal" id="new_company_form">
                 @csrf
                  <!-- User couunt/limitation -->
-                 <div class="form-group has-feedback">
-                  <div class="input-group">
-                      <span class="input-group-addon"><strong>Users:</strong></span>
+                 <div class="form-group">
+                      <label for="users" class="col-sm-2 control-label">Users</label>
+               <div class="col-sm-9">
                       <select name="user_count" class="form-control">
-                           <option value="1" name="company">1 User</option>
-                           <option value="2" name="company">2 Users</option>
-                           <option value="4" name="company">4 Users</option>
-                           <option value="5" name="company">5 Users</option>
-                           <option value="6" name="company">6 Users</option>
-                           <option value="7" name="company">7 Users</option>
-                           <option value="8" name="company">8 Users</option>
-                           <option value="9" name="company">9 Users</option>
-                           <option value="10" name="company">10 Users</option>
+                        <option value="1" name="company">1 User</option>
+                        <option value="2" name="company">2 Users</option>
+                        <option value="4" name="company">4 Users</option>
+                        <option value="5" name="company">5 Users</option>
+                        <option value="6" name="company">6 Users</option>
+                        <option value="7" name="company">7 Users</option>
+                        <option value="8" name="company">8 Users</option>
+                        <option value="9" name="company">9 Users</option>
+                        <option value="10" name="company">10 Users</option>
                       </select>
-                    </div>
+               </div>
+               <div class="col-sm-1">
+                 <span class="asterisk">*</span>
+               </div>
               </div>
               <!-- User couunt/limitation -->
                 <!-- Company-Name -->
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Company Name:</strong></span>
-                        <input id="comp_name" type="text" class="form-control" name="comp_name" placeholder="Company Name">
-                    </div>
+                <div class="form-group">
+                        <label for="company-name" class="col-sm-2 control-label">Company Name</label>
+                        <div class="col-sm-9">
+                          <input id="comp_name" type="text" class="form-control" name="comp_name" placeholder="Company Name">
+                        </div>
+                          <div class="col-sm-1">
+                            <span class="asterisk">*</span>
+                          </div>
                 </div>
                 <!-- /. Company State -->
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>State/Province:</strong></span>
-                        <input id="comp_state" type="text" class="form-control" name="comp_state" placeholder="Location State/Province">
-                    </div>
+                <div class="form-group">
+                        <label for="state" class="col-sm-2 control-label">State / Province</label>
+                        <div class="col-sm-9">
+                          <input id="comp_state" type="text" class="form-control" name="comp_state" placeholder="Location State/Province">
+                        </div>
+                          <div class="col-sm-1">
+                            <span class="asterisk">*</span>
+                          </div>
                 </div>
                 <!-- /. Company City -->
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>City:</strong></span>
-                        <input id="comp_city" type="text" class="form-control" name="comp_city" placeholder="City">
-                    </div>
+                <div class="form-group">
+                        <label for="city" class="col-sm-2 control-label">City</label>
+                        <div class="col-sm-9">
+                          <input id="comp_city" type="text" class="form-control" name="comp_city" placeholder="City">
+                        </div>
                 </div>
                 <!-- Company-Address -->
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Address:</strong></span>
-                        <input id="comp_address" type="text" class="form-control" name="comp_address" placeholder="Company Address">
-                      </div>
+                <div class="form-group">
+                        <label for="address" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-9">
+                          <input id="comp_address" type="text" class="form-control" name="comp_address" placeholder="Company Address">
+                        </div>
+                          <div class="col-sm-1">
+                            <span class="asterisk">*</span>
+                          </div>
                 </div>
                 <!-- Company-Contact -->
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Contact:</strong></span>
-                        <input id="comp_contact" type="text" class="form-control" name="comp_contact" placeholder="Contact NO">
-                      </div>
+                <div class="form-group">
+                        <label for="contact" class="col-sm-2 control-label">Contact</label>
+                        <div class="col-sm-9">
+                          <input id="comp_contact" type="text" class="form-control" name="comp_contact" placeholder="Contact NO">
+                        </div>
+                          <div class="col-sm-1">
+                            <span class="asterisk">*</span>
+                          </div>
                 </div>
                 <!-- Company-Email -->
                 <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Email:</strong></span>
-                        <input id="comp_email" type="email" class="form-control" name="comp_email" placeholder="Email">
-                      </div>
+                        <label for="email" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-9">
+                          <input id="comp_email" type="email" class="form-control" name="comp_email" placeholder="Email">
+                        </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success pull-left"  data-toggle="modal" data-target="#modal-new-user" id="btn_system_admin">Add System Admin</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <!-- <button type="button" class="btn btn-success pull-left"  data-toggle="modal" data-target="#modal-new-user" id="btn_system_admin">Add System Admin</button> -->
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary pull-left">Register</button>
                 </div>
               </form>
             </div>

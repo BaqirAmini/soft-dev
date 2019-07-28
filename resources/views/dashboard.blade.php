@@ -5,7 +5,7 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-  @can('isSystemAdmin')
+  @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class) || Auth::user()->can('isCashier', App\User::class))
     <div class="col-lg-3 col-xs-6" id="test">
       <!-- small box -->
       <div class="small-box bg-aqua">
@@ -16,7 +16,9 @@
         <div class="icon">
           <i class="ion ion-person-stalker"></i>
         </div>
-        <a href="{{ route('user') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        @can('isSystemAdmin')
+         <a href="{{ route('user') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        @endcan
       </div>
     </div>
     
@@ -31,7 +33,9 @@
         <div class="icon">
           <i class="ion ion-bag"></i>
         </div>
-        <a href="{{ route('sale') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        @if(Auth::user()->can('isSystemAdmin', App\User::class))
+          <a href="{{ route('sale') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        @endif
       </div>
     </div>
     <!-- ./col -->
@@ -40,13 +44,14 @@
       <div class="small-box bg-yellow">
         <div class="inner">
           <h3>{{ $custCount }}</h3>
-
           <p>Customers</p>
         </div>
         <div class="icon">
           <i class="ion ion-android-contacts"></i>
         </div>
-        <a href="{{ route('customer') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        @if(Auth::user()->can('isSystemAdmin', App\User::class))
+          <a href="{{ route('customer') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        @endif
       </div>
     </div>
     
@@ -61,15 +66,17 @@
         <div class="icon">
           <i class="ion ion-archive"></i>
         </div>
-        <a href="{{ route('item') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        @if(Auth::user()->can('isSystemAdmin', App\User::class))
+         <a href="{{ route('item') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        @endif
       </div>
     </div>
     <!-- ./col -->
-    @endcan
+    @endif
     <!-- ./col -->
     @can('isSuperAdmin')
     <!-- Stores/companies -->
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-lg-4 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-aqua">
           <div class="inner">
@@ -79,12 +86,12 @@
           <div class="icon">
             <i class="ion ion-briefcase"></i>
           </div>
-          <a href="{{ route('company') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          <!-- <a href="{{ route('company') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </div>
       </div>
       <!-- /. stores/companies -->
     <!-- Stores/companies -->
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-lg-4 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-green">
           <div class="inner">
@@ -94,37 +101,22 @@
           <div class="icon">
             <i class="ion ion-person-stalker"></i>
           </div>
-          <a href="{{ route('user') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </div>
       </div>
       <!-- /. stores/companies -->
     <!-- Stores/companies -->
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-yellow">
-          <div class="inner">
-            <h3>{{ $custCount }}</h3>
-            <p>More...</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-android-add"></i>
-          </div>
-          <a href="{{ route('customer') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- /. stores/companies -->
-    <!-- Stores/companies -->
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-lg-4 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-red">
           <div class="inner">
-            <h3>{{ $custCount }}</h3>
-            <p>Settings</p>
+            <h3>{{ $superAdminCount }}</h3>
+            <p>Super Admins</p>
           </div>
           <div class="icon">
-            <i class="ion ion-android-settings"></i>
+            <i class="ion ion-person-stalker"></i>
           </div>
-          <a href="{{ route('customer') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          <!-- <a href="{{ route('superAdmin') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
         </div>
       </div>
       <!-- /. stores/companies -->
@@ -142,8 +134,7 @@
     
               <div class="box">
                 <div class="box-header">
-                  <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-new-company"
-                    id="btn-new-company">New Company</button>
+                  <button class="btn btn-primary pull-left" data-toggle="modal" data-target="#modal-new-company" id="btn-new-company">Add Company</button>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body" id="box-user">
@@ -163,13 +154,13 @@
                     <tbody>
                       @foreach($companies as $company)
                       <tr>
-                        <td>{{ $company->comp_name }}</td>
+                        <td><a href="#" class="company-detail-link"
+                          data-comp-id="{{ $company->company_id }}">{{ $company->comp_name }}</a></td>
                         <td>{{ $company->comp_state }}</td>
                         <td>{{ $company->comp_city }}</td>
                         <td>{{ $company->comp_address }}</td>
                         <td>{{ $company->contact_no }}</td>
                         <td>{{ $company->email }}</td>
-                        @csrf
                         <td><button
                             class="btn-set-status @if($company->comp_status == 0) btn-xs btn btn-danger @elseif($company->comp_status == 1) btn-xs btn btn-success @endif"
                             data-comp-status-value="{{ $company->comp_status }}"
@@ -196,14 +187,16 @@
   <!-- /. List of companies -->
 
   <!-- ============= Products in INVENTORIES ==============-->
-  @can('isSystemAdmin')
+  @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class) || Auth::user()->can('isCashier', App\User::class))
       <div class="box">
         <div class="box-header">
           <!-- Header of items-page -->
           <section class="content-header">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-item">Add Item</button>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-category">Add Category</button>
-          </section>
+            @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class)) 
+                  <button class="btn btn-primary" data-toggle="modal" data-target="#modal-item">Add Item</button>
+                  <button class="btn btn-primary" data-toggle="modal" data-target="#modal-category">Add Category</button>
+            @endif
+        </section>
         </div>
         <div class="box-body">
           <div class="box">
@@ -220,7 +213,9 @@
                     <th>Purchase Price</th>
                     <th>Sell Price</th>
                     <th>Reg. Date</th>
-                    <th>Action</th>
+                    @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class))
+                      <th>Action</th>
+                    @endif
                   </tr>
                 </thead>
                 <tbody>
@@ -235,18 +230,19 @@
                     <td>{{ $item->purchase_price }}</td>
                     <td>{{ $item->sell_price }}</td>
                     <td>{{ Carbon\carbon::parse($item->created_at)->format('d M Y') }}</td>
-                    <td>
-                      <button class="btn btn-danger btn-sm btn_delete_product" data-toggle="modal"
-                        data-target="#modal-delete-item" data-product-id="{{ $item->item_id }}"><i
-                          class="fa fa-trash"></i></button>
-                      <button class="btn btn-primary btn-sm btn_edit_item" data-toggle="modal" data-target="#modal-edit-item"
-                        data-item-id="{{ $item->item_id }}" data-item-name="{{ $item->item_name }}"
-                        data-item-desc="{{ $item->item_desc }}" data-item-qty="{{ $item->quantity }}"
-                        data-item-barcode="{{ $item->barcode_number }}" data-item-purchase="{{ $item->purchase_price }}"
-                        data-item-taxable="{{ $item->taxable }}" data-item-sell="{{ $item->sell_price }}">
-                        <i class="fa fa-pencil"></i>
-                      </button>
-                    </td>
+                    @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class)) 
+                        <td>
+                          <button class="btn btn-danger btn-sm btn_delete_product" data-toggle="modal" data-target="#modal-delete-item"
+                            data-product-id="{{ $item->item_id }}"><i class="fa fa-trash"></i></button>
+                          <button class="btn btn-primary btn-sm btn_edit_item" data-toggle="modal" data-target="#modal-edit-item"
+                            data-item-id="{{ $item->item_id }}" data-item-name="{{ $item->item_name }}" data-item-desc="{{ $item->item_desc }}"
+                            data-item-qty="{{ $item->quantity }}" data-item-barcode="{{ $item->barcode_number }}"
+                            data-item-purchase="{{ $item->purchase_price }}" data-item-taxable="{{ $item->taxable }}"
+                            data-item-sell="{{ $item->sell_price }}">
+                            <i class="fa fa-pencil"></i>
+                          </button>
+                        </td>
+                    @endif
                   </tr>
                   @endforeach
               </table>
@@ -254,7 +250,7 @@
           </div>
         </div>
       </div>
-  @endcan
+  @endif
   <!-- ============== /. INVENTORIES ================= -->
 </section>
 <!-- /.content -->
@@ -275,7 +271,7 @@
         <!-- User-Count -->
         <div class="form-group has-feedback">
           <input type="hidden" name="input_comp_id">
-          <div class="input-group  col-md-12 com-sm-12 col-xs-6">
+          <div class="input-group  col-md-10 com-sm-10 col-xs-12 col-md-offset-1">
             <select name="company_user_count" class="form-control">
               <option value="1" name="company_user_count">1 User</option>
               <option value="2" name="company_user_count">2 Users</option>
@@ -303,101 +299,6 @@
 </div>
 <!-- /.modal -->
 <!-- /. Increase/Decrease User-Counts -->
-<!-- System-admin-modal -->
-<div class="modal fade" id="modal-new-user">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-        <h5 class="modal-title"><b>Company System Admin Registeration</b></h5>
-      </div>
-      <div class="modal-body">
-        <p id="status-msg" style="text-align:center;display: none"></p>
-        <div class="register-box-body">
-          <form id="system_admin_form">
-            @csrf
-            <!-- roles -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
-                <select name="company" class="form-control">
-                  @foreach($companies as $c)
-                  <option value="{{ $c->company_id }}" name="company" active>{{ $c->comp_name }}</option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-            <!-- first-name -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name">
-              </div>
-            </div>
-            <!-- /. first-name -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Lastname">
-              </div>
-            </div>
-            <!-- phone -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
-                <input id="phone" type="number" class="form-control" name="phone" placeholder="Phone">
-              </div>
-            </div>
-            <!-- email -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                <input id="email" type="email" class="form-control" name="email" placeholder="Email (Optional)">
-              </div>
-            </div>
-
-            <!-- roles -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
-                <select name="role" class="form-control">
-                  <option value="System Admin" name="role" readonly>System Admin</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- /roles -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-              </div>
-            </div>
-            <!-- confirm-password -->
-            <div class="form-group has-feedback">
-              <div class="input-group has-feedback">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                <input id="confirm_password" type="password" class="form-control" name="password_confirmation"
-                  placeholder="Retype Password">
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary pull-left">Register</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<!-- /. System-admin-modal -->
-
 
 <!-- New Company MODAL -->
 <div class="modal fade" id="modal-new-company">
@@ -413,76 +314,88 @@
         <ul id="role-msg" style="display: block">
         </ul>
         <div class="register-box-body">
-          <form id="new_company_form">
+          <form class="form-horizontal" id="new_company_form">
             @csrf
             <!-- User couunt/limitation -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><strong>Users:</strong></span>
-                <select name="user_count" class="form-control">
-                  <option value="1" name="company">1 User</option>
-                  <option value="2" name="company">2 Users</option>
-                  <option value="4" name="company">4 Users</option>
-                  <option value="5" name="company">5 Users</option>
-                  <option value="6" name="company">6 Users</option>
-                  <option value="7" name="company">7 Users</option>
-                  <option value="8" name="company">8 Users</option>
-                  <option value="9" name="company">9 Users</option>
-                  <option value="10" name="company">10 Users</option>
-                </select>
+            <div class="form-group">
+                <label for="users" class="col-sm-2 control-label">Users</label>
+              <div class="col-sm-9">
+                  <select name="user_count" class="form-control">
+                    <option value="1" name="company">1 User</option>
+                    <option value="2" name="company">2 Users</option>
+                    <option value="4" name="company">4 Users</option>
+                    <option value="5" name="company">5 Users</option>
+                    <option value="6" name="company">6 Users</option>
+                    <option value="7" name="company">7 Users</option>
+                    <option value="8" name="company">8 Users</option>
+                    <option value="9" name="company">9 Users</option>
+                    <option value="10" name="company">10 Users</option>
+                  </select>
               </div>
             </div>
             <!-- User couunt/limitation -->
             <!-- Company-Name -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><strong>Company Name:</strong></span>
-                <input id="comp_name" type="text" class="form-control" name="comp_name" placeholder="Company Name">
-              </div>
+            <div class="form-group">
+                <label for="company" class="col-sm-2 control-label">Company Name</label>
+                <div class="col-sm-9">
+                  <input id="comp_name" type="text" class="form-control" name="comp_name" placeholder="Company Name">
+                </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
+                </div>
             </div>
             <!-- /. Company State -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><strong>State/Province:</strong></span>
-                <input id="comp_state" type="text" class="form-control" name="comp_state"
-                  placeholder="Location State/Province">
-              </div>
+            <div class="form-group">
+                <label for="state" class="col-sm-2 control-label">State / Province</label>
+               <div class="col-sm-9">
+                  <input id="comp_state" type="text" class="form-control" name="comp_state" placeholder="Location State/Province">
+               </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
+                </div>
             </div>
             <!-- /. Company City -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><strong>City:</strong></span>
-                <input id="comp_city" type="text" class="form-control" name="comp_city" placeholder="City">
-              </div>
+            <div class="form-group">
+                <label for="city" class="col-sm-2 control-label">City</label>
+                <div class="col-sm-9">
+                  <input id="comp_city" type="text" class="form-control" name="comp_city" placeholder="City">
+                </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
+                </div>
             </div>
             <!-- Company-Address -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><strong>Address:</strong></span>
-                <input id="comp_address" type="text" class="form-control" name="comp_address"
-                  placeholder="Company Address">
-              </div>
+            <div class="form-group">
+                <label for="address" class="col-sm-2 control-label">Address</label>
+                <div class="col-sm-9">
+                  <input id="comp_address" type="text" class="form-control" name="comp_address" placeholder="Company Address">
+                </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
+                </div>
             </div>
             <!-- Company-Contact -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><strong>Contact:</strong></span>
-                <input id="comp_contact" type="text" class="form-control" name="comp_contact" placeholder="Contact NO">
-              </div>
+            <div class="form-group">
+                <label for="contact" class="col-sm-2 control-label">Contact</label>
+               <div class="col-sm-9">
+                  <input id="comp_contact" type="text" class="form-control" name="comp_contact" placeholder="Contact NO">
+               </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
+                </div>
             </div>
             <!-- Company-Email -->
-            <div class="form-group has-feedback">
-              <div class="input-group">
-                <span class="input-group-addon"><strong>Email:</strong></span>
-                <input id="comp_email" type="email" class="form-control" name="comp_email" placeholder="Email">
-              </div>
+            <div class="form-group">
+               <label for="email" class="col-sm-2 control-label">Email</label>
+               <div class="col-sm-9">
+                  <input id="comp_email" type="email" class="form-control" name="comp_email" placeholder="Email">
+               </div>
             </div>
-
             <div class="modal-footer">
-              <button type="button" class="btn btn-success pull-left" data-toggle="modal" data-target="#modal-new-user"
-                id="btn_system_admin">Add System Admin</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Register</button>
+              <!-- <button type="button" class="btn btn-success pull-left" data-toggle="modal" data-target="#modal-new-user"
+                id="btn_system_admin">Add System Admin</button> -->
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary pull-left">Register</button>
             </div>
           </form>
         </div>
@@ -510,25 +423,27 @@
             <ul id="ctg_message" style="display:none">
               <li>Message</li>
             </ul>
-            <form id="new_ctg_form">
+            <form class="form-horizontal" id="new_ctg_form">
               @csrf
   
               <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon">Category Name:</span>
-                  <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
-                </div>
+                  <label for="ctg-name" class="col-sm-2 control-label">Category Name</label>
+                  <div class="col-sm-9">
+                    <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
               </div>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon">Description</span>
-                  <input id="ctg_desc" type="text" class="form-control" name="ctg_desc"
-                    placeholder="Description (Optional)">
-                </div>
+              <div class="form-group">
+                  <label for="desc" class="col-sm-2 control-label">Description</label>
+                  <div class="col-sm-9">
+                    <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description (Optional)">
+                  </div>
               </div>
   
               <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                 <button type="submit" id="btn_add_ctg" class="btn btn-primary pull-left">Add Now</button>
               </div>
             </form>
@@ -554,66 +469,97 @@
           <div class="register-box-body">
             <ul id="item_message" style="display:none">
             </ul>
-            <form enctype="multipart/form-data" id="item_form_data">
+            <form class="form-horizontal" enctype="multipart/form-data" id="item_form_data">
               @csrf
-              <div class="input-group">
-                <span class="input-group-addon"><strong>Category</strong></span>
-                <select name="item_category" id="item_category" class="form-control" required autofocus>
-                  @foreach($ctgs as $ctg)
-                  <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
-                  @endforeach
-                </select>
-              </div><br>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Product</strong></span>
-                  <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
+              <div class="form-group">
+                <label for="category" class="col-sm-2 control-label">Category</label>
+                <div class="col-sm-9">
+                  <select name="item_category" id="item_category" class="form-control" required autofocus>
+                    @foreach($ctgs as $ctg)
+                    <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
                 </div>
               </div>
-              <div class="form-group has-feedback">
-                <label class="custom-upload">
-                  <span class="glyphicon glyphicon-picture"></span> Image
-                  <input type="file" id="user_photo" class="upload customer-file-input form-control" name="item_image">
-                </label>
+              <div class="form-group">
+                  <label for="item" class="col-sm-2 control-label">Item</label>
+                  <div class="col-sm-9">
+                    <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
+                  </div>
+                      <div class="col-sm-1">
+                        <span class="asterisk">*</span>
+                      </div>
               </div>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Quantity</strong></span>
-                  <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Image</label>
+                <div class="col-sm-9">
+                  <div class="input-group col-sm-12 col-md-12">
+                    <input type="text" class="form-control" disabled>
+                    <div class="input-group-addon">
+                      <label class="logo-custom-upload">
+                        <span class="glyphicon glyphicon-picture"></span>
+                        <input type="file" id="company_logo" class="upload logo-file-input form-control" name="item_image">
+                      </label>
+                    </div>
+                  </div>
                 </div>
+              
               </div>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Barcode</strong></span>
-                  <input id="barcode" type="number" class="form-control" name="barcode_number"
-                    placeholder="Barcode Number">
-                </div>
+              <div class="form-group">
+                  <label for="quantity" class="col-sm-2 control-label">Quantity</label>
+                  <div class="col-sm-9">
+                    <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
               </div>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Purchase Price</strong></span>
-                  <input id="purchase_price" type="number" class="form-control" name="purchase_price"
-                    placeholder="Purchase Price">
-                  <span class="input-group-addon"><strong>Sell Price</strong></span>
+              <div class="form-group">
+                  <label for="barcode" class="col-sm-2 control-label">Barcode</label>
+                  <div class="col-sm-9">
+                    <input id="barcode" type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="purchase-price" class="col-sm-2 control-label">Purchase Price</label>
+                  <div class="col-sm-9">
+                    <input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="sell-price" class="col-sm-2 control-label">Sell Price</label>
+                <div class="col-sm-9">
                   <input id="sell_price" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
                 </div>
               </div>
               <!-- Tax -->
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Taxable:</strong></span>
-                  <select name="taxable" id="taxable" class="form-control">
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
+              <div class="form-group">
+                  <label for="taxable" class="col-sm-2 control-label">Taxable</label>
+                  <div class="col-sm-9">
+                    <select name="taxable" id="taxable" class="form-control">
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
               </div>
               <!-- tax -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="btn_add_item" class="btn btn-primary pull-left">Add Now</button>
+              </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="submit" id="btn_add_item" class="btn btn-primary pull-left">Add Now</button>
         </div>
         </form>
       </div>
@@ -635,49 +581,68 @@
           <div class="register-box-body">
             <ul id="item_message" style="display:none">
             </ul>
-            <form enctype="multipart/form-data" id="edit_item_form_data">
+            <form class="form-horizontal" enctype="multipart/form-data" id="edit_item_form_data">
               <input type="hidden" name="item_id">
               @csrf
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Product</strong></span>
-                  <input type="text" class="form-control" name="item_name" placeholder="Item Name">
-                </div>
+              <div class="form-group">
+                  <label for="item" class="col-sm-2 control-label">Item</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" name="item_name" placeholder="Item Name">
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
               </div>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Desc</strong></span>
-                  <input type="text" class="form-control" name="item_desc" placeholder="Description">
-                </div>
+              <div class="form-group">
+                  <label for="desc" class="col-sm-2 control-label">Description</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" name="item_desc" placeholder="Description">
+                  </div>
               </div>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Quantity</strong></span>
-                  <input type="number" class="form-control" name="quantity" placeholder="Stock">
-                </div>
+              <div class="form-group">
+                  <label for="quantity" class="col-sm-2 control-label">Quantity</label>
+                  <div class="col-sm-9">
+                    <input type="number" class="form-control" name="quantity" placeholder="Stock">
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
               </div>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Barcode</strong></span>
-                  <input type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
-                </div>
+              <div class="form-group">
+                  <label for="barcode" class="col-sm-2 control-label">Barcode</label>
+                  <div class="col-sm-9">
+                    <input type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
+                  </div>
               </div>
-              <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Purchase Price</strong></span>
-                  <input type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
-                  <span class="input-group-addon"><strong>Sell Price</strong></span>
+              <div class="form-group">
+                  <label for="purchase-price" class="col-sm-2 control-label">Purchase Price</label>
+                  <div class="col-sm-9">
+                    <input type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="sell-price" class="col-sm-2 control-label">Sell Price</label>
+                <div class="col-sm-9">
                   <input type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
                 </div>
               </div>
               <!-- Tax -->
               <div class="form-group has-feedback">
-                <div class="input-group">
-                  <span class="input-group-addon"><strong>Taxable:</strong></span>
-                  <select name="taxable" class="form-control">
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
+                  <label for="taxable" class="col-sm-2 control-label">Taxable</label>
+                <div class="col-sm-9">
+                      <select name="taxable" class="form-control">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                </div>
+                <div class="col-sm-1">
+                  <span class="asterisk">*</span>
                 </div>
               </div>
               <!-- tax -->

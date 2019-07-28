@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
+use DB;
 class LoginController extends Controller
 {
     /*
@@ -20,8 +21,9 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     public function authenticate(Request $request) {
-        if (Auth::attempt(['name' => $request->name, 'password' => $request->password, 'status'=>1])) {
-            return redirect()->intended('dashboard');
+        # this is not working you should refere 'AuthenticateUsers.php' inside laravel>foundation>auth
+        if (Auth::attempt(['username' => $request->user_name, 'password' => $request->password, 'status'=>1])) {
+                return redirect()->intended('login');
         } 
     }
     /**

@@ -16,13 +16,14 @@ class CompanyController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'can:isSuperAdmin']);
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    # =============================== FOR SUPER-ADMIN to do something with companies ====================
     public function index()
     {
         $companies = DB::table('companies')->get();
@@ -56,13 +57,15 @@ class CompanyController extends Controller
             $user->password = Hash::make($request->password);
             $user->save(); 
             return response()->json([
-                'user_msg' => 'User registered successfully!',
+                'user_msg' => 'System admin registered successfully!',
+                'result' => 'ok',
                 'style' => 'color:grey'
             ]);
         } else {
             return response()->json([
                 'user_msg' => $validation->errors()->all(),
-                'style' => 'color:red'
+                'result' => 'fail',
+                'style' => 'color:darkred'
             ]);
         }
         
@@ -83,8 +86,8 @@ class CompanyController extends Controller
             'comp_state' => 'required|string|max:64',
             'comp_city' => 'required|string|max:128',
             'comp_address' => 'required|string|max:128',
-            'comp_contact' => 'required|string|max:64',
-            'comp_email' => 'nullable|string|max:64',
+            'comp_contact' => 'required|string|max:64|min:10',
+            'comp_email' => 'nullable|email|string|max:64|min:5'
         ]);
 
         if ($validation->passes()) {
@@ -97,11 +100,13 @@ class CompanyController extends Controller
             $company->save();
             return response()->json([
                 'comp_msg' => 'Company registered successfully!',
+                'result' => 'ok',
                 'style' => 'color:grey'
             ]);
         } else {
             return response()->json([
                 'comp_msg' => $validation->errors()->all(),
+                'result' => 'fail',
                 'style' => 'color:darkred'
             ]);
         }
@@ -149,17 +154,88 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function whichCompany()
+    # Load a specific company when a link of companies clicked.
+    public function onSetCompany($compId)
     {
-        $userId = Auth::user()->id;
-        $companyId = Auth::user()->comp_id;
-        $companies = DB::table('companies')
-        ->join('users', 'companies.company_id', '=', 'users.comp_id')
-        ->select('companies.*')
-        ->where('users.id', $userId)
-        ->get();
-        return view('company_settings', compact('companies'));
+        $users = DB::table('users')->select('*')->where('comp_id', $compId)->get();
+        $companies = DB::table('companies')->where('company_id', $compId)->get();
+        return view('company_setting', compact(['companies', 'compId', 'users']));
     }
+    # Edit the specific loaded company while clicking the link
+    public function onSaveCompanySetting(Request $request)
+    {
+        $company = Company::findOrfail($request->cid);
+      
+        $validation = Validator::make($request->all(), [
+            'cname' => 'required|string|max:64|min:5',
+            'cstate' => 'required|string|max:64',
+            'ccity' => 'required|string|max:128',
+            'caddress' => 'required|string|max:128',
+            'ccontact' => 'required|string|max:64',
+            'cemail' => 'nullable|string|max:64',
+      ]);
+        
+       
+      if ($validation->passes()) {
+                $company->comp_name = $request->cname;
+                $company->comp_city = $request->ccity;
+                $company->comp_address = $request->caddress;
+                $company->comp_state = $request->cstate;
+                $company->contact_no = $request->ccontact;
+                $company->email = $request->cemail;
+                $company->comp_status = $request->cstatus;
+                $company->user_count = $request->ucount;
+
+               
+            if ($company->save()) {
+                return response()->json([
+                    'msg' => 'Changes saved successfully!',
+                    'style' => 'color:darkblue'
+                ]);
+            } else {
+                return response()->json([
+                    'msg' => 'Sorry, something wrong, please try again.'
+                ]);
+            }
+      } else {
+          return response()->json([
+            'msg' => '<ul><li>company name required</li><li>Province/State required</li><li>City required</li><li>Address required</li><li>Contact required</li></ul>',
+            'style' => 'color:darkred'
+          ]);
+      }    
+    }
+
+    # =================================== change a specific company LOGO ===========================
+    public function changeLogo(Request $request)
+        { 
+            $v = Validator::make($request->all(), [
+                'company_logo' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2048'
+            ]);
+            if ($v->passes()) {
+                $company = Company::findOrfail($request->cid);
+                if ($request->hasFile('company_logo')) {
+                    $img = $request->file('company_logo');
+                    $path = "uploads/logos/";
+                    $img_name = rand() . '.' . $img->getClientOriginalExtension();
+                    $company->comp_logo = $img_name;
+                    $img->move($path, $img_name);
+                    $company->save();
+                    return response()->json([
+                        'message' => 'Logo changed successfully!',
+                        'style' => 'color:darkblue',
+                        'result' => 'ok'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'message' => $v->errors()->all(),
+                    'result' => 'fail',
+                    'style' => 'color:darkred'
+                ]);
+            }
+            
+        }
+    # =================================== /. change a specific company LOGO ===========================
 
     #Change user-count of company
     public function userCount(Request $request)
@@ -179,27 +255,6 @@ class CompanyController extends Controller
         }
         
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+# ================================ /. FOR SUPER-ADMIN to do some thing for companies ===================================
+   
 }

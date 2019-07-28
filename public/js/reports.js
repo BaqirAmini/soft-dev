@@ -1,19 +1,13 @@
 $(document).ready(function () {
-    $('#data_tbl6').on('click', '.btn-delete-daily-report', function () { 
-        var saleId = $(this).data('sale-id');
-        var compId = $(this).data('comp-id');
-        
-        $.ajax({
-            type: "GET",
-            url: "reports/daily/delete",
-            data: {'saleId': saleId, 'compId': compId},
-            dataType: "json",
-            success: function (response) {
-                $('#delete_sale_msg').html(response.delete_msg);
-                $('#delete_sale_msg').attr('style',response.style);
+    $('#btn_print_reports').click(function () { 
+        var printContents = document.getElementById('report_print_area').innerHTML;
+        w = window.open();
+        w.document.write("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" media=\"print\"/>");
+        w.document.write(printContents);
+        w.document.write('<scr' + 'ipt type="text/javascript">' + 'window.onload = function() { window.print(); window.close(); };' + '</sc' + 'ript>');
 
-            },
-            error: function (error) { console.log(error); }
-        });
+        w.document.close(); // necessary for IE >= 10
+        w.focus(); // necessary for IE >= 10
+
      });
 });

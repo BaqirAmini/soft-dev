@@ -85,10 +85,10 @@ $(document).ready(function () {
     // /. BTN-SAVE-SALE
 
     // delete DAILY-report
-    $('#data_tbl6').on('click', '.btn-delete-daily-report', function () { 
-        var saleId = $(this).data('sale-id');
-        $('input[name=daily_sale_id]').val();
-     });
+    // $('#data_tbl6').on('click', '.btn-delete-daily-report', function () { 
+    //     var saleId = $(this).data('sale-id');
+    //     $('input[name=daily_sale_id]').val();
+    //  });
 })
 // SELECT PAYMENT METHOD
 function selectPayment() {
@@ -97,7 +97,7 @@ function selectPayment() {
         $('button#btn_print').prop('disabled', true);
         $('button#btn_print').removeClass('btn btn-primary');
         $('button#btn_print').addClass('btn btn-default');
-    } else if (st.val() == 'cache') {
+    } else if (st.val() == 'Cash') {
         $('button#btn_print').prop('disabled', false);
         $('button#btn_print').removeClass('btn btn-default');
         $('button#btn_print').addClass('btn btn-primary');
@@ -109,11 +109,12 @@ function selectPayment() {
             var recieveable = parseFloat(payable) - parseFloat(recieved);
             $('input#payable').val(recieveable);
          });
-    } else if (st.val() == "credit card" || st.val() == "debit card") {
+    } else if (st.val() == "Master Card" || st.val() == "Debit Card") {
         $('button#btn_print').prop('disabled', false);
         $('button#btn_print').removeClass('btn btn-default');
         $('button#btn_print').addClass('btn btn-primary');
         $('.t-card').show();
+        $('#lbl_trans_code').show();
         $('#cache').hide();
     }
   }

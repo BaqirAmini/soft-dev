@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Customer;
 use Auth;
+use Illuminate\Support\Facades\Gate;
 use Validator;
 use function GuzzleHttp\json_encode;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +23,14 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isCashier')) {
+            $customers = Customer::all()->where('comp_id', Auth::user()->comp_id);
+            return view('customer', compact('customers'));
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
 
-        $customers = Customer::all()->where('comp_id', Auth::user()->comp_id);
-        return view('customer', compact('customers'));
+       
     }
 
     /**
@@ -156,12 +162,17 @@ class CustomerController extends Controller
     # Delete a customer from database
     public function destroy(Request $request)
     {
-        $deleted = Customer::destroy('cust_id', $request->custId);
-        if ($deleted) {
-            echo "Customer deleted!";   
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isCashier')) {
+            $deleted = Customer::destroy('cust_id', $request->custId);
+            if ($deleted) {
+                echo "Customer deleted!";
+            } else {
+                echo "Sorry, customer not deleted, please try again.";
+            }
         } else {
-            echo "Sorry, customer not deleted, please try again.";
+            abort(403, 'This action is unauthorized');
         }
+        
         
     }
 }

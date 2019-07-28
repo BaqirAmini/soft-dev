@@ -83,24 +83,27 @@
                 <ul id="ctg_message" style="display:none">
                     <li>Message</li>
                 </ul>
-                <form id="new_ctg_form">
+                <form class="form-horizontal" id="new_ctg_form">
                   @csrf
                
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon">Category Name:</span>
-                            <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
-                        </div>
+                    <div class="form-group">                       
+                            <label for="category" class="col-sm-2 control-label">Category Name</label>
+                            <div class="col-sm-9">
+                                <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
+                            </div>  
+                            <div class="col-sm-1">
+                                <span class="asterisk">*</span>
+                            </div>
                     </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon">Description</span>
-                            <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description (Optional)">
-                        </div>
+                    <div class="form-group">                        
+                            <label for="description" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-9">
+                                <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description (Optional)">
+                            </div>                       
                     </div>
             
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">cancel</button>
                       <button type="submit" id="btn_add_ctg" class="btn btn-primary pull-left">Add Now</button>
                   </div>
             </form>
@@ -129,70 +132,98 @@
             <div class="register-box-body">
                 <ul id="item_message" style="display:none">
                 </ul>
-                <form  enctype="multipart/form-data" id="item_form_data">
+                <form class="form-horizontal" enctype="multipart/form-data" id="item_form_data">
                   @csrf
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Category</strong></span>
-                       <select name="item_category" id="item_category" class="form-control" required autofocus>
-                           @foreach($ctgs as $ctg)
-                                <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
-                           @endforeach
-                       </select>
-                    </div><br>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Product</strong></span>
-                            <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
+                  <div class="form-group">
+                    <label for="category" class="col-sm-2 control-label">Category</label>
+                    <div class="col-sm-9">
+                        <select name="item_category" id="item_category" class="form-control" required autofocus>
+                            @foreach($ctgs as $ctg)
+                            <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="asterisk">*</span>
+                    </div>
+                  </div>
+                    <div class="form-group">
+                            <label for="product" class="col-sm-2 control-label">Item</label>
+                         <div class="col-sm-9">
+                                <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
+                         </div>
+                        <div class="col-sm-1">
+                            <span class="asterisk">*</span>
                         </div>
                     </div>
-                    <div class="form-group has-feedback">
-                        <label class="custom-upload">
-                            <span class="glyphicon glyphicon-picture"></span> Image
-                            <input type="file" id="user_photo" class="upload customer-file-input form-control" name="item_image">
-                        </label>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Quantity</strong></span>
-                            <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Image</label>
+                    <div class="col-sm-9">
+                        <div class="input-group col-sm-12 col-md-12">
+                            <input type="text" class="form-control" disabled>
+                            <div class="input-group-addon">
+                                <label class="logo-custom-upload">
+                                    <span class="glyphicon glyphicon-picture"></span>
+                                    <input type="file" id="company_logo" class="upload logo-file-input form-control" name="item_image">
+                                </label>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Barcode</strong></span>
-                            <input id="barcode" type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
-                        </div>
+                
+                </div>
+                    <div class="form-group">
+                            <label for="quantity" class="col-sm-2 control-label">Quantity</label>
+                           <div class="col-sm-9">
+                                <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
+                           </div>
+                            <div class="col-sm-1">
+                                <span class="asterisk">*</span>
+                            </div>
                     </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Purchase Price</strong></span>
-                            <input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
-                            <span class="input-group-addon"><strong>Sell Price</strong></span>
+                    <div class="form-group">                       
+                            <label for="barcode" class="col-sm-2 control-label">Barcode</label>
+                            <div class="col-sm-9">
+                                <input id="barcode" type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
+                            </div>                     
+                    </div>
+                    <div class="form-group">
+                            <label for="purchase-price" class="col-sm-2 control-label">Purchase Price</label>
+                            <div class="col-sm-9"><input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price"></div>
+                            <div class="col-sm-1">
+                                <span class="asterisk">*</span>
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell-price" class="col-sm-2 control-label">Sell Price</label>
+                       <div class="col-sm-9">
                             <input id="sell_price" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                       </div>
+                        <div class="col-sm-1">
+                            <span class="asterisk">*</span>
                         </div>
                     </div>
                 <!-- Tax -->
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Taxable:</strong></span>
-                        <select name="taxable" id="taxable" class="form-control">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                        <label for="taxable" class="col-sm-2 control-label">Taxable</label>
+                       <div class="col-sm-9">
+                            <select name="taxable" id="taxable" class="form-control">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                       </div>
                 </div>
-                <!-- tax --> 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                    <button type="submit" id="btn_add_item" class="btn btn-primary pull-left">Add Now</button>
+                </div>
             </div>
+               
             </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                      <button type="submit" id="btn_add_item" class="btn btn-primary pull-left">Add Now</button>
-                  </div>
             </form>
-              </div>
         </div>
+    </div>
         <!-- end of modal-body div -->
-      </div>
+</div>
       <!-- new Item Modal -->
 
       <!-- Edit Item Modal-->
@@ -208,50 +239,66 @@
             <div class="register-box-body">
                 <ul id="item_message" style="display:none">
                 </ul>
-                <form  enctype="multipart/form-data" id="edit_item_form_data">
+                <form class="form-horizontal"  enctype="multipart/form-data" id="edit_item_form_data">
                     <input type="hidden" name="item_id">
                   @csrf
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Product</strong></span>
-                            <input  type="text" class="form-control" name="item_name" placeholder="Item Name">
-                        </div>
+                    <div class="form-group has-feedback">                       
+                            <label for="product" class="col-sm-2 control-label">Item</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="item_name" placeholder="Item Name">
+                            </div>
+                            <div class="col-sm-1">
+                                <span class="asterisk">*</span>
+                            </div>                
                     </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Desc</strong></span>
-                            <input  type="text" class="form-control" name="item_desc" placeholder="Description">
-                        </div>
+                    <div class="form-group">                      
+                            <label for="desc" class="col-sm-2 control-label">Desc</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="item_desc" placeholder="Description">
+                            </div>
                     </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Quantity</strong></span>
-                            <input type="number" class="form-control" name="quantity" placeholder="Stock">
-                        </div>
+                    <div class="form-group">
+                            <label for="quantity" class="col-sm-2 control-label">Quantity</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" name="quantity" placeholder="Stock">
+                            </div>
+                            <div class="col-sm-1">
+                                <span class="asterisk">*</span>
+                            </div>
                     </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Barcode</strong></span>
-                            <input  type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
-                        </div>
+                    <div class="form-group">
+                            <label for="barcode" class="col-sm-2 control-label">Barcode</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
+                            </div>
                     </div>
-                    <div class="form-group has-feedback">
-                        <div class="input-group">
-                            <span class="input-group-addon"><strong>Purchase Price</strong></span>
-                            <input type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
-                            <span class="input-group-addon"><strong>Sell Price</strong></span>
-                            <input  type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                    <div class="form-group">
+                            <label for="purchase-price" class="col-sm-2 control-label">Purchase Price</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
+                            </div>
+                            <div class="col-sm-1">
+                                <span class="asterisk">*</span>
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell-price" class="col-sm-2 control-label">Sell Price</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="asterisk">*</span>
                         </div>
                     </div>
                 <!-- Tax -->
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><strong>Taxable:</strong></span>
-                        <select name="taxable" class="form-control">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                        <label for="taxable" class="col-sm-2 control-label">Taxable</label>
+                     <div class="col-sm-9">
+                            <select name="taxable" class="form-control">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                     </div>
                 </div>
                 <!-- tax -->
                     
@@ -266,7 +313,7 @@
               </div>
         </div>
         <!-- end of modal-body div -->
-      </div>
+</div>
       <!-- Edit Item Modal -->
 
        <!-- delete-item -->
@@ -290,7 +337,7 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div>
+    </div>
       <!-- /.modal -->
     <!-- /.delete-item -->
   @stop

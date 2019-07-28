@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use Validator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,8 +22,14 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $ctgs = Category::all()->where('comp_id', Auth::user()->comp_id);
-        return view('categories', compact('ctgs'));
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
+            $ctgs = Category::all()->where('comp_id', Auth::user()->comp_id);
+            return view('categories', compact('ctgs')); 
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
+        
+       
     }
 
     /**
@@ -145,20 +152,25 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        
-         $deleted = Category::destroy('ctg_id', $request->cid);
-         
-        if ($deleted) {
-            return response()->json([
-                'msg' => 'The category deleted successfully!',
-                'style' => 'color:grey'
-            ]);
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
+            $deleted = Category::destroy('ctg_id', $request->cid);
+
+            if ($deleted) {
+                return response()->json([
+                    'msg' => 'The category deleted successfully!',
+                    'style' => 'color:grey'
+                ]);
+            } else {
+                return response()->json([
+                    'msg' => 'Sorry, the category not deleted!',
+                    'style' => 'color:darkred'
+                ]);
+            } 
         } else {
-            return response()->json([
-                'msg' => 'Sorry, the category not deleted!',
-                'style' => 'color:darkred'
-            ]);
-        } 
+            abort(403, 'This action is unauthorized.');
+        }
+        
+      
         
     }
 }

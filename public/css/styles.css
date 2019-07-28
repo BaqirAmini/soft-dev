@@ -1,4 +1,16 @@
+/* ===================== Prevent Navbar From Scrolling ===================== */
+.main-header {
+    position: fixed !important;
+    width: 100%;    
+}
+/* =================== content of any page ============== */
 
+.content {
+    /* margin-top: 30px !important; */
+    margin-top: 40px;
+}
+
+/* /. ================== content of any page ================ */
 .modal-dialog {
     background: green;
     border-radius: 5px;
@@ -23,6 +35,9 @@
 
 .sale-list > div {
     padding: 3px;
+}
+.tbl-sales-label {
+    margin-top:10px;
 }
 /* /.sale-lists */
 
@@ -63,15 +78,43 @@ h5 {
 /*=====  End of Header of any modal  ======*/
 
 /* ============= User-profile ================ */
-.modal-body input[type="file"] {
+
+#user_profile_box {
+    min-height: 550px;
+    padding: 30px;
+}
+/* profile-image */
+#user_profile_img, #company_logo_img {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+}
+#user_profile_photo {
     display: none;
 }
+/* =========================================== LOGO of company ==================================== */
+.modal-body input[type="file"], #company_logo {
+    display: none;
+}
+#form_company_logo {
+    margin-left: 100px;
+}
+
+/* It should check whether it is related to any profile or just for user */
 .custom-upload {
     padding: 20px;
     color:  gray;
     background: rgb(238, 236, 236);
     border-radius: 5px;
 }
+
+/* =========== Company Logo */
+.logo-custom-upload {
+    color:  gray;
+    background: rgb(238, 236, 236);
+    border-radius: 5px;
+}
+/* =============== /. Company-logo =================== */
 .custom-upload:hover {
     border: 1px solid rgb(238, 236, 236);
     box-shadow: 1px 1px 2px grey;
@@ -81,13 +124,42 @@ h5 {
     margin: auto;
     text-align: center;
 }
-#user_avatar {
+/* #user_avatar {
     border-radius: 50%;
     border: 1px solid rgb(80, 139, 179);
     padding: 5px;
+} */
+
+.content-wrapper {
+    background: #72e272
 }
 
+/* ==================================== SALES PAGE DESIGN ======================================*/
 
+.tbl-sales-label th {
+    text-align:left;
+    width: 30px;
+    
+}
+
+#box_cart {
+    padding: 10px;
+}
+#total_area {
+    margin-right: -10px;
+}
+.lbl_payment {
+    text-align: center !important;
+}
+/* ==================================== /. SALES PAGE DESIGN =================================== */
+
+/* ================================= ASTERISK for validation ============================== */
+.asterisk {
+    color:red;
+    font-weight: bold;
+    font-size: 18px;
+    margin-left:-12px;
+}
 
 
 

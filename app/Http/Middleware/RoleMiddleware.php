@@ -16,7 +16,7 @@ class RoleMiddleware
     public function handle($request, Closure $next)
     {
        if (Auth::check()) {
-            if (Auth::user()->isAdmin() === 'admin') { 
+            if (Auth::user()->isAdmin() === 'Super Admin') { 
                  return $next($request);
                 
            }

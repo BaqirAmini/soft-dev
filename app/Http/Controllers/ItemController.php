@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\Gate;
 use App\Item;
 use Validator;
 
@@ -22,14 +23,20 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $compId = Auth::user()->comp_id;
-        $ctgs = DB::table('categories')->where('categories.comp_id', $compId)->get();
-        $items = DB::table('items')
-        ->join('categories', 'categories.ctg_id', '=', 'items.ctg_id')
-        ->select('items.*',  'categories.ctg_name')
-        ->where('items.comp_id',  $compId)
-        ->get();
-        return view('items', compact(['ctgs', 'items']));
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
+            $compId = Auth::user()->comp_id;
+            $ctgs = DB::table('categories')->where('categories.comp_id', $compId)->get();
+            $items = DB::table('items')
+                ->join('categories', 'categories.ctg_id', '=', 'items.ctg_id')
+                ->select('items.*',  'categories.ctg_name')
+                ->where('items.comp_id',  $compId)
+                ->get();
+            return view('items', compact(['ctgs', 'items']));
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
+        
+        
     }
 
     /**
@@ -183,18 +190,23 @@ class ItemController extends Controller
      */
     public function destroy(Request $request)
     {
-        $itemDeleted = Item::destroy('item_id', $request->itemId);
-        if ($itemDeleted) {
-            return response()->json([
-                'msg' => 'Product deleted successfully!',
-                'style' => 'color:red'
-            ]);
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
+            $itemDeleted = Item::destroy('item_id', $request->itemId);
+            if ($itemDeleted) {
+                return response()->json([
+                    'msg' => 'Product deleted successfully!',
+                    'style' => 'color:red'
+                ]);
+            } else {
+                return response()->json([
+                    'msg' => 'Sorry, product not deleted, please try again!',
+                    'style' => 'color:darkred'
+                ]);
+            }
         } else {
-            return response()->json([
-                'msg' => 'Sorry, product not deleted, please try again!',
-                'style' => 'color:darkred'
-            ]);
+            abort(403, 'This action is unauthorized.');
         }
+        
         
     }
 }

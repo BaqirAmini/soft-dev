@@ -7,30 +7,30 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-          <b id="role_mgs"></b>
         <h4 class="modal-title"><b>User Management</b></i></h4>
       </div>
       <!-- @csrf -->
       <div class="modal-body">
-          <h5 style="text-align:center"><strong>Choose a role</strong></h5>
-                <br>
-                <div class="row" class="col-md-12" style="margin:auto;text-align:center">
-                    <input type="hidden" name="role_id" id="role_id">
-                    <label class="radio-inline">
-                    <input type="radio" name="role" value="System Admin" id="radio_admin" checked>Administrator
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="role" value="store manager" id="radio_super_user">Store Manageer
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="role" value="cashier" id="radio_user">Cashier
-                    </label>          
+          <div class="register-box-body">
+            <form class="form-horizontal" id="user_role_form">
+              <input type="hidden" name="role_id" id="role_id" >
+              @csrf
+              <div class="form-group">
+                <label for="role" class="col-sm-2 control-label">Role</label>
+                <div class="col-sm-10">
+                    <select name="role" id="select_role" class="col-sm-10 form-control">
+                      <option value="System Admin">System Admin</option>
+                      <option value="Stock Manager">Stock Manager</option>
+                      <option value="Cashier">Cashier</option>
+                    </select>
                 </div>
-             
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-        <button type="button" id="btn_set_role" class="btn btn-primary pull-left" onclick="setRole();">Set Role</button>
+              </div>
+              <div class="modal-footer">
+                <input type="button" value="Cancel" class="btn btn-default pull-left" data-dismiss="modal">
+                <input type="submit" value="Save" class="btn btn-primary pull-left">
+              </div>
+            </form>
+          </div>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -40,9 +40,9 @@
 <!-- /.modal -->
 
      <!-- Main content -->
-     <section class="content">
+     <section class="content" id="users_list">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-lg-12 col-xs-12">
             <div class="box">
               <div class="box-header">
                 <h3 class="box-title">User Management <strong></h3>
@@ -51,45 +51,58 @@
               <div class="box-body">
                 
             <div class="box">
-              <div class="box-header">
-           <button class="btn btn-primary" id="new_user" data-toggle="modal" data-target="#modal-new-user">New User</button>
-              <!-- /.box-header -->
-              <div class="box-body" id="box-user">
-                <p id="role-msg" style="text-align:center;display: none"></p>
-                <table id="data_tbl1" class="table table-bordered table-striped test">
-                  <thead>
-                  <tr>
-                    <th>Photo</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                @foreach($users as $user)
-                  <tr>
-                    <td><a href="#"><img src="uploads/user_photos/{{$user->photo}}" alt="User Image" height="40" width="40"></a></td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->lastname }}</td>
-                    <td>{{ $user->phone }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td id="r"><button class="btn btn-default btn-sm btn_role"  data-toggle="modal" data-target="#modal-user" data-user-id="{{ $user->id }}">
-                      <i> {{ $user->role }} </i>
-                  </button></td>
-                    <td><button class="btn-user-set-status @if($user->status == 0) btn-xs btn btn-danger @elseif($user->status == 1) btn-xs btn btn-success @endif" 
-                      data-user-status-value="{{ $user->status }}"
-                      data-user-id="{{ $user->id }}">@if($user->status == 0) Inactive @elseif($user->status == 1) Active @endif</button></td>
-                  </tr>
-                @endforeach
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
+                <div class="box-header">
+                    <div class="box-header">
+                      @if( $activeCount < $user_count or $existingCount < $user_count) <button class="btn btn-primary" id="add_user"
+                        data-toggle="modal" data-target="#modal-new-user">Add User</button>
+                        @else
+                        <button class="btn btn-default" disabled id="add_user" data-toggle="modal" data-target="#modal-new-user">Add
+                          User</button>
+                        @endif
+                       
+                    </div>
+                </div>
+                <div class="box-body">
+                  <ul id="status_msg" style="display: none;">message....</ul>
+                    <!-- /.box-header -->
+                    <div class="box-body" id="box-user">
+                      <table id="data_tbl1" class="table table-bordered table-striped test">
+                        <thead>
+                          <tr>
+                            <th>Photo</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @foreach($users as $user)
+                          <tr>
+                            <td><a href="#"><img src="uploads/user_photos/{{$user->photo}}" alt="User Image" height="40" width="40" class="img-circle img-bordered"></a>
+                            </td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->lastname }}</td>
+                            <td>{{ $user->phone }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td id="r"><button class="btn btn-default btn-sm btn_role" data-toggle="modal" data-target="#modal-user"
+                                data-user-id="{{ $user->id }}">
+                                <i> {{ $user->role }} </i>
+                              </button></td>
+                            <td><button
+                                class="btn-user-set-status @if($user->status == 0) btn-xs btn btn-danger @elseif($user->status == 1) btn-xs btn btn-success @endif"
+                                data-user-status-value="{{ $user->status }}" data-user-id="{{ $user->id }}">@if($user->status == 0)
+                                Inactive @elseif($user->status == 1) Active @endif</button></td>
+                          </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
           </div>
           <!-- /.col -->
         </div>
@@ -107,64 +120,92 @@
                   <span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
+                <ul id="role-msg" style="display: none"></ul>
                   <div class="register-box-body">
-                   
                       <p class="login-box-msg">Register a new user</p>
                   
-                      <form id="new_user_form">
+                      <form class="form-horizontal" id="new_user_form">
                         <input type="hidden" name="counter" value="0">
                         @csrf
                         <!-- first-name -->
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name">
-                            </div>
+                        <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">First Name</label>
+                                <div class="col-sm-9">
+                                  <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name"> 
+                                </div>
+                                  <div class="col-sm-1 control-label">
+                                    <span class="asterisk">*</span>
+                                  </div>
                         </div>
                         <!-- /. first-name -->
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Lastname">
-                            </div>
+                        <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">Last Name</label>
+                                <div class="col-sm-9">
+                                  <input id="last_name" type="text" class="form-control" name="last_name" placeholder="Lastname">
+                                </div>
                         </div>
                         <!-- phone -->
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
-                                <input id="phone" type="number" class="form-control" name="phone" placeholder="Phone">
-                              </div>
+                        <div class="form-group">
+                                <label for="phone" class="col-sm-2 control-label">Phone</label>
+                                <div class="col-sm-9">
+                                  <input id="phone" type="number" class="form-control" name="phone" placeholder="Phone">
+                                </div>
+                                <div class="col-sm-1 control-label">
+                                  <span class="asterisk">*</span>
+                                </div>
                         </div>
                        <!-- email -->
-                       <div class="form-group has-feedback">
-                          <div class="input-group">
-                              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                              <input id="email" type="email" class="form-control" name="email" placeholder="Email (Optional)">
-                          </div>
+                       <div class="form-group">
+                              <label for="email" class="col-sm-2 control-label">Email</label>
+                              <div class="col-sm-9">
+                                <input id="email" type="email" class="form-control" name="email" placeholder="Email (Optional)">
+                              </div>
                        </div>
                       
                         <!-- roles -->
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <select name="role" class="form-control">
-                                  <option value="Stock Manager" name="role">Stock Manager</option>
-                                  <option value="Cashier" name="role">Cashier</option>
-                                </select>
-                              </div>
+                        <div class="form-group">
+                          <label for="role" class="col-sm-2 control-label">Role</label>
+                               <div class="col-sm-9">
+                                  <select name="role" class="form-control">
+                                    <option value="Stock Manager" name="role">Stock Manager</option>
+                                    <option value="Cashier" name="role">Cashier</option>
+                                  </select>
+                               </div>
+                                <div class="col-sm-1 control-label">
+                                  <span class="asterisk">*</span>
+                                </div>
                         </div>
                           <!-- /roles -->
-                          <div class="form-group has-feedback">
-                              <div class="input-group">
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                  <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-                              </div>
+                          <!-- Username -->
+                          <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-9">
+                              <input id="user_name" type="text" class="form-control" name="user_name" placeholder="Username">
+                            </div>
+                            <div class="col-sm-1 control-label">
+                              <span class="asterisk">*</span>
+                            </div>
+                          </div>
+                          <!-- Password -->
+                          <div class="form-group">
+                                  <label for="password" class="col-sm-2 control-label">Password</label>
+                                  <div class="col-sm-9">
+                                    <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+                                  </div>
+                                  <div class="col-sm-1 control-label">
+                                    <span class="asterisk">*</span>
+                                  </div>
                           </div>
                        <!-- confirm-password -->
-                       <div class="form-group has-feedback">
-                          <div class="input-group has-feedback">
-                              <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                              <input id="confirm_password" type="password" class="form-control" name="password_confirmation" placeholder="Retype Password">
-                          </div>
+                       <div class="form-group">
+                              <label for="confirm" class="col-sm-2 control-label">Confirm Password</label>
+                              <div class="col-sm-9">
+                                <input id="confirm_password" type="password" class="form-control" name="password_confirmation"
+                                  placeholder="Confirm Password">
+                              </div>
+                              <div class="col-sm-1 control-label">
+                                <span class="asterisk">*</span>
+                              </div>
                        </div>
                        
                         <div class="modal-footer">

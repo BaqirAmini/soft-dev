@@ -16,6 +16,7 @@ class User extends Authenticatable
             'last_name' => 'nullable|string|max:64',
             'phone' => 'required|unique:users|string|min:10',
             'email' => 'nullable|unique:users|email|string|min:10',
+            'user_name' => 'required|unique:users|string|min:5',
             'password' => 'required|string|min:6|confirmed'
         ];
     }
@@ -26,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'lastname', 'phone', 'email', 'role', 'password', 'status',
+        'name', 'lastname', 'phone', 'email', 'role', 'password', 'username', 'status',
     ];
 
     /**

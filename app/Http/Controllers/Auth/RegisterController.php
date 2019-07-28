@@ -46,18 +46,6 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-  /*  protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'min:10', 'unique:users'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed']
-        ]);
-    } */
-
-   
     /**
      * Store a newly created resource in storage.
      *
@@ -68,14 +56,6 @@ class RegisterController extends Controller
     {
         $validation = Validator::make($request->all(), User::rules());
         if ($validation->passes()) {
-          /*  return User::create([
-                'name' => $data['firstname'],
-                'lastname' => $data['lastname'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
-                'role' => $data['role'],
-                'password' => Hash::make($data['password']),
-            ]); */
           $user = new User();
             $user->name = $request->first_name;
             $user->lastname = $request->last_name;

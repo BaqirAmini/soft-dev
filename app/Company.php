@@ -9,7 +9,7 @@ class Company extends Model
     protected $primaryKey = "company_id";
     protected $table = "companies";
 
-    protected $fillable = ['status', 'user_count'];
+    protected $fillable = ['status', 'email','user_count'];
     
     public function user() {
         return $this->hasMany(User::class);

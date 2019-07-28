@@ -42,12 +42,14 @@ class HomeController extends Controller
         // number of registered companies
         $compCount = DB::table('companies')->count();
         // number of all registered users except Super-admin(app owner)
-        $allUsers = DB::table('users')->where('id', '>', 8)->count();
+        $allUsers = DB::table('users')->where('id', '>', 8)->where('status', 1)->count();
+        // Number of super Admins
+        $superAdminCount = DB::table('users')->where('role', 'Super Admin')->count();
         // Total of products in-stock
         $invenTotal = DB::table('items')->where('comp_id', Auth::user()->comp_id)->sum('quantity');
         $usersCount = $users->count();
         # To return list of COMPANIES to Dashboard
         $companies = DB::table('companies')->get();
-        return view('dashboard', compact(['usersCount', 'sales', 'custCount', 'invenTotal', 'compCount', 'allUsers', 'companies', 'items', 'ctgs']) );
+        return view('dashboard', compact(['usersCount', 'sales', 'custCount', 'invenTotal', 'compCount', 'allUsers', 'superAdminCount', 'companies', 'items', 'ctgs']) );
     }
 }

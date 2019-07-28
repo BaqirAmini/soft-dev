@@ -1,16 +1,26 @@
 <?php
-
+#Super-admin
+Route::get('super-admin', 'SuperAdminController@index')->name('superAdmin');
+#SuperAdmin status
+Route::post('super-admin/status', 'SuperAdminController@onStatus');
+Route::post('super-admin/create', 'SuperAdminController@create');
+# /. Super-admin
 #Company
 Route::get('company', 'CompanyController@index')->name('company');
 Route::post('company/register', 'CompanyController@store');
 # === Company-settings === #
-Route::get('company/setting', 'CompanyController@whichCompany')->name('company.setting');
-Route::post('company/setting', 'CompanyController@index');
+Route::get('company/setting/{id?}', 'CompanyController@onSetCompany')->name('company.setting');
+Route::post('company/logo', 'CompanyController@changeLogo');
+Route::post('/company/setCompany', 'CompanyController@onSaveCompanySetting');
 #===== company-status =====#
 Route::post('company/status', 'CompanyController@onCompanyStatus');
-Route::post('company/admin', 'CompanyController@createSystemAdmin');
+Route::post('company/system-admin', 'CompanyController@createSystemAdmin');
 Route::post('company/userCount', 'CompanyController@userCount');
 #company
+# =========================== Settings of A SEPECIFIC COMPANY =================
+Route::get('myCompany', 'UserManageController@onDefault')->name('myCompany.specific');
+Route::post('myCompany/setting', 'UserManageController@onSet')->name('myCompany.setting');
+# ============================ /. Settings of A SPEFIC COMPANY ================
 
 Route::get('register', function() {
     return view('auth.register');
@@ -21,20 +31,25 @@ Route::post('category/add', 'CategoryController@store');
 Route::get('category/delete', 'CategoryController@destroy');
 Route::post('category/edit', 'CategoryController@edit');
 
-Route::get('item', 'ItemController@index')->name('item') /*->middleware('roleAuth')*/;
+Route::get('item', 'ItemController@index')->name('item');
 Route::post('item/add', 'ItemController@store');
 Route::get('item/delete', 'ItemController@destroy');
 Route::post('item/update', 'ItemController@update');
 
 #User-Management
+#users of a specific company
+// Route::get('/users/{compId?}', 'UserManageController@usersOfSpecificCompany');
+# Authenticated company can see    
 Route::get('manageUser', 'UserManageController@index')->name('user');
 Route::post('manageUser', 'UserManageController@changeRole');
-/*Route::post('manageUser/status/activate', 'UserManageController@onActivate');
-Route::post('manageUser/status/deactivate', 'UserManageController@onDeactivate'); */
 Route::post('manageUser/status', 'UserManageController@onStatus'); 
-Route::post('manageUser/profile', 'UserManageController@changeProfile');
+ // Super-admin only changes status of system-admins
+Route::post('systemAdmin/status', 'UserManageController@onSystemAdminStatus'); 
+Route::get('manageUser/profile', 'UserManageController@showUserProfile')->name('profile');
 Route::post('manageUser/register', 'UserManageController@createUser');
-Route::post('manageUser/profilePhoto', 'UserManageController@changePhoto');
+Route::post('manageUser/userInfo1', 'UserManageController@changePersonInfo');
+Route::post('manageUser/userInfo2', 'UserManageController@changePassword');
+Route::post('manageUser/userPhoto', 'UserManageController@changePhoto');
 # End of User-Management
 
 #Sales-management
@@ -68,15 +83,9 @@ Route::get('invoice/print', 'InvoiceController@onPrint');
 #Invoice
 
 #Reports
-Route::get('reports/daily', 'ReportController@daily')->name('daily');
-Route::get('reports/daily/delete', 'ReportController@deleteDaily');
-Route::get('reports/weekly', 'ReportController@weekly')->name('weekly');
-Route::get('reports/monthly', 'ReportController@monthly')->name('monthly');
-Route::get('reports/anually', 'ReportController@anually')->name('annually');
-Route::get('reports/daily/delete', 'ReportController@deleteDaily');
-Route::get('reports/graph', function() {
-    return view('reports_graph');
-});
+
+Route::get('analytics/{time?}', 'ReportController@index')->name('report');
+Route::get('reports/graph', 'ReportController@chart');
 #Reports
 
 #Charts
@@ -84,15 +93,17 @@ Route::get('charts', 'ChartController@index')->name('chart');
 #charts
 
 #testing
-Route::get('test', function() {
-    return view('test');
-});
+// Route::get('test', function() {
+//     return view('user_profile');
+// });
 // /.Items & Categories
 Route::get('/', 'HomeController@index')->name('dashboard');
 
 Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+
+
 
 // Route::post('api/login', 'AndroidAPIController@onLogin');
 // Route::get('api/login', 'AndroidAPIController@onLogin');

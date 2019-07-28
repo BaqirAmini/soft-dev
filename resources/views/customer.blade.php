@@ -5,16 +5,16 @@
         <div class="col-md-12">
           <div class="box">
             <div class="box-header">
-                <section class="content-header">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-customer">New Customer</button>
-                </section>
+                @can('isSystemAdmin')
+                  <section class="content-header">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-customer">Add Customer</button>
+                  </section>
+                @endcan
             </div>
             <div class="box-body">
               <div class="box">
                   <div class="box-header">
-                     
                       <!-- Datatables -->
-                      <p id="cust_message" style="display:none">Customer Message</p>
                       <table id="data_tbl5" class="table table-responsive col-md-12 col-xs-6 table-striped table-bordered">
                         <thead>
                           <tr>
@@ -23,7 +23,7 @@
                             <th>Last Name</th>
                             <th>Address</th>
                             <th>Reg. Date</th>
-                            <th>Action</th>
+                            <!-- <th>Action</th> -->
                           </tr>
                         </thead>
                         <tbody>
@@ -39,12 +39,12 @@
                             <td>{{ $customer->cust_lastname }}</td>
                             <td>{{ $customer->cust_state }}, {{ $customer->cust_addr }}</td>
                             <td>{{ Carbon\carbon::parse($customer->created_at)->format('M d Y')  }}</td>
-                            <td>
+                            <!-- <td>
                               <button class="btn btn-danger btn-sm delete-customer" data-cust-id="{{ $customer->cust_id }}"
                                 data-toggle="modal" data-target="#modal-delete-customer">
                                 <i class="fa fa-trash"></i>
                               </button>
-                            </td>
+                            </td> -->
                           </tr>
                           @endforeach
                         </tbody>
@@ -124,48 +124,63 @@
               </ul>
             </div>
             <div class="modal-body">
+              <p id="cust_message" style="display:none">Customer Message</p>
                 <div class="register-box-body">
-                      @csrf 
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input id="cust_name" type="text" class="form-control" name="cust_name" placeholder="Customer Name">
+                    <form  class="form-horizontal">
+                        @csrf
+                        <div class="form-group">
+                            <label for="cust-name" class="col-sm-2 control-label">First Name</label>
+                            <div class="col-sm-9">
+                              <input id="cust_name" type="text" class="form-control" name="cust_name" placeholder="Customer Name">
+                            </div>
+                            <div class="col-sm-1 control-label">
+                              <span class="asterisk">*</span>
                             </div>
                         </div>
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input id="cust_lastname" type="text" class="form-control" name="cust_lastname" placeholder="Customer Last Name">
+                        <div class="form-group">
+                            <label for="cust-lastname" class="col-sm-2 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                              <input id="cust_lastname" type="text" class="form-control" name="cust_lastname" placeholder="Customer Last Name">
                             </div>
                         </div>
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
-                                <input id="cust_phone" type="text" class="form-control" name="cust_phone" placeholder="Customer Phone">
+                        <div class="form-group">
+                            <label for="phone" class="col-sm-2 control-label">Phone</label>
+                            <div class="col-sm-9">
+                              <input id="cust_phone" type="text" class="form-control" name="cust_phone" placeholder="Customer Phone">
+                            </div>
+                            <div class="col-sm-1 control-label">
+                              <span class="asterisk">*</span>
                             </div>
                         </div>
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                <input id="cust_email" type="text" class="form-control" name="cust_email" placeholder="Customer Email (Optional)">
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-9">
+                              <input id="cust_email" type="text" class="form-control" name="cust_email" placeholder="Customer Email (Optional)">
                             </div>
                         </div>
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-                                <input id="cust_state" type="text" class="form-control" name="cust_state" placeholder="Province/State">
+                        <div class="form-group">
+                            <label for="state" class="col-sm-2 control-label">Province / State</label>
+                            <div class="col-sm-9">
+                              <input id="cust_state" type="text" class="form-control" name="cust_state" placeholder="Province/State">
+                            </div>
+                            <div class="col-sm-1 control-label">
+                              <span class="asterisk">*</span>
                             </div>
                         </div>
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-                                <input id="cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Address">
+                        <div class="form-group">
+                            <label for="address" class="col-sm-2 control-label">Adress</label>
+                            <div class="col-sm-9">
+                              <input id="cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Address">
+                            </div>
+                            <div class="col-sm-1 control-label">
+                              <span class="asterisk">*</span>
                             </div>
                         </div>
+                    </form>
                 
                       <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                          <button type="button" id="btn_add_customer" class="btn btn-primary">Add Now</button>
+                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                          <button type="button" id="btn_add_customer" class="btn btn-primary pull-left">Add Now</button>
                       </div>
                   </div>
             </div>
@@ -193,7 +208,9 @@
                           <ul class="nav nav-tabs">
                             <li class="active"><a href="#activity" data-toggle="tab">About</a></li>
                             <li><a href="#timeline" data-toggle="tab" id="purchase_history">Balance</a></li>
+                          @can('isSystemAdmin')
                             <li><a href="#settings" data-toggle="tab">Edit</a></li>
+                          @endcan
                           </ul>
                           <div class="tab-content">
                             <div class="active tab-pane" id="activity">
@@ -210,17 +227,6 @@
                                 <!-- /.user-block -->
                                <p id="customer-phone">Customer Phone</p>
                                <p id="customer-email">Customer Email</p>
-                               
-                                <!-- <ul class="list-inline">
-                                  <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
-                                  <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                                  </li>
-                                  <li class="pull-right">
-                                    <a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments
-                                      (5)</a></li>
-                                </ul>
-                
-                                <input class="form-control input-sm" type="text" placeholder="Type a comment"> -->
                               </div>
                               <!-- /.post -->
                             </div>
@@ -229,50 +235,63 @@
                               <form class="form-horizontal" id="customer-profile-form">
                                 <input type="hidden" name="cust_id">
                                 <!-- customer name -->
-                                    <div class="form-group has-feedback">
-                                      <div class="input-group">
-                                          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                          <input id="edit_cust_name" type="text" class="form-control" name="cust_name" placeholder="Customer Name">
-                                      </div>
+                                    <div class="form-group">
+                                          <label for="first-name" class="col-sm-2 control-label">First Name</label>
+                                         <div class="col-sm-9">
+                                            <input id="edit_cust_name" type="text" class="form-control" name="cust_name" placeholder="Customer Name">
+                                         </div>
+                                          <div class="col-sm-1 control-label">
+                                            <span class="asterisk">*</span>
+                                          </div>
                                    </div>
                                 <!-- customer lastname -->
-                                    <div class="form-group has-feedback">
-                                      <div class="input-group">
-                                          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                          <input id="edit_cust_lastname" type="text" class="form-control" name="cust_lastname" placeholder="Customer Last Name">
-                                      </div>
+                                    <div class="form-group">
+                                          <label for="last-name" class="col-sm-2 control-label">Last Name</label>
+                                          <div class="col-sm-9">
+                                            <input id="edit_cust_lastname" type="text" class="form-control" name="cust_lastname" placeholder="Customer Last Name">
+                                          </div>
                                    </div>
                                 <!-- customer phone -->
-                                    <div class="form-group has-feedback">
-                                      <div class="input-group">
-                                          <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
-                                          <input id="edit_cust_phone" type="number" class="form-control" name="cust_phone" placeholder="Customer Phone">
-                                      </div>
+                                    <div class="form-group">
+                                          <label for="phone" class="col-sm-2 control-label">Phone</label>
+                                         <div class="col-sm-9">
+                                            <input id="edit_cust_phone" type="number" class="form-control" name="cust_phone" placeholder="Customer Phone">
+                                         </div>
+                                          <div class="col-sm-1 control-label">
+                                            <span class="asterisk">*</span>
+                                          </div>
                                    </div>
                                 <!-- customer email -->
-                                    <div class="form-group has-feedback">
-                                      <div class="input-group">
-                                          <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                          <input id="edit_cust_email" type="email" class="form-control" name="cust_email" placeholder="Customer Email">
-                                      </div>
+                                    <div class="form-group">
+                                          <label for="email" class="col-sm-2 control-label">Email</label>
+                                          <div class="col-sm-9">
+                                            <input id="edit_cust_email" type="email" class="form-control" name="cust_email" placeholder="Customer Email">
+                                          </div>
                                    </div>
                                 <!-- customer state -->
-                                    <div class="form-group has-feedback">
-                                      <div class="input-group">
-                                          <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-                                          <input id="edit_cust_state" type="text" class="form-control" name="cust_state" placeholder="Customer State">
-                                      </div>
+                                    <div class="form-group">
+                                          <label for="state" class="col-sm-2 control-label">Province / State</label>
+                                          <div class="col-sm-9">
+                                            <input id="edit_cust_state" type="text" class="form-control" name="cust_state" placeholder="Customer State">
+                                          </div>
+                                          <div class="col-sm-1 control-label">
+                                            <span class="asterisk">*</span>
+                                          </div>
                                    </div>
                                 <!-- customer address -->
-                                    <div class="form-group has-feedback">
-                                      <div class="input-group">
-                                          <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-                                          <input id="edit_cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Customer Address">
-                                      </div>
+                                    <div class="form-group">
+                                          <label for="address" class="col-sm-2 control-label">Address</label>
+                                          <div class="col-sm-9">
+                                            <input id="edit_cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Customer Address">
+                                          </div>
+                                          <div class="col-sm-1 control-label">
+                                            <span class="asterisk">*</span>
+                                          </div>
                                    </div>
                                
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary pull-right" id="btn-edit-customer">Change</button>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default pull-left" id="btn-edit-customer" data-dismiss="modal">Cancel</button>
+                                  <button type="submit" class="btn btn-primary pull-left" id="btn-edit-customer">Change</button>
                                 </div>
                               </form>
                             </div>

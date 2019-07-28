@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta id="token" name="token" content="{{csrf_token() }}">
-  <title>Xamuor POS</title>
+  <title>CashCo</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -44,7 +44,7 @@
 
 </head>
 <!-- Body -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body @if(!Request::is('login')) class="hold-transition skin-blue sidebar-mini" @endif>
 <div class="wrapper">
   @if(!Request::is('login') && !Request::is('logout'))
       @include('inc.header')
@@ -52,10 +52,10 @@
   <!-- Left side column. contains the logo and sidebar -->
       @include('inc.sidebar')
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div @if(!Request::is('login')) class="content-wrapper" @endif>
     <!-- Content Header (Page header) -->
     <!-- Main content -->
-    <section class="content content-fluid">
+    <section  class="content content-fluid" >
       @yield('content')
     </section>
     <!-- /.content -->
@@ -63,14 +63,9 @@
   <!-- /.content-wrapper -->
 
   <!-- Main Footer -->
-  @include('inc.footer')
+ @if(!Request::is('login')) @include('inc.footer') @endif
   
-  <!-- Add the sidebar's background. This div must be placed
-  immediately after the control sidebar -->
- @if(!Request::is('login') && !Request::is('logout')) <div class="control-sidebar-bg"></div> @endif
-</div>
-<!-- ./wrapper -->
-
+  
 <!-- REQUIRED JS SCRIPTS -->
 
 

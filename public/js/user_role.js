@@ -20,6 +20,18 @@ $(document).ready(function () {
                 $(ref).addClass(response.add_class);
                 $(ref).html(response.label);
                 $('#data_tbl1').load(' #data_tbl1');
+                if (response.user_count == "over") {
+                    $('#add_user').prop('disabled', true);
+                    $('#add_user').removeClass('btn btn-primary btn-sm');
+                    $('#add_user').addClass('btn btn-default btn-sm');
+                    $('#modal-new-user').modal('hide');
+                    $('p#role-msg').css('display', 'block');
+                    $('p#role-msg').attr('style', response.style);
+                    $('button#new_user').attr(response.style);
+                    $('p#role-msg').text(response.user_msg);
+                    $('p#role-msg').attr(response.style);
+                    $('p#role-msg').text(response.user_msg);
+                } 
                 
             },
             error: function (error) { 
@@ -27,39 +39,99 @@ $(document).ready(function () {
              }
         });
      });
-   /* $('#data_tbl1').on('click', '.btn-user-set-status', function () { 
-        var userStatus = $(this).data('user-status-value');
-        var userId = $(this).data('user-id');
-        // alert(userId + " userStatus: " + userStatus);
-        if (userStatus == 0) {
-            onActivate(userId, userStatus, this)
-        } else if(userStatus == 1) {
-            onDeactivate(userId, userStatus, this)
-        }
-     }); */
     
     /*=====  End of User Status __ enabling or disabling  ======*/
     
  });
 
-function setRole() {
-    
-    var m = $('#modal-user');
-    var userID = m.find('input#role_id').val();
-    var role = $('input[name="role"]:checked').val();
+/** ======================= CHANGE USER-ROLE =============== */
+$('#user_role_form').on('submit', function (e) { 
+    e.preventDefault();
+    var roleData = new FormData(this);
     $.ajax({
         type: "POST",
         url: "manageUser",
-        data: {'id':userID, 'role': role, '_token': $('input[name=_token]').val()},
+        data: roleData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        dataType: "json",
         success: function (response) {
-            m.modal('hide');
-            $('p#role-msg').css('display', 'block');
-            $('p#role-msg').text(response.role_msg);
             location.reload();
         },
         error: function (error) { 
             console.log(error);
-         },
-        dataType: 'json'
+         }
     });
-}
+
+ });
+/** =========================== / change USER-ROLE ===================== */
+/* ======================= Super-admin status (Enable/Disable) ===================== */
+$('#super_admin_data_tbl').on('click', '.btn-sa-set-status', function () {
+    var saId = $(this).data('sa-id');
+    var statusValue = $(this).data('sa-status-value');
+    var ref = this;
+    $.ajax({
+        type: "POST",
+        url: "super-admin/status",
+        data: { 'saId': saId, 'statusValue': statusValue, '_token': $('input[name=_token]').val() },
+        dataType: "json",
+        success: function (response) {
+            $(ref).removeClass(response.remove_class);
+            $(ref).addClass(response.add_class);
+            $(ref).html(response.label);
+            $('#super_admin_data_tbl').load(' #super_admin_data_tbl');
+                // $('#btn-new-system-admin').prop('disabled', true);
+                // $('#btn-new-system-admin').removeClass('btn btn-primary btn-sm');
+                // $('#btn-new-system-admin').addClass('btn btn-default btn-sm');
+                // $('#modal-new-user').modal('hide');
+                $('p#role-msg').css('display', 'block');
+                $('p#role-msg').attr('style', response.style);
+                // $('button#new_user').attr(response.style);
+                $('p#role-msg').text(response.user_msg);
+                $('p#role-msg').attr(response.style);
+                $('p#role-msg').text(response.user_msg);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+});
+
+/* ========================= /. System-admin status ============================== */
+
+/* ============================== Enable/disable status of system-admins by SUPER-USER  */
+$('#data_tbl_for_specific_users').on('click', '.btn-system-admin-set-status', function () {
+    var userId = $(this).data('user-id');
+    var statusValue = $(this).data('user-status-value');
+    var ref = this;
+    $.ajax({
+        type: "POST",
+        url: "/systemAdmin/status",
+        data: { 'userId': userId, 'statusValue': statusValue, '_token': $('input[name=_token]').val() },
+        dataType: "json",
+        success: function (response) {
+            $(ref).removeClass(response.remove_class);
+            $(ref).addClass(response.add_class);
+            $(ref).html(response.label);
+            $('#data_tbl_for_specific_users').load(' #data_tbl_for_specific_users');
+            // if (response.user_count == "over") {
+            //     $('#add_user').prop('disabled', true);
+            //     $('#add_user').removeClass('btn btn-primary btn-sm');
+            //     $('#add_user').addClass('btn btn-default btn-sm');
+            //     $('#modal-new-user').modal('hide');
+            //     $('p#role-msg').css('display', 'block');
+            //     $('p#role-msg').attr('style', response.style);
+            //     $('button#new_user').attr(response.style);
+            //     $('p#role-msg').text(response.user_msg);
+            //     $('p#role-msg').attr(response.style);
+            //     $('p#role-msg').text(response.user_msg);
+            // }
+
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+});
+/* ================================= /. Enable/Disable status of system-admins by SUPER-USERS ============================= */

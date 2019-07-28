@@ -97,28 +97,45 @@
 
                 <!-- sale-list -->
                       <div  id="test">
+                      <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                          <table class="col-md-12 table-responsive tbl-sales-label">
+                            <thead>
+                              <tr>
+                                <th>delete</th>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Unit Price</th>
+                                <th>Total Price</th>
+                                <th>Tax</th>
+                              </tr>
+                            </thead>
+                          </table>
+                        </div>
+                      </div>
+                        <hr>
                       @foreach($carts as $cart)
                         <div class="row sale-list col-md-12 col-xs-12" style="display:block">
                           <input type="hidden" class="item_id" value="{{ $cart->id }}">
                           <div class="col-xs-1 col-md-1">
                               <button class="btn btn-danger btn_remove_sale" data-item-id="{{ $cart->rowId }}" style="padding:5px 8px;"><i class="fa fa-remove"></i></button>
                           </div>
-                          <div class="col-xs-3 col-md-3">
+                          <div class="col-xs-12 col-md-3">
                             <input type="text" class="form-control item_name"  placeholder="Item" value="{{ $cart->name }}" readonly>
                           </div>
-                          <div class="col-xs-2 col-md-2">
+                          <div class="col-xs-12 col-md-2">
                             <input type="number" class="form-control item_qty" min="0" value="{{ $cart->qty }}" placeholder="Qty" readonly>
                           </div>
-                          <div class="col-xs-2 col-md-2">
+                          <div class="col-xs-12 col-md-2">
                             <input type="number"  class="form-control price" value="{{ $cart->price }}"  min="0" placeholder="Price" value="">
                           </div>
-                          <div class="col-xs-2 col-md-2">   
+                          <div class="col-xs-12 col-md-2">   
                           <div class="input-group">
                             <span class="input-group-addon" style="padding-right: 5px;padding-left: 5px;">$</span>
                             <input type="number" class="form-control subtotal" style="padding-right: 0px;padding-left: 0px;" min="0" step="0.01" placeholder="Sub Total" value="{{ $cart->qty * $cart->price }}" readonly>
                           </div>
                         </div>
-                        <div class="col-xs-2 col-md-2"> 
+                        <div class="col-xs-12 col-md-2"> 
                           <div class="input-group">
                             <span class="input-group-addon" style="padding-right: 5px;padding-left: 5px;">$</span>
                             <input type="number" class="form-control tax_value" style="padding-right: 0px;padding-left: 0px;" min="0" step="0.01" placeholder="Tax" name="tax_value" >
@@ -129,30 +146,34 @@
                       </div>
               
                      <!-- Total & Tax input -->
-                <div class="row col-md-10" style="margin-bottom:50px;margin-top:20px;" id="total_area">
+                <div class="row col-md-10 col-xs-10 col-md-offset-7" style="margin-bottom:50px;margin-top:20px;" id="total_area">
                       <div class="input-group col-xs-5">
-                        <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                        <input type="text" class="form-control" max="999999.9999" id="total" value="{{$subTotal}}" placeholder="Total">
+                        <span class="input-group-addon"><strong>Sub Total</strong></span>
+                        <input type="text" class="form-control col-md-5 col-xs-5" max="999999.9999" id="total" value="{{$subTotal}}" placeholder="Total">
                       </div>
                 </div>
                 <!-- /. Total & Tax input -->
                 <!-- Payment -->
                 <div class="row col-md-12"  id="payment_area">
                   <div class="col-md-5">
+                    <label for="payment_type" class="lbl_payment">Payment Type</label>
                       <select name="payment_type" id="payment_type" class="form-control" onchange="selectPayment();" required>
                           <option value="">Select Payment...</option>
-                          <option value="cache">Cache</option>
-                          <option value="credit card">Credit Card</option>
-                          <option value="debit card">Debit Card</option>
+                          <option value="Cash">Cash</option>
+                          <option value="Master Card">Master Card</option>
+                          <option value="Debit Card">Debit Card</option>
                       </select>
                   </div>
                   <div class="col-xs-6">
+                    <label for="transCode" style="display: none" id="lbl_trans_code">Transaction #</label>
                       <input type="number" class="form-control t-card" style="display:none" placeholder="Transaction Code" id="transCode">
                       <div class="row" id="cache" style="display:none">
                           <div class="col-md-6">
+                            <label for="payable" class="lbl_payment">Recievable</label>
                               <input type="text" min="0" max="9999"  class="form-control" placeholder="payable" id="payable" value="{{ $subTotal }}">
                           </div>
                           <div class="col-md-6">
+                            <label for="recieved" class="lbl_payment">Recieved</label>
                               <input type="text" min="0" max="999" step="0.01" class="form-control"  placeholder="recieved" id="recieved" style="padding:0;text-align:center">
                           </div>
                       </div>
