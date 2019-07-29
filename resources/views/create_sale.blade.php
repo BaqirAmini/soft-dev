@@ -160,7 +160,7 @@
                       </div>
               
                      <!-- Total & Tax input -->
-                <div class="row col-md-10 col-sm-10" style="margin-bottom:50px;margin-top:20px;" id="total_area">
+                <div class="row col-md-12 col-sm-10" style="margin-bottom:50px;margin-top:20px;" id="total_area">
                       <div class="input-group col-sm-5 col-xs-11">
                         <span class="input-group-addon"><strong>Sub Total</strong></span>
                         <input type="text" class="form-control col-md-5 col-xs-5 col-sm-5" max="999999.9999" id="total" value="{{$subTotal}}" placeholder="Total">

@@ -197,42 +197,5 @@ class SaleController extends Controller
             abort(403, 'This action is unauthorized.');
         }
     }
-    # Call when invoice generated
-    public function onSale($custId, $company, $transCode, $payType, $recieved, $recievable)
-        {
-            # To get invoice-id based on customer-id from invoices
-            $invoiceId = DB::table('invoices')->where('cust_id', $custId)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
-            $carts = Cart::content();
 
-            # Payment & transaction
-            $payment = new Payment();
-            $payment->inv_id = $invoiceId;
-            $payment->comp_id = $company;
-            $payment->trans_code = $transCode;
-            $payment->payment_type = $payType;
-            $payment->recieved_amount = $recieved;
-            $payment->recievable_amount = $recievable;
-            if ($payment->save()) {
-                foreach ($carts as $data) {
-                    $sold = Sale::create([
-                        'inv_id' => $invoiceId,
-                        'comp_id' => $company,
-                        'item_id' => $data->id,
-                        'qty_sold' => $data->qty,
-                        'sell_price' => $data->price,
-                        'tax' => 3,
-                        'subtotal' => $data->price * $data->qty,
-                    ]);
-                }
-                if ($sold) {
-                    Cart::destroy($carts);
-                    return response()->json([
-                        'sale_msg' => 'The products sold successfully!',
-                        'invoice_id' => $invoiceId,
-                        'style' => 'color:grey',
-
-                    ]);
-                }
-            }
-        }
 }

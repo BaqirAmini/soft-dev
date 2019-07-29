@@ -74,6 +74,7 @@ $(document).ready(function () {
    // when BTN-SAVE-SALE clicked
    $('.btn_save_sale').click(function () { 
         var invoiceID = $(this).data('invoice-id');
+
         // set hidden inputs
         $('input[name=cust_id_for_print]').val(cid);
         $('input[name=invoice_id_for_print]').val(invoiceID);
@@ -128,10 +129,11 @@ function selectPayment() {
           $('#inv_message').css('display', 'block');
           $('#inv_message').attr('style', response.style);
           $('#inv_message').html(response.sale_msg);
-          $('.btn_save_sale').attr('data-invoice-id', response.invoice_id);
           $('#inv_message').fadeOut(4000);
+          _invoiceID = response.invoice_id;
           // $('#sale_section').load(' #sale_section');
           setTimeout(function () { location.reload(); }, 5000);
+
         },
         error: function (error) { 
             console.log(error);
@@ -214,7 +216,7 @@ function onCard(pntType) {
 $('button.btn_print_sale').click(function () { 
   // cid (customer-id) is globally declared.
   var invoiceId = $('input[name=invoice_id_for_print]').val();
-  onPrintInvoice(cid, invoiceId);
+  onPrintInvoice(cid, _invoiceID);
   
     
 });
@@ -266,5 +268,6 @@ function doPrint(i) {
  }
  // This variable is to fetch customer-id when it is selected;
  var cid = '';
+ var _invoiceID = '';
  // /. Delete DAILY-report
 

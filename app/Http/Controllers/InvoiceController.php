@@ -33,43 +33,6 @@ class InvoiceController extends Controller
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    # Create invoice & Sale
-    public function store(Request $request)
-    {
-        $invoice = new Invoice();
-        $compId = Auth::user()->comp_id;
-        $companies = DB::table('companies')
-            ->join('users', 'companies.company_id', '=', 'users.comp_id')
-            ->select('companies.comp_status')
-            ->where('users.id', Auth::user()->id)
-            ->get();
-        $compStatus = $companies[0]->comp_status;
-        if ($compStatus == 1) {
-                $invoice->cust_id = $request->custId;
-                $invoice->comp_id = $compId;
-                $invoice->save();
-                return response()->json([
-                    'inv_msg' => 'Customer selected!',
-                    'style' => 'color:grey',
-                    'invoice_id' => $invoice->inv_id
-                ]);
-                  
-        } else if( $compStatus == 0) {
-            return response()->json([
-                'inv_msg' => 'Sorry, customer not selected, try to see if your company is activated.',
-                'style' => 'darkred'
-            ]);
-            
-        }
-    }
-
     /**
      * Display the specified resource.
      *
