@@ -5,14 +5,13 @@ $(document).ready(function () {
           $('.btn_add_sale').removeClass('btn btn-primary');
           $('.btn_add_sale').addClass('btn btn-default');
       } else {
-            var custID = $(this).val();
-            $('.btn_print_sale').attr('data-print', custID);
-
+            cid = $(this).val();
+            $('.btn_print_sale').attr('data-print', cid);
             var tax = $('input#tax').val();
             $('.btn_add_sale').prop('disabled', false);
             $('.btn_add_sale').removeClass('btn btn-default');
             $('.btn_add_sale').addClass('btn btn-primary btn-sm');
-            $(this).prop('disabled', true);
+            // $(this).prop('disabled', true);
             $('#btn_new_customer').prop('disabled', true);
             
             // when button add clicked...
@@ -27,7 +26,7 @@ $(document).ready(function () {
                 $.ajax({
                   type: "POST",
                   url: "cart",
-                  data: {'custID': custID, 'itemID': itemID, 'itemName': itemName, 'itemPrice': itemPrice, 'itemQty': 1,  'tax': tax, '_token': $('input[name=_token]').val()},
+                  data: {'custID': cid, 'itemID': itemID, 'itemName': itemName, 'itemPrice': itemPrice, 'itemQty': 1,  'tax': tax, '_token': $('input[name=_token]').val()},
                   success: function (response) {
                       console.log(response);
                       $('#stock_message').css({'display':'block', 'text-align':'center', 'color':'darkred'});
@@ -44,11 +43,9 @@ $(document).ready(function () {
                 });  
             });
             // generate invoice-id with customer-selection
-            onCreateInvoice(custID);
-            $('.btn_save_sale').attr('data-customer-id', custID);
+            // onCreateInvoice(custID);
 
       }
-      
    })
      // To remove an item from the cart
      $('.btn_remove_sale').click(function () { 
@@ -76,19 +73,12 @@ $(document).ready(function () {
 
    // when BTN-SAVE-SALE clicked
    $('.btn_save_sale').click(function () { 
-        var custId = $(this).data('customer-id');
         var invoiceID = $(this).data('invoice-id');
         // set hidden inputs
-        $('input[name=cust_id_for_print]').val(custId);
+        $('input[name=cust_id_for_print]').val(cid);
         $('input[name=invoice_id_for_print]').val(invoiceID);
     });
     // /. BTN-SAVE-SALE
-
-    // delete DAILY-report
-    // $('#data_tbl6').on('click', '.btn-delete-daily-report', function () { 
-    //     var saleId = $(this).data('sale-id');
-    //     $('input[name=daily_sale_id]').val();
-    //  });
 })
 // SELECT PAYMENT METHOD
 function selectPayment() {
@@ -133,11 +123,12 @@ function selectPayment() {
         url: "sale",
         dataType: "json",
         // data: {'_token': $('input[name=_token]').val()},
-        data: {'custID': custId, 'payment': pntType, 'recieved': recieved_amount, 'recieveable': recieveable_amount, 'transCode': transCode, 'tax': tax, '_token': $('input[name=_token]').val() },
+        data: {'custID': cid, 'payment': pntType, 'recieved': recieved_amount, 'recieveable': recieveable_amount, 'transCode': transCode, 'tax': tax, '_token': $('input[name=_token]').val() },
         success: function (response) {
           $('#inv_message').css('display', 'block');
           $('#inv_message').attr('style', response.style);
           $('#inv_message').html(response.sale_msg);
+          $('.btn_save_sale').attr('data-invoice-id', response.invoice_id);
           $('#inv_message').fadeOut(4000);
           // $('#sale_section').load(' #sale_section');
           setTimeout(function () { location.reload(); }, 5000);
@@ -221,10 +212,7 @@ function onCard(pntType) {
  
 }
 $('button.btn_print_sale').click(function () { 
-     
-  
-  
-  var cid = $('input[name=cust_id_for_print]').val();
+  // cid (customer-id) is globally declared.
   var invoiceId = $('input[name=invoice_id_for_print]').val();
   onPrintInvoice(cid, invoiceId);
   
@@ -276,5 +264,7 @@ function doPrint(i) {
       }
     });
  }
+ // This variable is to fetch customer-id when it is selected;
+ var cid = '';
  // /. Delete DAILY-report
 

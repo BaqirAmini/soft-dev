@@ -94,16 +94,18 @@ class UserManageController extends Controller
         # to know count of users
         $userId = Auth::user()->id;
         $compId = Auth::user()->comp_id;
-        $users = DB::table('users')->where('comp_id', $compId)->get();
+        $users = DB::table('users')->where('comp_id', $compId)->where('status', 1)->get();
         $count = $users->count();
         # end of count
         $validation = Validator::make($request->all(), [
-            'user_name' => 'required|string|max:64|min:5',
+            'first_name' => 'required|string|max:64|min:5',
             'first_name' => 'required|string|max:64',
             'last_name' => 'nullable|string|max:64',
             'phone' => 'required|unique:users|string|min:10',
             'email' => 'nullable|unique:users|email|max:128',
+            'user_name' => 'required|unique:users|string|max:128|min:5',
             'password' => 'required|string|min:6|confirmed'
+
         ]);
         
         if ($validation->passes()) {
@@ -125,25 +127,27 @@ class UserManageController extends Controller
                         $user->phone = $request->phone;
                         $user->email = $request->email;
                         $user->role = $request->role;
+                        $user->username = $request->user_name;
                         $user->password = Hash::make($request->password);
                         $user->username = $request->user_name;
                         $user->save(); 
                     return response()->json([
                             'user_msg' => "User registered successfully!",
-                            'user_count' => "remaining",
+                            'result' => "success",
                             'style' => 'color:grey'
                         ]); 
                     }
                     
                     return response()->json([
                         'user_msg' => 'Sorry, your user count has reached to its maximum size.',
-                        'user_count' => "over",
+                        'result' => "over",
                         'style' => 'color:darkred'
                     ]);
      
             } else if($compStatus == 0) {
                 return response()->json([
                     'user_msg' => 'Sorry, the company is not active.',
+                     'result' => 'innactive',
                     'style' => 'color:darkred'
                 ]);
             }
@@ -151,6 +155,7 @@ class UserManageController extends Controller
         } else {
             return response()->json([
                 'user_msg' => $validation->errors()->all(),
+                'result' => 'fail',
                 'style' => 'color:red'
             ]);
         }

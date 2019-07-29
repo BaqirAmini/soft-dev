@@ -21,7 +21,7 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
             
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <a href="#">
                   <img src="/uploads/user_photos/{{ Auth::user()->photo }}" class="user-image img-bordered" alt="User Image" style="width: 35px;height:35px;margin-top:-6px;">
                   <span class="hidden-xs">@if(Auth::check()) {{ Auth::user()->name }} {{ Auth::user()->lastname }} @endif</span>
                 </a>

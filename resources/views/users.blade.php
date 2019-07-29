@@ -176,16 +176,24 @@
                                 </div>
                         </div>
                           <!-- /roles -->
-                          <!-- Username -->
+                          <!-- Email -->
                           <div class="form-group">
-                            <label for="username" class="col-sm-2 control-label">Email</label>
+                            <label for="email" class="col-sm-2 control-label">Email</label>
                             <div class="col-sm-9">
-                              <input id="user_name" type="text" class="form-control" name="user_name" placeholder="Username">
-                            </div>
-                            <div class="col-sm-1 control-label">
-                              <span class="asterisk">*</span>
+                              <input id="email" type="email" class="form-control" name="email" placeholder="Email">
                             </div>
                           </div>
+                          <!-- Username -->
+                            <div class="form-group">
+                              <label for="username" class="col-sm-2 control-label">User Name</label>
+                              <div class="col-sm-9">
+                                <input id="username" type="text" class="form-control" name="user_name" placeholder="User Name">
+                              </div>
+                              <div class="col-sm-1 control-label">
+                                <span class="asterisk">*</span>
+                              </div>
+                            </div>
+                          <!-- /Username -->
                           <!-- Password -->
                           <div class="form-group">
                                   <label for="password" class="col-sm-2 control-label">Password</label>

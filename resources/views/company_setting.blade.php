@@ -272,8 +272,19 @@
                   </select>
                 </div>
               </div>
-  
               <!-- /roles -->
+              <!-- Username -->
+                <div class="form-group">
+                  <label for="email" class="col-sm-2 control-label">User Name</label>
+                  <div class="col-sm-9">
+                    <input id="username" type="text" class="form-control" name="user_name" placeholder="User Name">
+                  </div>
+                  <div class="col-sm-1">
+                    <span class="asterisk">*</span>
+                  </div>
+                </div>
+              <!-- /. Username -->
+              <!-- Password -->
               <div class="form-group">
                 <label for="password" class="col-sm-2 control-label">Password</label>
                 <div class="col-sm-9">

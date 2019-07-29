@@ -43,6 +43,7 @@ class CompanyController extends Controller
             'last_name' => 'nullable|string|max:64',
             'phone' => 'required|unique:users|string|min:10',
             'email' => 'nullable|unique:users|email|max:128',
+            'user_name' => 'required|string|max:128|min:5',
             'password' => 'required|string|min:6|confirmed'
         ]);
         
@@ -54,6 +55,7 @@ class CompanyController extends Controller
             $user->phone = $request->phone;
             $user->email = $request->email;
             $user->role = $request->role;
+            $user->username = $request->user_name;
             $user->password = Hash::make($request->password);
             $user->save(); 
             return response()->json([

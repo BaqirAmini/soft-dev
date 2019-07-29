@@ -10,53 +10,68 @@
           <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Add New Customer</h4>
         <ul id="msg_area" style="display:none">
-
         </ul>
       </div>
       <div class="modal-body">
+        <p id="cust_message" style="display:none">Customer Message</p>
           <div class="register-box-body">
-                @csrf 
-                  <div class="form-group has-feedback">
-                      <div class="input-group">
-                          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                          <input id="cust_name" type="text" class="form-control" name="cust_name" placeholder="Customer Name">
+            <form  class="form-horizontal">
+                @csrf
+                    <div class="form-group">
+                      <label for="cust_name" class="col-sm-2 control-label">First Name</label>
+                      <div class="col-sm-9">
+                        <input id="cust_name" type="text" class="form-control" name="cust_name" placeholder="Customer Name">
                       </div>
-                  </div>
-                  <div class="form-group has-feedback">
-                      <div class="input-group">
-                          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                      <div class="col-sm-1">
+                        <span class="asterisk">*</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_lastname" class="col-sm-2 control-label">Last Name</label>
+                        <div class="col-sm-9">
                           <input id="cust_lastname" type="text" class="form-control" name="cust_lastname" placeholder="Customer Last Name">
-                      </div>
-                  </div>
-                  <div class="form-group has-feedback">
-                      <div class="input-group">
-                          <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_phone" class="col-sm-2 control-label">Phone</label>
+                        <div class="col-sm-9">
                           <input id="cust_phone" type="text" class="form-control" name="cust_phone" placeholder="Customer Phone">
-                      </div>
-                  </div>
-                  <div class="form-group has-feedback">
-                      <div class="input-group">
-                          <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                          <input id="cust_email" type="text" class="form-control" name="cust_email" placeholder="Customer Email (Optional)">
-                      </div>
-                  </div>
-                  <div class="form-group has-feedback">
-                      <div class="input-group">
-                          <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                        </div>
+                        <div class="col-sm-1">
+                          <span class="asterisk">*</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_email" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-9">
+                          <input id="cust_email" type="text" class="form-control" name="cust_email" placeholder="Customer Email)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust_state" class="col-sm-2 control-label">Province / State</label>
+                        <div class="col-sm-9">
                           <input id="cust_state" type="text" class="form-control" name="cust_state" placeholder="Province/State">
-                      </div>
-                  </div>
-                  <div class="form-group has-feedback">
-                      <div class="input-group">
-                          <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                        </div>
+                        <div class="col-sm-1">
+                          <span class="asterisk">*</span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="cust_addr" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-9">
                           <input id="cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Address">
-                      </div>
-                  </div>
-          
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                    <button type="button" id="btn_add_customer" class="btn btn-primary">Add Now</button>
-                </div>
+                        </div>
+                        <div class="col-sm-1">
+                          <span class="asterisk">*</span>
+                        </div>
+
+                    </div>
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                      <button type="button" id="btn_add_customer" class="btn btn-primary pull-left">Register</button>
+                    </div>
+            </form>
             </div>
       </div>
       <!-- end of modal-body div -->
@@ -76,13 +91,12 @@
             <div class="box box-primary" id="box_cart">
               <div class="box-header with-border">
                 <h3 class="box-title">Customer & Payment</h3>
-                <p id="cust_message" style="display:none">Customer Message</p>
               </div>
               <!-- /.box-header -->
                 <div class="box-body">
                   <p id="inv_message" style="display:none;"></p>
                   <!-- customer-selection -->
-                    <div class="input-group col-md-10" id="choose-customer">
+                    <div class="input-group col-md-12" id="choose-customer">
                         <select class="form-control" id="select_customer" required>
                           <option value="">Select customer..</option>
                           @foreach($customers as $c)
@@ -146,10 +160,10 @@
                       </div>
               
                      <!-- Total & Tax input -->
-                <div class="row col-md-10 col-xs-10 col-md-offset-7" style="margin-bottom:50px;margin-top:20px;" id="total_area">
-                      <div class="input-group col-xs-5">
+                <div class="row col-md-10 col-sm-10" style="margin-bottom:50px;margin-top:20px;" id="total_area">
+                      <div class="input-group col-sm-5 col-xs-11">
                         <span class="input-group-addon"><strong>Sub Total</strong></span>
-                        <input type="text" class="form-control col-md-5 col-xs-5" max="999999.9999" id="total" value="{{$subTotal}}" placeholder="Total">
+                        <input type="text" class="form-control col-md-5 col-xs-5 col-sm-5" max="999999.9999" id="total" value="{{$subTotal}}" placeholder="Total">
                       </div>
                 </div>
                 <!-- /. Total & Tax input -->
@@ -187,7 +201,6 @@
                 <div class="box-footer">
                   <button id="btn_print" 
                   class="btn btn-default pull-right btn_save_sale" 
-                  disabled
                   data-toggle="modal"
                   data-target="#modal-print"
                   onclick="onSaveSale();" >Save Sale</button>

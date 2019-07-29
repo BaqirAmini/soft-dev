@@ -73,12 +73,14 @@ class CustomerController extends Controller
             $customer->save();
             return response()->json([
                 'message' => 'Customer registed successfully!',
+                'result' => 'success',
                 'style' => 'color:grey'
             ]);
             
         } else {
             return response()->json([
                 'message' => $validation->errors()->all(),
+                'result' => 'fail',
                 'style' => 'color:darkred'
             ]);
         }

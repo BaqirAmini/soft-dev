@@ -13,20 +13,25 @@ $(document).ready(function () {
                 contentType: false,
                 cache: false,
                 success: function (response) {
-                    $('#modal-new-user').modal('hide');
+                    if (response.result === 'success' || response.result === 'inactive') {
+                        $('#modal-new-user').modal('hide');
+                        // location.reload();
+                    } else if(response.result === 'over') {
+                        $('ul#status_msg').css('display', 'block');
+                        $('ul#status_msg').html('<li>' + response.user_msg + '</li>');
+                        $('#modal-new-user').modal('hide');
+                        $('#add_user').prop('disabled', true);
+                        $('#add_user').removeClass('btn btn-primary btn-sm');
+                        $('#add_user').addClass('btn btn-default btn-sm');
+                    } else if(response.result === 'fail') {
+                        $('#modal-new-user').modal('show');
+                    }
                     $('ul#role-msg').css('display', 'block');
                     $('ul#role-msg').attr('style', response.style);
                     $('button#new_user').attr(response.style);
                     $('ul#role-msg').html('<li>' + response.user_msg + '</li>');
                     $('ul#role-msg').attr(response.style);
-                    $('#data_tbl1').load(' #data_tbl1');
-                    if (response.user_count == "over") {
-                        $('#add_user').prop('disabled',true);
-                        $('#add_user').removeClass('btn btn-primary btn-sm');
-                        $('#add_user').addClass('btn btn-default btn-sm');
-                        $('#status_msg').css('display', 'block');
-                        $('#status_msg').html(response.user_msg);
-                    } 
+                    // $('#data_tbl1').load(' #data_tbl1');
                 },
                 error: function (error) { 
                     $('button#new_user').attr(error.style);

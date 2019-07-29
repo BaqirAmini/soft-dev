@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Item;
 use App\Customer;
 use App\Sale;
+use App\Invoice;
 use DB;
 use Gate;
 use Cart;
@@ -77,46 +78,69 @@ class SaleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   $customerId = $request->custID;
+        $tCode = $request->transCode;
+        $paymentType = $request->payment;
+        $recieved = $request->recieved;
+        $recievable = $request->recieveable;
         # current company-id
         $compId = Auth::user()->comp_id;
-        # To get invoice-id based on customer-id from invoices
-        $invoiceId = DB::table('invoices')->where('cust_id', $request->custID)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
-        # 
-        
-        $carts = Cart::content();
-        
-            # Payment & transaction
-           $payment = new Payment();
-           $payment->inv_id = $invoiceId;
-           $payment->comp_id = $compId;
-           $payment->trans_code = $request->transCode;
-           $payment->payment_type = $request->payment;
-           $payment->recieved_amount = $request->recieved;
-           $payment->recievable_amount = $request->recieveable;
-           if($payment->save()) {
 
-            foreach ($carts as $data) {
-                $sold = Sale::create([
-                          'inv_id' => $invoiceId,
-                          'comp_id' => $compId,
-                          'item_id' => $data->id,
-                          'qty_sold' => $data->qty,
-                          'sell_price' => $data->price,
-                          'tax' => 3,
-                          'subtotal' => $data->price * $data->qty,
-                  ]); 
-               } 
-               if ($sold) {
-                Cart::destroy($carts);
-                return response()->json([
-                    'sale_msg' => 'The products sold successfully!',
-                    'style' => 'color:grey',
-                    
-                 ]);
-            
-               }
-           }
+        # First generate invoice in TABLE invoices that is needed in TABLE payments
+        $invoice = new Invoice();
+        $companies = DB::table('companies')
+            ->join('users', 'companies.company_id', '=', 'users.comp_id')
+            ->select('companies.comp_status')
+            ->where('users.id', Auth::user()->id)
+            ->get();
+        $compStatus = $companies[0]->comp_status;
+        if ($compStatus == 1) {
+            $invoice->cust_id = $customerId;
+            $invoice->comp_id = $compId;
+            $invoiceGenerated = $invoice->save();
+            if ($invoiceGenerated) {
+                # To get invoice-id based on customer-id from invoices
+                $invoiceId = DB::table('invoices')->where('cust_id', $customerId)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
+                $carts = Cart::content();
+
+                # Payment & transaction
+                $payment = new Payment();
+                $payment->inv_id = $invoiceId;
+                $payment->comp_id = $compId;
+                $payment->trans_code = $tCode;
+                $payment->payment_type = $paymentType;
+                $payment->recieved_amount = $recieved;
+                $payment->recievable_amount = $recievable;
+                if ($payment->save()) {
+                    foreach ($carts as $data) {
+                        $sold = Sale::create([
+                            'inv_id' => $invoiceId,
+                            'comp_id' => $compId,
+                            'item_id' => $data->id,
+                            'qty_sold' => $data->qty,
+                            'sell_price' => $data->price,
+                            'tax' => 3,
+                            'subtotal' => $data->price * $data->qty,
+                        ]);
+                    }
+                    if ($sold) {
+                        Cart::destroy($carts);
+                        return response()->json([
+                            'sale_msg' => 'The products sold successfully!',
+                            'invoice_id' => $invoiceId,
+                            'style' => 'color:grey',
+
+                        ]);
+                    }
+                }
+            }
+        } else if ($compStatus == 0) {
+            return response()->json([
+                'sale_msg' => 'Sorry, customer not selected, try to see if your company is activated.',
+                'style' => 'darkred'
+            ]);
+        }
+        # /. Genereate invoice .....
           
     }
 
@@ -172,8 +196,43 @@ class SaleController extends Controller
         } else {
             abort(403, 'This action is unauthorized.');
         }
-        
-        
-         
     }
+    # Call when invoice generated
+    public function onSale($custId, $company, $transCode, $payType, $recieved, $recievable)
+        {
+            # To get invoice-id based on customer-id from invoices
+            $invoiceId = DB::table('invoices')->where('cust_id', $custId)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
+            $carts = Cart::content();
+
+            # Payment & transaction
+            $payment = new Payment();
+            $payment->inv_id = $invoiceId;
+            $payment->comp_id = $company;
+            $payment->trans_code = $transCode;
+            $payment->payment_type = $payType;
+            $payment->recieved_amount = $recieved;
+            $payment->recievable_amount = $recievable;
+            if ($payment->save()) {
+                foreach ($carts as $data) {
+                    $sold = Sale::create([
+                        'inv_id' => $invoiceId,
+                        'comp_id' => $company,
+                        'item_id' => $data->id,
+                        'qty_sold' => $data->qty,
+                        'sell_price' => $data->price,
+                        'tax' => 3,
+                        'subtotal' => $data->price * $data->qty,
+                    ]);
+                }
+                if ($sold) {
+                    Cart::destroy($carts);
+                    return response()->json([
+                        'sale_msg' => 'The products sold successfully!',
+                        'invoice_id' => $invoiceId,
+                        'style' => 'color:grey',
+
+                    ]);
+                }
+            }
+        }
 }

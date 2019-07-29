@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('#modal-customer').on('click', '#btn_add_customer', function () { 
+
             var custName = $('input[name=cust_name]').val();
             var custLastName = $('input[name=cust_lastname]').val();
             var custPhone = $('input[name=cust_phone]').val();
@@ -23,7 +24,12 @@ $(document).ready(function () {
                      },
                 
                 success: function (response) {
-                    $('#modal-customer').modal('hide');
+                    if (response.result === 'success') {
+                        $('#modal-customer').modal('hide');
+                        location.reload();
+                    } else {
+                        $('#modal-customer').modal('show');
+                    }
                     $('#cust_message').css(
                         {
                             'display':'block',
@@ -33,7 +39,8 @@ $(document).ready(function () {
                     $('#cust_message').text(response.message);
                     $('#cust_message').attr('style', response.style);
                     $('#data_tbl5').load(' #data_tbl5');
-                    location.reload();
+                    // location.reload();
+                    
                 },
                 error: function (error) { 
                     console.log(error);

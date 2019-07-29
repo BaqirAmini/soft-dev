@@ -40,6 +40,7 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    # Create invoice & Sale
     public function store(Request $request)
     {
         $invoice = new Invoice();
