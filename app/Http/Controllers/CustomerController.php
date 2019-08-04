@@ -53,6 +53,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
        $validation = Validator::make($request->all(), [
+            'cBName' => 'required|string|max:128|min:5',
             'cName' => 'required|string|max:64',
             'cLastName' => 'nullable|string|max:64',
             'cPhone' => 'required|string|min:10|max:16',
@@ -64,6 +65,7 @@ class CustomerController extends Controller
 
             $customer = new Customer();
             $customer->comp_id = Auth::user()->comp_id;
+            $customer->business_name = $request->cBName;
             $customer->cust_name = $request->cName;
             $customer->cust_lastname = $request->cLastName;
             $customer->cust_phone = $request->cPhone;
@@ -88,7 +90,7 @@ class CustomerController extends Controller
        
     }
     # Show balance of a specific customer
-    public function onPurchaseHistory($id)
+    public function onPurchaseHistory($id = null)
     {
         $purchases = DB::table('customers')
         ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
@@ -99,7 +101,15 @@ class CustomerController extends Controller
         ->where('customers.cust_id', $id)
         ->get();
         // return view('customer_purchase_history', compact('purchases'));
-       return view('customer_purchase_history', compact('purchases'));
+        $recieved = $purchases->sum('recieved_amount');
+        $recievable = $purchases->sum('recievable_amount');
+        $totalTransaction = $recievable + $recieved;
+        if (count($purchases) > 0 ) {
+            return view('customer_detail', compact(['purchases', 'recieved', 'recievable', 'totalTransaction']));
+        } else {
+            abort(403, 'Sorry, this customer has not purchased anything yet.');
+        }
+      
     }
 
     /**
@@ -122,21 +132,36 @@ class CustomerController extends Controller
     # Edit a customer
     public function edit(Request $request)
     {
-        $validator = $request->validate([
-            'cName' => 'required|string|min:5|max:64'
+        $v = Validator::make($request->all(), [
+            'cust_firstname' => 'required|string|min:5|max:64',
+            'cust_lastname' => 'nullable|string|min:5|max:64',
+            'business_name' => 'nullable|string|min:5|max:64',
+            'cust_phone' => 'required|string|min:10|max:64',
+            'cust_email' => 'nullable|email|min:6|max:64',
+            'cust_state' => 'required|string|min:4|max:64',
+            'cust_address' => 'required|string|min:4|max:64'
         ]);
-        $editCustomer = Customer::findOrfail($request->cId);
-        $editCustomer->cust_name = $request->cName;
-        $editCustomer->cust_lastname = $request->cLastName;
-        $editCustomer->cust_phone = $request->cPhone;
-        $editCustomer->cust_email = $request->cEmail;
-        $editCustomer->cust_state = $request->cState;
-        $editCustomer->cust_addr = $request->cAddr;
        
-      if ($editCustomer->save()) {
-        return "The customer edited!";  
-      } else if($validator->fails()) {
-          return json_encode(['errors'=>$validator->errors()->all()]);
+        if ($v->passes()) {
+            $editCustomer = Customer::findOrfail($request->cust_id);
+            $editCustomer->business_name = $request->business_name;
+            $editCustomer->cust_name = $request->cust_firstname;
+            $editCustomer->cust_lastname = $request->cust_lastname;
+            $editCustomer->cust_phone = $request->cust_phone;
+            $editCustomer->cust_email = $request->cust_email;
+            $editCustomer->cust_state = $request->cust_state;
+            $editCustomer->cust_addr = $request->cust_address;
+            $editCustomer->save();
+            return response()->json([
+                'cust_msg' => 'Customer edited successfully!',
+                'style' => 'color:grey'
+            ]);
+        }
+        else  {
+            return response()->json([
+                'cust_msg' => $v->errors()->all(),
+                'style' => 'color:red'
+            ]);
       }
       
           

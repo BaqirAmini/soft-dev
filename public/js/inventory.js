@@ -12,13 +12,16 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function (response) {
+                if (response.result === 'success') {
+                    $('#modal-item').modal('hide');
+                    $('#Item_data_table').load(' #Item_data_table');
+                } else if(response.result === 'fail') {
+                    $('#modal-item').modal('show');
+                }
                 $('#item_message').css({'display':'block'});
                 $('#item_message').attr('style', response.style);
-                $('#item_message').append('<br><li>'+response.item_msg+'</li>');
-                $('#Item_data_table').load(' #Item_data_table');
-                // $('#modal-item').load(' #modal-item');
-                // location.reload();
-
+                $('#item_message').html('<li>'+response.item_msg+'</li>');
+                
              },
              error: function (error) { 
                  console.log(error);
@@ -61,12 +64,15 @@ $('#Item_data_table').on('click', '.btn_delete_product', function () {
         data: editData,
         dataType: "json",
         success: function (response) {
-            $('#modal-edit-item').modal('hide');
-            $("#item_message_area").css('display', 'block');
-            $("#item_message_area").html(response.edit_msg);
-            $("#item_message_area").attr('style', response.style);
-            $("#item_message_area").fadeOut(5000);
-            $('#Item_data_table').load(' #Item_data_table');
+            if (response.result === 'success') {
+                $('#modal-edit-item').modal('hide');
+                $('#Item_data_table').load(' #Item_data_table');
+            } else if(response.result === 'fail') {
+                $('#modal-edit-item').modal('show');
+            }
+            $("#item_edit_message").css('display', 'block');
+            $("#item_edit_message").html('<li>' + response.edit_msg + '</li>');
+            $("#item_edit_message").attr('style', response.style);
         },
         error: function (error) { 
             console.log(error);

@@ -5,93 +5,91 @@
   <div class="content">      
     <p id="comp-setting-msg" style="text-align: center;display: none;">Message</p>
         <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Configure Company</h3>
+        <div class="box box-primary" id="box_for_specific_company">
+          <div class="box-header">
+            <div class="content-header">
+              <h3 class="box-title">Configure Company</h3>
+            </div><br>
+            <!-- ============  Company LOGO =============== -->
+          @foreach($companies as $c)
+            <form id="specific_comp_logo_form" enctype="multipart/form-data" class="col-md-offset-1 col-sm-offset-1">
+              @csrf
+              <input type="hidden" name="cid" id="hidden_comp_id" value="{{ $c->company_id }}">
+              <div class="form-group pull-left" style="text-align:center" id="uploaded_image">
+                <label class="company-logo pull-left">
+                  <img class="img-circle img-bordered pull-left" @if(Auth::check()) src="/uploads/logos/{{ $c->comp_logo }}" @endif
+                    alt="Logo" id="specific_company_logo">
+                  <input type="file" id="clogo" class="upload form-control" name="company_logo">
+                </label>
+              </div>
+            </form>
+            <!-- ============= /. Company LOGO ================= -->
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-          @foreach($companies as $c)
+          <div class="box-body">
             <form class="form-horizontal" id="form_specific_company_setting" enctype="multipart/form-data">
               @csrf
-              <div class="box-body">
-                <input type="hidden" name="cid" id="hidden_comp_id" value="{{ $c->company_id }}">
-                    <!-- /.form group -->
-                  <div class="form-group">
-                    <label for="name" class="col-sm-2 control-label">Logo</label>
-                    <div class="col-sm-9">
-                        <div class="input-group col-sm-12 col-md-12">
-                          <input type="text" class="form-control"  disabled>
-                          <div class="input-group-addon">
-                            <label class="logo-custom-upload">
-                              <img src="uploads/logos/{{ $c->comp_logo }}" alt="Logo" height="15" width="15">
-                              <input type="file" id="company_logo" class="upload logo-file-input form-control" name="clogo">
-                            </label>
-                          </div>
-                        </div>
-                    </div>
-                    
-                  </div>
+              <input type="hidden" name="cid" id="hidden_comp_id" value="{{ $c->company_id }}">
                 <div class="form-group">
-                  <label for="name" class="col-sm-2 control-label">Company Name</label>
+                  <div class="control-label the-ast col-sm-2">
+                    <label for="company_name">Name</label>
+                    <span class="asterisk">*</span>
+                  </div>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" name="cname" placeholder="Company Name" value="{{ $c->comp_name }}">
                   </div>
-                  <div class="col-sm-1">
-                    <span class="asterisk">*</span>
-                  </div>
                 </div>
                 <div class="form-group">
-                  <label for="state" class="col-sm-2 control-label">State/Province</label>
-                
+                  <div class="control-label the-ast col-sm-2">
+                    <label for="state">State / Province</label>
+                    <span class="asterisk">*</span>
+                  </div>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" name="cstate" placeholder="State" value="{{ $c->comp_state }}">
                   </div>
-                  <div class="col-sm-1">
-                    <span class="asterisk">*</span>
-                  </div>
                 </div>
                 <div class="form-group">
-                  <label for="name" class="col-sm-2 control-label">City</label>
+                  <div class="control-label the-ast col-sm-2">
+                    <label for="city">City</label>
+                    <span class="asterisk">*</span>
+                  </div>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" name="ccity" placeholder="City" value="{{ $c->comp_city }}">
                   </div>
-                  <div class="col-sm-1">
-                    <span class="asterisk">*</span>
-                  </div>
                 </div>
                 <div class="form-group">
-                  <label for="address" class="col-sm-2 control-label">Company Address</label>
-                
+                <div class="control-label the-ast col-sm-2">
+                  <label for="address">Address</label>
+                  <span class="asterisk">*</span>
+                </div>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" name="caddress" placeholder="Address" value="{{ $c->comp_address }}">
                   </div>
-                  <div class="col-sm-1">
-                    <span class="asterisk">*</span>
-                  </div>
                 </div>
                 <div class="form-group">
-                  <label for="contact" class="col-sm-2 control-label">Contact NO</label>
-                
+                <div class="control-label the-ast col-sm-2">
+                  <label for="contact">Contact #</label>
+                  <span class="asterisk">*</span>
+                </div>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" name="ccontact" placeholder="Contact NO" value="{{ $c->contact_no }}">
                   </div>
-                  <div class="col-sm-1">
-                    <span class="asterisk">*</span>
-                  </div>
                 </div>
                 <div class="form-group">
-                  <label for="email" class="col-sm-2 control-label">Email</label>
-                
+                <div class="control-label the-ast col-sm-2">
+                  <label for="cemail">Email</label>
+                </div>
                   <div class="col-sm-9">
                     <input type="email" class="form-control" name="cemail" placeholder="Email" value="{{ $c->email }}">
+                    &nbsp;
                   </div>
                 </div>
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
                 <a href="{{ route('dashboard') }}" class="btn btn-default">Cancel</a>
-                <button type="submit" class="btn btn-info">Save</button>
+                <button type="submit" class="btn btn-primary">Save</button>
               </div>
               <!-- /.box-footer -->
             </form>

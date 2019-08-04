@@ -19,9 +19,17 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function onDetail($id)
     {
-        //
+        $compId = Auth::user()->comp_id;
+        $sales = DB::table('categories')
+            ->join('items', 'categories.ctg_id', '=', 'items.ctg_id')
+            ->join('sales', 'sales.item_id', '=', 'items.item_id')
+            ->select('categories.ctg_name', 'items.item_name', 'sales.*')
+            ->where('sales.comp_id', $compId)
+            ->where('sales.inv_id', $id)
+            ->get();
+        return view('invoice_detail', compact('sales'));
     }
 
     /**

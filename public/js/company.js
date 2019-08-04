@@ -189,15 +189,15 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
            processData: false,
             dataType: "json",
             success: function (response) {
-                
-                // $('#form_specific_company_setting').load(' #form_specific_company_setting');
-                if (response.msg == "success") {
-                    location.reload();
-                } else {
+                if (response.result == "success") {
+                    setTimeout(function () { 
+                        location.reload();
+                     }, 3000);
+                } 
                     $('#comp-setting-msg').css({ 'display': 'block', 'text-align': 'center' });
                     $('#comp-setting-msg').html(response.msg);
                     $('#comp-setting-msg').attr('style', response.style);
-                }
+                
                 
             },
             error:function (error) { 
@@ -205,6 +205,41 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
              }
         });
     });
+    // Change only LOGO
+    $('#clogo').change(function () {
+        var d = new FormData($('#specific_comp_logo_form')[0]);
+        $.ajax({
+            type: "POST",
+            url: "/myCompany/logo",
+            data: d,
+            contentType: false,
+            processData: false,
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                if (response.result === 'success') {
+                    setTimeout(function () { 
+                        location.reload();
+                     }, 3000);
+                } 
+                    $('#comp-setting-msg').css('display', 'block');
+                    $('#comp-setting-msg').attr('style', response.style);
+                    $('#comp-setting-msg').html(response.msg);
+                
+            }
+        });
+        readLogoURL(this);
+     });
+     function readLogoURL(input) {
+         if (input.files && input.files[0]) {
+             var reader = new FileReader(); 
+             reader.onload = function (e) { 
+                 $('#specific_company_logo').attr('src', e.target.result);
+              }
+            reader.readAsDataURL(input.files[0]);
+         }
+         
+     }
     /* ===================================== /. settings of A SPECIFIC COMPANY ============================= */
 });
 

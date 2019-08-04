@@ -85,6 +85,8 @@ class SaleController extends Controller
         $recievable = $request->recieveable;
         # current company-id
         $compId = Auth::user()->comp_id;
+        # currend user-id to define who sells 
+        $seller = Auth::user()->id;
 
         # First generate invoice in TABLE invoices that is needed in TABLE payments
         $invoice = new Invoice();
@@ -97,6 +99,7 @@ class SaleController extends Controller
         if ($compStatus == 1) {
             $invoice->cust_id = $customerId;
             $invoice->comp_id = $compId;
+            $invoice->user_id = $seller;
             $invoiceGenerated = $invoice->save();
             if ($invoiceGenerated) {
                 # To get invoice-id based on customer-id from invoices

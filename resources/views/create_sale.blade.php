@@ -17,13 +17,16 @@
           <div class="register-box-body">
             <form  class="form-horizontal">
                 @csrf
+                  <div class="form-group">
+                    <label for="business_name" class="col-sm-2 control-label">Business Name <span class="asterisk">*</span></label>
+                    <div class="col-sm-9">
+                      <input id="business_name" type="text" class="form-control" name="business_name" placeholder="Business Name">
+                    </div>
+                  </div>
                     <div class="form-group">
-                      <label for="cust_name" class="col-sm-2 control-label">First Name</label>
+                      <label for="cust_name" class="col-sm-2 control-label">First Name <span class="asterisk">*</span></label>
                       <div class="col-sm-9">
                         <input id="cust_name" type="text" class="form-control" name="cust_name" placeholder="Customer Name">
-                      </div>
-                      <div class="col-sm-1">
-                        <span class="asterisk">*</span>
                       </div>
                     </div>
                     <div class="form-group">
@@ -33,12 +36,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="cust_phone" class="col-sm-2 control-label">Phone</label>
+                        <label for="cust_phone" class="col-sm-2 control-label">Phone <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="cust_phone" type="text" class="form-control" name="cust_phone" placeholder="Customer Phone">
-                        </div>
-                        <div class="col-sm-1">
-                          <span class="asterisk">*</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -48,23 +48,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="cust_state" class="col-sm-2 control-label">Province / State</label>
+                        <label for="cust_state" class="col-sm-2 control-label">Province / State <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="cust_state" type="text" class="form-control" name="cust_state" placeholder="Province/State">
                         </div>
-                        <div class="col-sm-1">
-                          <span class="asterisk">*</span>
-                        </div>
                     </div>
                     <div class="form-group has-feedback">
-                        <label for="cust_addr" class="col-sm-2 control-label">Address</label>
+                        <label for="cust_addr" class="col-sm-2 control-label">Address <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Address">
                         </div>
-                        <div class="col-sm-1">
-                          <span class="asterisk">*</span>
-                        </div>
-
                     </div>
                     
                     <div class="modal-footer">
@@ -116,7 +109,7 @@
                           <table class="col-md-12 table-responsive tbl-sales-label">
                             <thead>
                               <tr>
-                                <th>delete</th>
+                                <th>Delete</th>
                                 <th>Item</th>
                                 <th>Qty</th>
                                 <th>Unit Price</th>
@@ -169,33 +162,38 @@
                 <!-- /. Total & Tax input -->
                 <!-- Payment -->
                 <div class="row col-md-12"  id="payment_area">
-                  <div class="col-md-5">
+                  <div class="col-xs-4">
                     <label for="payment_type" class="lbl_payment">Payment Type</label>
-                      <select name="payment_type" id="payment_type" class="form-control" onchange="selectPayment();" required>
+                      <select name="payment_type" id="payment_type" class="form-control pull-left" onchange="selectPayment();" required style="margin-left:-12px;">
                           <option value="">Select Payment...</option>
                           <option value="Cash">Cash</option>
                           <option value="Master Card">Master Card</option>
                           <option value="Debit Card">Debit Card</option>
                       </select>
                   </div>
-                  <div class="col-xs-6">
-                    <label for="transCode" style="display: none" id="lbl_trans_code">Transaction #</label>
-                      <input type="number" class="form-control t-card" style="display:none" placeholder="Transaction Code" id="transCode">
-                      <div class="row" id="cache" style="display:none">
-                          <div class="col-md-6">
+                  <div class="col-xs-4 col-xs-offset-3">
+                      <div class="checkbox pull-right" style="margin-top:20px;display: none" id="chk_area">
+                        <label>
+                          <input type="checkbox" id="paid_all"> Paid All
+                        </label>
+                      </div>
+                  </div>
+                  <!-- Amount Area -->
+                      <div class="col-md-12 col-xs-12" style="margin-left:-25px;margin-top:15px;">
+                        <div class="col-md-4" id="trans_area" style="display: none;">
+                          <label for="transCode" id="lbl_trans_code">Trans #</label>
+                          <input type="number" class="form-control t-card" placeholder="Transaction Code" id="transCode">
+                        </div>
+                          <div class="col-md-4" id="rvable" style="display: none;">
                             <label for="payable" class="lbl_payment">Recievable</label>
-                              <input type="text" min="0" max="9999"  class="form-control" placeholder="payable" id="payable" value="{{ $subTotal }}">
+                              <input type="text" min="0" max="9999"  class="form-control" placeholder="payable" id="payable" value="{{$subTotal}}">
                           </div>
-                          <div class="col-md-6">
+                          <div class="col-md-4" id="rvd" style="display: none;">
                             <label for="recieved" class="lbl_payment">Recieved</label>
                               <input type="text" min="0" max="999" step="0.01" class="form-control"  placeholder="recieved" id="recieved" style="padding:0;text-align:center">
                           </div>
                       </div>
-                     
-                  </div>
                 </div>
-                  
-                
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
@@ -203,7 +201,8 @@
                   class="btn btn-default pull-right btn_save_sale" 
                   data-toggle="modal"
                   data-target="#modal-print"
-                  onclick="onSaveSale();" >Save Sale</button>
+                  onclick="onSaveSale();"
+                  disabled >Save Sale</button>
                 </div>
             </div>
             <!-- /.box -->
@@ -231,7 +230,7 @@
                                 <tbody>
                             @foreach($items as $item)
                                 <tr>
-                                    <td><a href="#"><img src="{{ asset('image/item_image/item.png') }}" alt="Item Image" height="30" width="30" class="circle"></a></td>
+                                    <td><a href="#"><img src="uploads/product_images/{{ $item->item_image }}" alt="Item Image" height="30" width="30" class="img-circle img-bordered-xs"></a></td>
                                     <td>{{ $item->item_name }}</td>
                                     <td> @if($item->quantity > 5) <button class="btn-sm  btn btn-info">{{ $item->quantity }}</button> @elseif($item->quantity <= 5) <button class="btn-sm btn btn-danger">{{ $item->quantity }}</button> @endif</td>
                                     <td>

@@ -20,6 +20,7 @@ Route::post('company/userCount', 'CompanyController@userCount');
 # =========================== Settings of A SEPECIFIC COMPANY =================
 Route::get('myCompany', 'UserManageController@onDefault')->name('myCompany.specific');
 Route::post('myCompany/setting', 'UserManageController@onSet')->name('myCompany.setting');
+Route::post('myCompany/logo', 'UserManageController@onChangeLogo');
 # ============================ /. Settings of A SPEFIC COMPANY ================
 
 Route::get('register', function() {
@@ -64,7 +65,8 @@ Route::get('customer', 'CustomerController@index')->name('customer');
 Route::get('customer/delete', 'CustomerController@destroy');
 Route::post('customer/edit', 'CustomerController@edit');
 #Purchase-history
-Route::get('customer/purHistory/{id?}', 'CustomerController@onPurchaseHistory');
+Route::get('customer/custDetail/{id?}', 'CustomerController@onPurchaseHistory');
+Route::get('customer/custDetail/invoice/detail/{invId?}', 'InvoiceController@onDetail');
 // Route::get('customer/purHistory', 'CustomerController@onPurchaseHistory')->name('history');
 
 # /.Customers
@@ -76,7 +78,7 @@ Route::get('cart/removeItem', 'CartController@removeItem');
 
 #Invoice-routes
 Route::post('invoice', 'InvoiceController@store');
-Route::post('invoice/delete', 'InvoiceController@index');
+// Route::post('invoice/delete', 'InvoiceController@index');
 // Route::delete('invoice/delete', 'InvoiceController@destroy');
 // Route::get('invoice/delete', ['as'=>'invoice.delete', 'uses'=>'InvoiceController@destroy']);
 Route::get('invoice/print', 'InvoiceController@onPrint');
@@ -93,15 +95,16 @@ Route::get('charts', 'ChartController@index')->name('chart');
 #charts
 
 #testing
-// Route::get('test', function() {
-//     return view('user_profile');
-// });
+ Route::get('test', function() {
+     return view('customer_detail');
+ });
 // /.Items & Categories
 Route::get('/', 'HomeController@index')->name('dashboard');
 
 Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+Route::get('/dashboard/{time?}', 'HomeController@analytic');
 
 
 

@@ -98,13 +98,13 @@ class UserManageController extends Controller
         $count = $users->count();
         # end of count
         $validation = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:64|min:5',
-            'first_name' => 'required|string|max:64',
+            'first_name' => 'required|string|max:64|min:3',
             'last_name' => 'nullable|string|max:64',
             'phone' => 'required|unique:users|string|min:10',
             'email' => 'nullable|unique:users|email|max:128',
-            'user_name' => 'required|unique:users|string|max:128|min:5',
-            'password' => 'required|string|min:6|confirmed'
+            'user_name' => 'required|string|max:128|min:5',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required'
 
         ]);
         
@@ -129,25 +129,24 @@ class UserManageController extends Controller
                         $user->role = $request->role;
                         $user->username = $request->user_name;
                         $user->password = Hash::make($request->password);
-                        $user->username = $request->user_name;
                         $user->save(); 
                     return response()->json([
                             'user_msg' => "User registered successfully!",
-                            'result' => "success",
+                            'result' => 'success',
                             'style' => 'color:grey'
                         ]); 
                     }
                     
                     return response()->json([
                         'user_msg' => 'Sorry, your user count has reached to its maximum size.',
-                        'result' => "over",
+                        'result' => 'over',
                         'style' => 'color:darkred'
                     ]);
      
             } else if($compStatus == 0) {
                 return response()->json([
                     'user_msg' => 'Sorry, the company is not active.',
-                     'result' => 'innactive',
+                     'result' => 'inactive',
                     'style' => 'color:darkred'
                 ]);
             }
@@ -156,7 +155,7 @@ class UserManageController extends Controller
             return response()->json([
                 'user_msg' => $validation->errors()->all(),
                 'result' => 'fail',
-                'style' => 'color:red'
+                'style' => 'color:darkred'
             ]);
         }
         
@@ -199,19 +198,19 @@ class UserManageController extends Controller
                         } else {
                             return response()->json([
                                 'message' => 'Sorry, password confirmation does not match, try again.',
-                                'style' => 'color:red' 
+                                'style' => 'color:darkred' 
                             ]);
                         }
                 } else {
                     return response()->json([
                         'message' => 'Sorry, incorrect password.',
-                        'style' => 'color:red'
+                        'style' => 'color:darkred'
                     ]);
                 }
         } else {
             return response()->json([
                 'message' => $val->errors()->all(),
-                'style' => 'color:red'
+                'style' => 'color:darkred'
             ]);
         }
     }
@@ -388,8 +387,7 @@ class UserManageController extends Controller
             'ccity' => 'required|string|max:128',
             'caddress' => 'required|string|max:128',
             'ccontact' => 'required|string|max:64',
-            'cemail' => 'nullable|string|max:64',
-            'clogo' => 'nullable|image|mimes:jpg,jpeg,gif,png|max:2048'
+            'cemail' => 'nullable|string|max:64'
         ]);
 
         if ($val->passes()) {
@@ -400,17 +398,10 @@ class UserManageController extends Controller
             $comp->comp_address = $request->caddress;
             $comp->contact_no = $request->ccontact;
             $comp->email = $request->cemail;
-
-            if ($request->hasFile('clogo')) {
-                $image = $request->file('clogo');
-                $path = "uploads/logos/";
-                $logo_name = rand() . '.' . $image->getClientOriginalExtension();
-                $comp->comp_logo = $logo_name;
-                $image->move($path, $logo_name);
-            }
             if ($comp->save()) {
                 return response()->json([
-                    'msg' => 'success',
+                    'msg' => 'Company set successfully!',
+                    'result' => 'success',
                     'style' => 'color:darkblue'
                 ]);
             }
@@ -421,6 +412,38 @@ class UserManageController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
+    }
+    public function onChangeLogo(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'company_logo' => 'nullable|image|mimes:png,jpg,jpeg,png|max:2048'
+        ]);
+        
+        if ($v->passes()) {
+            $company = Company::findOrfail($request->cid);
+            if ($request->hasFile('company_logo')) {
+                $image = $request->file('company_logo');
+                $path = "uploads/logos/";
+                $logo_name = rand() . '.' . $image->getClientOriginalExtension();
+                $company->comp_logo = $logo_name;
+                $image->move($path, $logo_name);
+                $company->save();
+                return response()->json([
+                    'msg' => 'Logo changed successfully!',
+                    'style' => 'color:darkblue',
+                    'result' => 'success'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'msg' => $v->errors()->all(),
+                'style' => 'color:darkred',
+                'result' => 'fail'
+            ]);
+        }
+        
+        
+        
     }
       # /. ============================== AUTHENTICATED/SPECIFIC COMPANY =========================
   

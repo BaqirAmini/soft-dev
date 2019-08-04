@@ -54,51 +54,35 @@
                               <p id="comp-setting-msg" style="text-align: center;display: none;">Message</p>
                               <input type="hidden" name="cid" id="hidden_comp_id" value="{{ $compId }}">
                               <div class="form-group">
-                                <label for="name" class="col-sm-2 control-label">Company Name</label>
+                                <label for="name" class="col-sm-2 control-label">Company Name <span class="asterisk">*</span></label>
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="cname" placeholder="Company Name" value="{{ $c->comp_name }}">
                                 </div>
-                                <div class="col-sm-1">
-                                  <span class="asterisk">*</span>
-                                </div>
                               </div>
                               <div class="form-group">
-                                <label for="state" class="col-sm-2 control-label">State/Province</label>
+                                <label for="state" class="col-sm-2 control-label">State/Province <span class="asterisk">*</span></label>
                           
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="cstate" placeholder="State" value="{{ $c->comp_state }}">
                                 </div>
-                                <div class="col-sm-1">
-                                  <span class="asterisk">*</span>
-                                </div>
                               </div>
                               <div class="form-group">
-                                <label for="name" class="col-sm-2 control-label">City</label>
+                                <label for="name" class="col-sm-2 control-label">City <span class="asterisk">*</span></label>
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="ccity" placeholder="City" value="{{ $c->comp_city }}">
                                 </div>
-                                <div class="col-sm-1">
-                                  <span class="asterisk">*</span>
-                                </div>
                               </div>
                               <div class="form-group">
-                                <label for="address" class="col-sm-2 control-label">Company Address</label>
+                                <label for="address" class="col-sm-2 control-label">Company Address <span class="asterisk">*</span></label>
                           
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="caddress" placeholder="Address" value="{{ $c->comp_address }}">
                                 </div>
-                                <div class="col-sm-1">
-                                  <span class="asterisk">*</span>
-                                </div>
                               </div>
                               <div class="form-group">
-                                <label for="contact" class="col-sm-2 control-label">Contact NO</label>
-                          
+                                <label for="contact" class="col-sm-2 control-label">Contact # <span class="asterisk">*</span></label>
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="ccontact" placeholder="Contact NO" value="{{ $c->contact_no }}">
-                                </div>
-                                <div class="col-sm-1">
-                                  <span class="asterisk">*</span>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -123,7 +107,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label for="user-count" class="col-sm-2 control-label">Users</label>
+                                <label for="user-count" class="col-sm-2 control-label">Users <span class="asterisk">*</span></label>
                                 <div class="col-sm-9">
                                   <select name="ucount" class="form-control">
                                     <option value="1" name="company">1 User</option>
@@ -136,9 +120,6 @@
                                     <option value="9" name="company">9 Users</option>
                                     <option value="10" name="company">10 Users</option>
                                   </select>
-                                </div>
-                                <div class="col-sm-1">
-                                  <span class="asterisk">*</span>
                                 </div>
                               </div>
                               <!-- /.box-body -->
@@ -161,6 +142,7 @@
                             <thead>
                               <tr>
                                 <th>Photo</th>
+                                <th>User Name</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Phone</th>
@@ -174,6 +156,7 @@
                               <tr>
                                 <td><a href="#"><img src="/uploads/user_photos/{{$user->photo}}" class="img-circle img-bordered" alt="User Image" height="40" width="40"></a>
                                 </td>
+                                <td>{{ $user->username }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->lastname }}</td>
                                 <td>{{ $user->phone }}</td>
@@ -230,12 +213,9 @@
               </div>
               <!-- first-name -->
               <div class="form-group">
-                <label for="firstname" class="col-sm-2 control-label">First Name</label>
+                <label for="firstname" class="col-sm-2 control-label">First Name <span class="asterisk">*</span></label>
                 <div class="col-sm-9">
                   <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name">
-                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
                 </div>
               </div>
               <!-- /. first-name -->
@@ -247,12 +227,9 @@
               </div>
               <!-- phone -->
               <div class="form-group">
-                <label for="phone" class="col-sm-2 control-label">Phone</label>
+                <label for="phone" class="col-sm-2 control-label">Phone <span class="asterisk">*</span></label>
                 <div class="col-sm-9">
                   <input id="phone" type="text" class="form-control" name="phone" placeholder="Phone">
-                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
                 </div>
               </div>
               <!-- email -->
@@ -275,34 +252,25 @@
               <!-- /roles -->
               <!-- Username -->
                 <div class="form-group">
-                  <label for="email" class="col-sm-2 control-label">User Name</label>
+                  <label for="email" class="col-sm-2 control-label">User Name <span class="asterisk">*</span></label>
                   <div class="col-sm-9">
                     <input id="username" type="text" class="form-control" name="user_name" placeholder="User Name">
-                  </div>
-                  <div class="col-sm-1">
-                    <span class="asterisk">*</span>
                   </div>
                 </div>
               <!-- /. Username -->
               <!-- Password -->
               <div class="form-group">
-                <label for="password" class="col-sm-2 control-label">Password</label>
+                <label for="password" class="col-sm-2 control-label">Password <span class="asterisk">*</span></label>
                 <div class="col-sm-9">
                   <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
                 </div>
               </div>
               <!-- confirm-password -->
               <div class="form-group">
-                <label for="confirm" class="col-sm-2 control-label">Confirm Password</label>
+                <label for="confirm" class="col-sm-2 control-label">Confirm Password <span class="asterisk">*</span></label>
                 <div class="col-sm-9">
                   <input id="confirm_password" type="password" class="form-control" name="password_confirmation"
                     placeholder="Confirm Password">
-                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
                 </div>
               </div>
   

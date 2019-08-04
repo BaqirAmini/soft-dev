@@ -3,7 +3,7 @@
 <body class="hold-transition login-page">
         <div class="login-box">
           <div class="login-logo">
-            <img src="{{ asset('uploads/logo.png') }}" alt="Logo" width="130" height="50">
+            <img src="{{ asset('uploads/cashco_blue.png') }}" alt="Logo" width="130" height="50">
           </div>
           <!-- /.login-logo -->
           <div class="login-box-body">
@@ -18,7 +18,7 @@
               @endif
               <div class="input-group">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                  <input id="name" type="text" class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" placeholder="User Name">
+                  <input id="name" type="text" class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" placeholder="User Name" autofocus>
               </div>
               </div>
               <div class="form-group has-feedback">
@@ -29,7 +29,7 @@
               @endif
               <div class="input-group">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                  <input id="password" type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password">
+                  <input id="password" type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" autofocus>
                 </div>
               </div>
               </div>

@@ -16,7 +16,6 @@
           <div class="box-body">
               <div class="box">
                   <div class="box-header">
-                      <span id="msg"></span>
                   </div>
                    <div class="box-body">
                         <!-- Datatables -->
@@ -96,7 +95,9 @@
           <h4 class="modal-title">Add Categories</h4>
         </div>
         <div class="modal-body">
-            
+            <ul id="ctg_message" style="display:none">
+
+            </ul>
             <div class="register-box-body">
                 <ul id="ctg_message" style="display: none">
                     <li>Message</li>
@@ -105,12 +106,9 @@
                   @csrf
                
                     <div class="form-group">
-                            <label for="ctg-name" class="col-sm-2 control-label">Category Name</label>
+                            <label for="ctg-name" class="col-sm-2 control-label">Category Name <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                               <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
-                            </div>
-                            <div class="col-sm-1">
-                              <span class="asterisk">*</span>
                             </div>
                     </div>
                     <div class="form-group">
@@ -142,22 +140,24 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Edit Category</h4>
+          <div class="content-header">
+            <h4 class="modal-title">Edit Category</h4>
+          </div>
         </div>
         <div class="modal-body">
+          <span id="msg"></span>
             <div class="register-box-body">
-                <p class="login-box-msg">Edit Category</p>
                 <form class="form-horizontal" id="edit-category-form">
                   @csrf
                 <input type="hidden" name="ctgId" id="ctgId">
                     <div class="form-group">
                            <!-- Category Name -->
-                            <label for="ctg-name" class="col-sm-2 control-label">Category Name</label>
+                           <div class="col-sm-2 control-label">
+                              <label for="ctg_name">Category Name</label>
+                              <span class="asterisk">*</span>
+                           </div>
                             <div class="col-sm-9">
                               <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
-                            </div>
-                            <div class="col-sm-1">
-                              <span class="asterisk">*</span>
                             </div>
                     </div>
                     <div class="form-group">
@@ -194,13 +194,13 @@
       <h4 class="modal-title">Add Items</h4>
     </div>
     <div class="modal-body">
+      <ul id="item_message" style="display: none"></ul>
         <div class="register-box-body">
-            <ul id="item_message" style="display:none">
             </ul>
             <form class="form-horizontal" enctype="multipart/form-data" id="item_form_data">
               @csrf
                <div class="form-group">
-                  <label for="category" class="col-sm-2 control-label">Category</label>
+                  <label for="category" class="col-sm-2 control-label">Category <span class="asterisk">*</span></label>
                   <div class="col-sm-9">
                     <select name="item_category" id="item_category" class="form-control" required autofocus>
                       @foreach($ctgs as $ctg)
@@ -208,17 +208,11 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="col-sm-1">
-                    <span class="asterisk">*</span>
-                  </div>
                </div>
                 <div class="form-group">
-                        <label for="item" class="col-sm-2 control-label">Item</label>
+                        <label for="item" class="col-sm-2 control-label">Item <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
-                        </div>
-                        <div class="col-sm-1">
-                          <span class="asterisk">*</span>
                         </div>
                 </div>
                 <div class="form-group">
@@ -242,12 +236,9 @@
                     </div>
                   </div>
                 <div class="form-group">
-                        <label for="quantity" class="col-sm-2 control-label">Quantity</label>
+                        <label for="quantity" class="col-sm-2 control-label">Quantity <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
-                        </div>
-                        <div class="col-sm-1">
-                          <span class="asterisk">*</span>
                         </div>
                 </div>
                 <div class="form-group">
@@ -257,21 +248,15 @@
                         </div>
                 </div>
                 <div class="form-group">
-                        <label for="purchase-price" class="col-sm-2 control-label">Purchase Price</label>
+                        <label for="purchase-price" class="col-sm-2 control-label">Purchase Price <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
                         </div>
-                        <div class="col-sm-1">
-                          <span class="asterisk">*</span>
-                        </div>
                 </div>
                 <div class="form-group">
-                  <label for="sell-price" class="col-sm-2 control-label">Sell Price</label>
+                  <label for="sell-price" class="col-sm-2 control-label">Sell Price <span class="asterisk">*</span></label>
                   <div class="col-sm-9">
                     <input id="sell_price" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
-                  </div>
-                  <div class="col-sm-1">
-                    <span class="asterisk">*</span>
                   </div>
                 </div>
             <!-- Tax -->

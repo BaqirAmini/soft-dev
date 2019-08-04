@@ -11,6 +11,8 @@
   <meta name="asset" id="asset" content="{{ asset('/') }}">
   <!-- My-own styles -->
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+  <!-- Icon in title-bar -->
+  <link rel="icon" type="/uploads/cashco_blue.png" href="/uploads/cashco_blue.png">
   <!-- bootstrap -->
   <link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
   <!-- datatables -->
@@ -50,7 +52,7 @@
       @include('inc.header')
   @endif
   <!-- Left side column. contains the logo and sidebar -->
-      @include('inc.sidebar')
+     @if(Auth::check()) @include('inc.sidebar') @endif
   <!-- Content Wrapper. Contains page content -->
   <div @if(!Request::is('login')) class="content-wrapper" @endif>
     <!-- Content Header (Page header) -->

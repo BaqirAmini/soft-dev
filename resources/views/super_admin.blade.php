@@ -22,6 +22,7 @@
                         <thead>
                         <tr>
                           <th>Photo</th>
+                          <th>User Name</th>
                           <th>First Name</th>
                           <th>Last Name</th>
                           <th>Phone</th>
@@ -33,6 +34,7 @@
                           @foreach($superAdmins as $sa)
                             <tr>
                                 <td><a href="#"><img src="uploads/user_photos/{{ $sa->photo }}" alt="System Admin Photo" width="40" height="40"></a></td>
+                                <td>{{ $sa->username }}</td>
                                 <td>{{ $sa->name }}</td>
                                 <td>{{ $sa->lastname }}</td>
                                 <td>{{ $sa->phone }}</td>
@@ -127,8 +129,19 @@
                 <span class="asterisk">*</span>
               </div>
             </div>
-
             <!-- /roles -->
+            <!-- Username -->
+            <div class="form-group">
+              <label for="username" class="col-sm-2 control-label">User Name</label>
+              <div class="col-sm-9">
+                <input id="username" type="text" class="form-control" name="user_name" placeholder="User Name">
+              </div>
+              <div class="col-sm-1">
+                <span class="asterisk">*</span>
+              </div>
+            </div>
+            <!-- /. Username -->
+            <!-- Password -->
             <div class="form-group">
                 <label for="password" class="col-sm-2 control-label">Password</label>
                 <div class="col-sm-9">

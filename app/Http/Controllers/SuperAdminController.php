@@ -32,6 +32,7 @@ class SuperAdminController extends Controller
             'last_name' => 'nullable|string|max:64|min:3',
             'phone' => 'required|unique:users|string|max:16|min:10',
             'email' => 'nullable|unique:users|string|max:64',
+            'user_name' => 'required|string|max:64|min:5',
             'password' => 'required|string|min:6|confirmed'
         ]);
         if ($v->passes()) {
@@ -41,6 +42,7 @@ class SuperAdminController extends Controller
             $sa->phone = $request->phone;
             $sa->email = $request->email;
             $sa->role = $request->role;
+            $sa->username = $request->user_name;
             $sa->password = Hash::make($request->password);
             if ($sa->save()) {
                 return response()->json([

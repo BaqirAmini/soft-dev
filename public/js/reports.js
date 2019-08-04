@@ -10,4 +10,25 @@ $(document).ready(function () {
         w.focus(); // necessary for IE >= 10
 
      });
+
+     /* =================================== ANALYTICS in dashboard =================================== */
+    $('#analytic').change(function () { 
+       var t = $(this).val();
+       $.ajax({
+           type: "GET",
+           url: "/dashboard/" + t,
+           data: {'time':t},
+           dataType: "json",
+           success: function (response) {
+               $('#atc_title').text(response.schedule + ' Sales');
+               $('#atc_total').text('$' + response.total);
+               $('#atc_recieved').text('$' + response.recieved);
+               $('#atc_cash').text('$' + response.cash);
+               $('#atc_master').text('$' + response.master);
+               $('#atc_debit').text('$' + response.debit);
+               $('#atc_recievable').text('$' + response.recievable);
+           }
+       });
+     });
+     /* ===================================/. ANALYTICS in dashboard =================================== */
 });

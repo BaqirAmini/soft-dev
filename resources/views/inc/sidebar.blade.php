@@ -36,12 +36,16 @@
          <div class="user-panel">
            
            <div class="pull-left image">
-        <a href="{{ route('profile') }}">@if(Auth::check())<img src="/uploads/user_photos/{{ Auth::user()->photo }}" width="50" height="50" class="img-circle img-bordered" alt="User Image"> @endif</a>
+               @if(isset($logo[0])) <a href="{{ route('myCompany.specific') }}"><img src="/uploads/logos/{{ $logo[0]->comp_logo }}" width="50" height="50" class="img-circle img-bordered"
+                  alt="Logo"></a> 
+                @endif
            </div>
-           <div class="pull-left info">
-             <p> @if(Auth::check()) {{ Auth::user()->name }} {{ Auth::user()->lastname }} @endif</p>
-             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-           </div>
+              @if(isset($logo[0])) 
+                <div class="pull-left info">
+                  <p>{{ $logo[0]->comp_name }}</p>
+                  <a href="#">{{ $logo[0]->email }}</a>
+                </div> 
+              @endif
          </div>
        
          <!-- sidebar menu: : style can be found in sidebar.less -->

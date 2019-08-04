@@ -70,6 +70,7 @@
                         <thead>
                           <tr>
                             <th>Photo</th>
+                            <th>User Name</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone</th>
@@ -83,6 +84,7 @@
                           <tr>
                             <td><a href="#"><img src="uploads/user_photos/{{$user->photo}}" alt="User Image" height="40" width="40" class="img-circle img-bordered"></a>
                             </td>
+                            <td>{{ $user->username }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->lastname }}</td>
                             <td>{{ $user->phone }}</td>
@@ -125,17 +127,14 @@
                       <p class="login-box-msg">Register a new user</p>
                   
                       <form class="form-horizontal" id="new_user_form">
-                        <input type="hidden" name="counter" value="0">
+                        <!-- <input type="hidden" name="counter" value="0"> -->
                         @csrf
                         <!-- first-name -->
                         <div class="form-group">
-                                <label for="firstname" class="col-sm-2 control-label">First Name</label>
-                                <div class="col-sm-9">
-                                  <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name"> 
-                                </div>
-                                  <div class="col-sm-1 control-label">
-                                    <span class="asterisk">*</span>
-                                  </div>
+                            <label for="firstname" class="col-sm-2 control-label">First Name <span class="asterisk">*</span></label>
+                            <div class="col-sm-9">
+                              <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name"> 
+                            </div>
                         </div>
                         <!-- /. first-name -->
                         <div class="form-group">
@@ -146,12 +145,9 @@
                         </div>
                         <!-- phone -->
                         <div class="form-group">
-                                <label for="phone" class="col-sm-2 control-label">Phone</label>
+                                <label for="phone" class="col-sm-2 control-label">Phone <span class="asterisk">*</span></label>
                                 <div class="col-sm-9">
-                                  <input id="phone" type="number" class="form-control" name="phone" placeholder="Phone">
-                                </div>
-                                <div class="col-sm-1 control-label">
-                                  <span class="asterisk">*</span>
+                                  <input id="phone" type="text" class="form-control" name="phone" placeholder="Phone">
                                 </div>
                         </div>
                        <!-- email -->
@@ -164,55 +160,36 @@
                       
                         <!-- roles -->
                         <div class="form-group">
-                          <label for="role" class="col-sm-2 control-label">Role</label>
+                          <label for="role" class="col-sm-2 control-label">Role <span class="asterisk">*</span></label>
                                <div class="col-sm-9">
                                   <select name="role" class="form-control">
                                     <option value="Stock Manager" name="role">Stock Manager</option>
                                     <option value="Cashier" name="role">Cashier</option>
                                   </select>
                                </div>
-                                <div class="col-sm-1 control-label">
-                                  <span class="asterisk">*</span>
-                                </div>
                         </div>
                           <!-- /roles -->
-                          <!-- Email -->
-                          <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">Email</label>
-                            <div class="col-sm-9">
-                              <input id="email" type="email" class="form-control" name="email" placeholder="Email">
-                            </div>
-                          </div>
                           <!-- Username -->
                             <div class="form-group">
-                              <label for="username" class="col-sm-2 control-label">User Name</label>
+                              <label for="username" class="col-sm-2 control-label">User Name <span class="asterisk">*</span></label>
                               <div class="col-sm-9">
                                 <input id="username" type="text" class="form-control" name="user_name" placeholder="User Name">
-                              </div>
-                              <div class="col-sm-1 control-label">
-                                <span class="asterisk">*</span>
                               </div>
                             </div>
                           <!-- /Username -->
                           <!-- Password -->
                           <div class="form-group">
-                                  <label for="password" class="col-sm-2 control-label">Password</label>
+                                  <label for="password" class="col-sm-2 control-label">Password <span class="asterisk">*</span></label>
                                   <div class="col-sm-9">
                                     <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-                                  </div>
-                                  <div class="col-sm-1 control-label">
-                                    <span class="asterisk">*</span>
                                   </div>
                           </div>
                        <!-- confirm-password -->
                        <div class="form-group">
-                              <label for="confirm" class="col-sm-2 control-label">Confirm Password</label>
+                              <label for="confirm" class="col-sm-2 control-label">Confirm Password <span class="asterisk">*</span></label>
                               <div class="col-sm-9">
                                 <input id="confirm_password" type="password" class="form-control" name="password_confirmation"
                                   placeholder="Confirm Password">
-                              </div>
-                              <div class="col-sm-1 control-label">
-                                <span class="asterisk">*</span>
                               </div>
                        </div>
                        

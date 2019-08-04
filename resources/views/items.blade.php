@@ -21,9 +21,13 @@
                             <thead>
                                 <tr>
                                     <th>Image</th>
+                                    <th>Category</th>
                                     <th>Item</th>
                                     <th>Description</th>
                                     <th>In Stock</th>
+                                    <th>Barcode #</th>
+                                    <th>Taxable</th>
+                                    <th>Supplier</th>
                                     <th>Purchase Price</th>
                                     <th>Sell Price</th>
                                     <th>Reg. Date</th>
@@ -33,12 +37,16 @@
                             <tbody>
                                 @foreach($items as $item)
                                 <tr>
-                                    <td><img src="uploads/product_images/{{ $item->item_image }}" alt="Image" class="circle" height="30"
+                                    <td><img src="uploads/product_images/{{ $item->item_image }}" alt="Image" class="img-circle img-bordered-sm" height="30"
                                             width="30"></td>
+                                    <td>{{ $item->ctg_name }}</td>
                                     <td>{{ $item->item_name }}</td>
                                     <td>{{ $item->item_desc }}</td>
                                     <td> @if($item->quantity > 5) <button class="btn-sm btn btn-info">{{ $item->quantity }}</button> @else
                                         <button class="btn-sm btn btn-danger">{{ $item->quantity }}</button> @endif </td>
+                                    <td>{{ $item->barcode_number }}</td>
+                                    <td>{{ $item->taxable }}</td>
+                                    <td></td>
                                     <td>{{ $item->purchase_price }}</td>
                                     <td>{{ $item->sell_price }}</td>
                                     <td>{{ Carbon\carbon::parse($item->created_at)->format('d M Y') }}</td>
@@ -81,19 +89,14 @@
             
             <div class="register-box-body">
                 <ul id="ctg_message" style="display:none">
-                    <li>Message</li>
                 </ul>
                 <form class="form-horizontal" id="new_ctg_form">
                   @csrf
-               
                     <div class="form-group">                       
-                            <label for="category" class="col-sm-2 control-label">Category Name</label>
+                            <label for="category" class="col-sm-2 control-label">Category Name <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                                 <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
                             </div>  
-                            <div class="col-sm-1">
-                                <span class="asterisk">*</span>
-                            </div>
                     </div>
                     <div class="form-group">                        
                             <label for="description" class="col-sm-2 control-label">Description</label>
@@ -135,7 +138,7 @@
                 <form class="form-horizontal" enctype="multipart/form-data" id="item_form_data">
                   @csrf
                   <div class="form-group">
-                    <label for="category" class="col-sm-2 control-label">Category</label>
+                    <label for="category" class="col-sm-2 control-label">Category <span class="asterisk">*</span></label>
                     <div class="col-sm-9">
                         <select name="item_category" id="item_category" class="form-control" required autofocus>
                             @foreach($ctgs as $ctg)
@@ -143,18 +146,12 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-sm-1">
-                        <span class="asterisk">*</span>
-                    </div>
                   </div>
                     <div class="form-group">
-                            <label for="product" class="col-sm-2 control-label">Item</label>
+                            <label for="product" class="col-sm-2 control-label">Item <span class="asterisk">*</span></label>
                          <div class="col-sm-9">
                                 <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
                          </div>
-                        <div class="col-sm-1">
-                            <span class="asterisk">*</span>
-                        </div>
                     </div>
                 <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">Image</label>
@@ -172,13 +169,10 @@
                 
                 </div>
                     <div class="form-group">
-                            <label for="quantity" class="col-sm-2 control-label">Quantity</label>
+                            <label for="quantity" class="col-sm-2 control-label">Quantity <span class="asterisk">*</span></label>
                            <div class="col-sm-9">
                                 <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
                            </div>
-                            <div class="col-sm-1">
-                                <span class="asterisk">*</span>
-                            </div>
                     </div>
                     <div class="form-group">                       
                             <label for="barcode" class="col-sm-2 control-label">Barcode</label>
@@ -187,20 +181,14 @@
                             </div>                     
                     </div>
                     <div class="form-group">
-                            <label for="purchase-price" class="col-sm-2 control-label">Purchase Price</label>
+                            <label for="purchase-price" class="col-sm-2 control-label">Purchase Price <span class="asterisk">*</span></label>
                             <div class="col-sm-9"><input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price"></div>
-                            <div class="col-sm-1">
-                                <span class="asterisk">*</span>
-                            </div>
                     </div>
                     <div class="form-group">
-                        <label for="sell-price" class="col-sm-2 control-label">Sell Price</label>
+                        <label for="sell-price" class="col-sm-2 control-label">Sell Price <span class="asterisk">*</span></label>
                        <div class="col-sm-9">
                             <input id="sell_price" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
                        </div>
-                        <div class="col-sm-1">
-                            <span class="asterisk">*</span>
-                        </div>
                     </div>
                 <!-- Tax -->
                 <div class="form-group">
@@ -236,20 +224,17 @@
           <h4 class="modal-title">Edit Items</h4>
         </div>
         <div class="modal-body">
+            <ul id="item_edit_message" style="display:none">
+            </ul>
             <div class="register-box-body">
-                <ul id="item_message" style="display:none">
-                </ul>
                 <form class="form-horizontal"  enctype="multipart/form-data" id="edit_item_form_data">
                     <input type="hidden" name="item_id">
                   @csrf
                     <div class="form-group has-feedback">                       
-                            <label for="product" class="col-sm-2 control-label">Item</label>
+                            <label for="product" class="col-sm-2 control-label">Item <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="item_name" placeholder="Item Name">
-                            </div>
-                            <div class="col-sm-1">
-                                <span class="asterisk">*</span>
-                            </div>                
+                            </div>           
                     </div>
                     <div class="form-group">                      
                             <label for="desc" class="col-sm-2 control-label">Desc</label>
@@ -258,12 +243,9 @@
                             </div>
                     </div>
                     <div class="form-group">
-                            <label for="quantity" class="col-sm-2 control-label">Quantity</label>
+                            <label for="quantity" class="col-sm-2 control-label">Quantity <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control" name="quantity" placeholder="Stock">
-                            </div>
-                            <div class="col-sm-1">
-                                <span class="asterisk">*</span>
                             </div>
                     </div>
                     <div class="form-group">
@@ -273,21 +255,15 @@
                             </div>
                     </div>
                     <div class="form-group">
-                            <label for="purchase-price" class="col-sm-2 control-label">Purchase Price</label>
+                            <label for="purchase-price" class="col-sm-2 control-label">Purchase Price <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
                             </div>
-                            <div class="col-sm-1">
-                                <span class="asterisk">*</span>
-                            </div>
                     </div>
                     <div class="form-group">
-                        <label for="sell-price" class="col-sm-2 control-label">Sell Price</label>
+                        <label for="sell-price" class="col-sm-2 control-label">Sell Price <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" name="sell_price" placeholder="Sell Price">
-                        </div>
-                        <div class="col-sm-1">
-                            <span class="asterisk">*</span>
                         </div>
                     </div>
                 <!-- Tax -->

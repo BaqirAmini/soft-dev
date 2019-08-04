@@ -98,11 +98,13 @@ class ItemController extends Controller
                     $item->save();
                     return response()->json([
                         'item_msg' => 'Item added successfully!',
+                        'result' => 'success',
                         'style' => 'color:grey'
                     ]);
                 } else if($compStatus == 0) {
                     return response()->json([
                         'item_msg' => 'Sorry, the company is deactivated, please make contact with the system admin.',
+                        'result' => 'fail',
                         'style' => 'color:darkred'
 
                     ]);
@@ -110,6 +112,7 @@ class ItemController extends Controller
         } else {
             return response()->json([
                 'item_msg' => $validation->errors()->all(),
+                'result' => 'fail',
                 'style'=>'color:darkred'
             ]);
         }
@@ -169,12 +172,14 @@ class ItemController extends Controller
             if($editItem->save()) {
                 return response()->json([
                     'edit_msg' => 'The product changed successfully!',
+                    'result' => 'success',
                     'style' => 'color:grey'
                 ]);
             }
         } else {
             return response()->json([
                 'edit_msg' => $validation->errors()->all(),
+                'result' => 'fail',
                 'style' => 'color:darkred'
             ]);
         }

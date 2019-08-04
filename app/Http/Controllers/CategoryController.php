@@ -73,11 +73,13 @@ class CategoryController extends Controller
                         $ctg->save();
                         return response()->json([
                             'ctg_msg' => 'The category added successfully',
+                            'result' => 'success',
                             'style' => 'color:grey'
                         ]);
                     } else if( $compStatus == 0) {
                         return response()->json([
                             'ctg_msg' => 'Sorry, the company is deactivated, please make contact with the system admin.',
+                            'result' => 'fail',
                             'style' => 'color:darkred'
                         ]);
                     }
@@ -85,6 +87,7 @@ class CategoryController extends Controller
         } else {
             return response()->json([
                 'ctg_msg' => $validation->errors()->all(),
+                'result' => 'fail',
                 'style' => 'color:darkred'
             ]);
         }
@@ -121,12 +124,14 @@ class CategoryController extends Controller
             $ctg->save();
             return response()->json([
                 'msg' => 'The category edited successfully!',
+                'result' => 'success',
                 'style' => 'color:grey'
             ]);
         } else {
             return response()->json([
                 'msg' => $validation->errors()->all(),
-                'style' => 'color:red'
+                'result' => 'fail',
+                'style' => 'color:darkred'
             ]);
         }
         

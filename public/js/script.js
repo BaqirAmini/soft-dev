@@ -19,6 +19,8 @@
      $('#data_tbl_purchase_history').DataTable();
   
      $('#modal-default').trigger('focus');
+     // invoice-detail
+     $('#data_tbl_invoice_detail').DataTable();
      // MORISS chart
    /*  new Morris.Line({
          // ID of the element in which to draw the chart.

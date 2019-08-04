@@ -11,12 +11,18 @@ $(document).ready(function () {
             contentType: false,
             dataType: "json",
             success: function (response) {
+                if (response.result === 'success') {
+                    $('#modal-category').modal('hide');
+                    $('#data_tbl4').load(' #data_tbl4');
+                } else if (response.result === 'fail') {
+                    $('#modal-category').modal('show');
+                } 
                 $('#ctg_message').css('display', 'block');
                 $('#ctg_message').html('<li>'+response.ctg_msg+'</li>');
                 $('#ctg_message li').attr('style', response.style);
                 $('input[name=ctg_name]').val('');
                 $('input[name=ctg_desc]').val('');
-                $('#data_tbl4').load(' #data_tbl4');
+                
             }, 
             error: function (error) { 
                 console.log(error);
@@ -70,10 +76,16 @@ $(document).ready(function () {
              contentType: false,
              cache: false,
              success: function (response) {
-                 $('#modal-edit-category').modal('hide');
+                 if (response.result === 'success') {
+                     $('#modal-edit-category').modal('hide');
+                     $('#data_tbl4').load(' #data_tbl4');
+                 } else {
+                     $('#modal-edit-category').modal('show');
+                 }
+                 
                  $('span#msg').text(response.msg);
                  $('span#msg').attr('style', response.style);
-                 $('#data_tbl4').load(' #data_tbl4');
+                
              },
              error: function (error) { 
                  console.log(error);

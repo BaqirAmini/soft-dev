@@ -19,8 +19,12 @@
                         <thead>
                           <tr>
                             <th>Photo</th>
+                            <th>Business Name</th>
                             <th>First Name</th>
                             <th>Last Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>State/Province</th>
                             <th>Address</th>
                             <th>Reg. Date</th>
                             <!-- <th>Action</th> -->
@@ -30,14 +34,18 @@
                           @foreach($customers as $customer)
                           <tr>
                             <td><a href="#"><img src="{{ asset('image/user_image/user.png') }}" alt="" height="30" width="30"></a></td>
-                            <td><a href="#" class="customer-detail" data-toggle="modal" data-target="#customer-profile"
-                                data-cust-id="{{ $customer->cust_id }}" data-cust-name="{{ $customer->cust_name }}"
-                                data-cust-lastname="{{ $customer->cust_lastname }}" data-cust-phone="{{ $customer->cust_phone }}"
-                                data-cust-email="{{ $customer->cust_email }}" data-cust-state="{{ $customer->cust_state }}"
-                                data-cust-addr="{{ $customer->cust_addr }}">
-                                {{ $customer->cust_name }}</a></td>
+                            <td>
+                            <a href="#" class="customer-detail" data-cust-id="{{ $customer->cust_id }}">
+                              {{ $customer->business_name }}
+                            </a>
+                            </td>
+                            <td>{{ $customer->cust_name }} </td>
                             <td>{{ $customer->cust_lastname }}</td>
-                            <td>{{ $customer->cust_state }}, {{ $customer->cust_addr }}</td>
+                            <td>{{ $customer->cust_phone }}</td>
+                            <td>{{ $customer->cust_email }}</td>
+                            <td>{{ $customer->cust_addr }}</td>
+                            <td>{{ $customer->cust_state }}</td>
+                            <td>{{ $customer->cust_addr }}</td>
                             <td>{{ Carbon\carbon::parse($customer->created_at)->format('M d Y')  }}</td>
                             <!-- <td>
                               <button class="btn btn-danger btn-sm delete-customer" data-cust-id="{{ $customer->cust_id }}"
@@ -128,13 +136,18 @@
                 <div class="register-box-body">
                     <form  class="form-horizontal">
                         @csrf
+                        <!-- Business Name -->
                         <div class="form-group">
-                            <label for="cust-name" class="col-sm-2 control-label">First Name</label>
+                          <label for="business_name" class="col-sm-2 control-label">Business Name <span class="asterisk">*</span></label>
+                          <div class="col-sm-9">
+                            <input id="business_name" type="text" class="form-control" name="business_name" placeholder="Business Name">
+                          </div>
+                        </div>
+                        <!-- Customer First Name -->
+                        <div class="form-group">
+                            <label for="cust-name" class="col-sm-2 control-label">First Name <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                               <input id="cust_name" type="text" class="form-control" name="cust_name" placeholder="Customer Name">
-                            </div>
-                            <div class="col-sm-1 control-label">
-                              <span class="asterisk">*</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -144,12 +157,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="phone" class="col-sm-2 control-label">Phone</label>
+                            <label for="phone" class="col-sm-2 control-label">Phone <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                               <input id="cust_phone" type="text" class="form-control" name="cust_phone" placeholder="Customer Phone">
-                            </div>
-                            <div class="col-sm-1 control-label">
-                              <span class="asterisk">*</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -159,21 +169,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="state" class="col-sm-2 control-label">Province / State</label>
+                            <label for="state" class="col-sm-2 control-label">Province / State <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                               <input id="cust_state" type="text" class="form-control" name="cust_state" placeholder="Province/State">
                             </div>
-                            <div class="col-sm-1 control-label">
-                              <span class="asterisk">*</span>
-                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="address" class="col-sm-2 control-label">Adress</label>
+                            <label for="address" class="col-sm-2 control-label">Adress <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                               <input id="cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Address">
-                            </div>
-                            <div class="col-sm-1 control-label">
-                              <span class="asterisk">*</span>
                             </div>
                         </div>
                     </form>

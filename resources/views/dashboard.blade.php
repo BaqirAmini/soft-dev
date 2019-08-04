@@ -27,14 +27,14 @@
       <!-- small box -->
       <div class="small-box bg-green">
         <div class="inner">
-          <h3>${{ $sales }}</h3>
+          <h3>${{ $totalAmount }}</h3>
           <p>Sales</p>
         </div>
         <div class="icon">
           <i class="ion ion-bag"></i>
         </div>
         @if(Auth::user()->can('isSystemAdmin', App\User::class))
-          <a href="{{ route('sale') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="{{ route('report', ['id' => 'allTime']) }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         @endif
       </div>
     </div>
@@ -186,72 +186,94 @@
         @endcan
   <!-- /. List of companies -->
 
-  <!-- ============= Products in INVENTORIES ==============-->
-  @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class) || Auth::user()->can('isCashier', App\User::class))
-      <div class="box">
-        <div class="box-header">
-          <!-- Header of items-page -->
-          <section class="content-header">
-            @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class)) 
-                  <button class="btn btn-primary" data-toggle="modal" data-target="#modal-item">Add Item</button>
-                  <button class="btn btn-primary" data-toggle="modal" data-target="#modal-category">Add Category</button>
-            @endif
-        </section>
-        </div>
-        <div class="box-body">
+ <!-- ================================================ ANALYTICS =========================================== -->
+          @if(!auth::user()->can('isSuperAdmin'))
           <div class="box">
             <div class="box-header">
-      
-              <!-- Datatables -->
-              <table id="Item_data_table" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Item</th>
-                    <th>Description</th>
-                    <th>In Stock</th>
-                    <th>Purchase Price</th>
-                    <th>Sell Price</th>
-                    <th>Reg. Date</th>
-                    @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class))
-                      <th>Action</th>
-                    @endif
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($items as $item)
-                  <tr>
-                    <td><img src="uploads/product_images/{{ $item->item_image }}" alt="Image" class="circle" height="30"
-                        width="30"></td>
-                    <td>{{ $item->item_name }}</td>
-                    <td>{{ $item->item_desc }}</td>
-                    <td> @if($item->quantity > 5) <button class="btn-sm btn btn-info">{{ $item->quantity }}</button> @else
-                      <button class="btn-sm btn btn-danger">{{ $item->quantity }}</button> @endif </td>
-                    <td>{{ $item->purchase_price }}</td>
-                    <td>{{ $item->sell_price }}</td>
-                    <td>{{ Carbon\carbon::parse($item->created_at)->format('d M Y') }}</td>
-                    @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class)) 
-                        <td>
-                          <button class="btn btn-danger btn-sm btn_delete_product" data-toggle="modal" data-target="#modal-delete-item"
-                            data-product-id="{{ $item->item_id }}"><i class="fa fa-trash"></i></button>
-                          <button class="btn btn-primary btn-sm btn_edit_item" data-toggle="modal" data-target="#modal-edit-item"
-                            data-item-id="{{ $item->item_id }}" data-item-name="{{ $item->item_name }}" data-item-desc="{{ $item->item_desc }}"
-                            data-item-qty="{{ $item->quantity }}" data-item-barcode="{{ $item->barcode_number }}"
-                            data-item-purchase="{{ $item->purchase_price }}" data-item-taxable="{{ $item->taxable }}"
-                            data-item-sell="{{ $item->sell_price }}">
-                            <i class="fa fa-pencil"></i>
-                          </button>
-                        </td>
-                    @endif
-                  </tr>
-                  @endforeach
-              </table>
+              <section class="content-header">
+                <h3 class="box-title">Analytics</h3>
+                <div class="form-group col-md-3 pull-right ">
+                  <label for="analytic">Time:</label>
+                  <select name="analytic" id="analytic" class="form-control">
+                    <option value="">---- Select Time ----</option>
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="last7days">Last 7 Days</option>
+                    <option value="thisWeek">This Week</option>
+                    <option value="lastWeek">Last Week</option>
+                    <option value="last30days">Last 30 Days</option>
+                    <option value="thisMonth">This Month</option>
+                    <option value="lastMonth">Last Month</option>
+                    <option value="thisYear">This Year</option>
+                    <option value="lastYear">Last Year</option>
+                    <option value="allTime">All The Time</option>
+                  </select>
+                </div>
+              </section>
+            </div>
+            <div class="box-body">
+              <div class="box">
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                  <div class="col-md-6 col-md-offset-3" id="report_print_area">
+                    <div class="box">
+                      <div class="box-header">
+                        <h3 class="box-title" id="atc_title">Sales According To Schedule </h3>
+                      </div>
+                      <br>
+                      <!-- /.box-header -->
+                      <div class="box-body no-padding">
+                        <table class="table">
+                          <tr>
+                            <th>Total</th>
+                            <th id="atc_total">$0</th>
+                          </tr>
+                          <tr>
+                            <td>Recieved Amount</td>
+                            <td id="atc_recieved">
+                              $0
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Cash</td>
+                            <td id="atc_cash">
+                              $0
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Master Card</td>
+                            <td id="atc_master">
+                              $0
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Debit Card</td>
+                            <td id="atc_debit">
+                              $0
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Recievable Amount</td>
+                            <td id="atc_recievable">
+                              $0
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                  </div>
+                  <button class="btn btn-primary pull-right" id="btn_print_reports"><i
+                      class="glyphicon glyphicon-print"></i></button>
+                </div>
+              </div>
+          
             </div>
           </div>
-        </div>
-      </div>
-  @endif
-  <!-- ============== /. INVENTORIES ================= -->
+          @endif
+ <!-- ================================================/. ANALYTICS ========================================= -->
 </section>
 <!-- /.content -->
 
@@ -272,7 +294,7 @@
         <div class="form-group has-feedback">
           <input type="hidden" name="input_comp_id">
           <div class="input-group  col-md-10 com-sm-10 col-xs-12 col-md-offset-1">
-            <select name="company_user_count" class="form-control">
+            <select name="company_user_count" class="form-control" autocomplete="off">
               <option value="1" name="company_user_count">1 User</option>
               <option value="2" name="company_user_count">2 Users</option>
               <option value="3" name="company_user_count">3 Users</option>
@@ -336,53 +358,38 @@
             <!-- User couunt/limitation -->
             <!-- Company-Name -->
             <div class="form-group">
-                <label for="company" class="col-sm-2 control-label">Company Name</label>
+                <label for="company" class="col-sm-2 control-label">Company Name <span class="asterisk">*</span></label>
                 <div class="col-sm-9">
                   <input id="comp_name" type="text" class="form-control" name="comp_name" placeholder="Company Name">
-                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
                 </div>
             </div>
             <!-- /. Company State -->
             <div class="form-group">
-                <label for="state" class="col-sm-2 control-label">State / Province</label>
+                <label for="state" class="col-sm-2 control-label">State / Province <span class="asterisk">*</span></label>
                <div class="col-sm-9">
                   <input id="comp_state" type="text" class="form-control" name="comp_state" placeholder="Location State/Province">
                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
-                </div>
             </div>
             <!-- /. Company City -->
             <div class="form-group">
-                <label for="city" class="col-sm-2 control-label">City</label>
+                <label for="city" class="col-sm-2 control-label">City <span class="asterisk">*</span></label>
                 <div class="col-sm-9">
                   <input id="comp_city" type="text" class="form-control" name="comp_city" placeholder="City">
-                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
                 </div>
             </div>
             <!-- Company-Address -->
             <div class="form-group">
-                <label for="address" class="col-sm-2 control-label">Address</label>
+                <label for="address" class="col-sm-2 control-label">Address <span class="asterisk">*</span></label>
                 <div class="col-sm-9">
                   <input id="comp_address" type="text" class="form-control" name="comp_address" placeholder="Company Address">
-                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
                 </div>
             </div>
             <!-- Company-Contact -->
             <div class="form-group">
-                <label for="contact" class="col-sm-2 control-label">Contact</label>
+                <label for="contact" class="col-sm-2 control-label">Contact # <span class="asterisk">*</span></label>
                <div class="col-sm-9">
                   <input id="comp_contact" type="text" class="form-control" name="comp_contact" placeholder="Contact NO">
                </div>
-                <div class="col-sm-1">
-                  <span class="asterisk">*</span>
-                </div>
             </div>
             <!-- Company-Email -->
             <div class="form-group">

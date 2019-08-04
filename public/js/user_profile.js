@@ -6,15 +6,16 @@ $(document).ready(function () {
             // Send form values through AJAX
             $.ajax({
                 type: "POST",
-                url: "manageUser/register",
+                url: "/manageUser/register",
                 data: formValues,
                 dataType: "json",
                 processData: false,
                 contentType: false,
                 cache: false,
                 success: function (response) {
-                    if (response.result === 'success' || response.result === 'inactive') {
+                    if (response.result === 'success') {
                         $('#modal-new-user').modal('hide');
+                        $('#data_tbl1').load(' #data_tbl1');
                         // location.reload();
                     } else if(response.result === 'over') {
                         $('ul#status_msg').css('display', 'block');
@@ -34,9 +35,10 @@ $(document).ready(function () {
                     // $('#data_tbl1').load(' #data_tbl1');
                 },
                 error: function (error) { 
-                    $('button#new_user').attr(error.style);
-                    $('ul#role-msg').css('display', 'block');
-                    $('ul#role-msg').text('<li></li>' + response.user_msg);
+                    console.log(error);
+                    // $('button#new_user').attr(error.style);
+                    // $('ul#role-msg').css('display', 'block');
+                    // $('ul#role-msg').text('<li></li>' + response.user_msg);
                  }
             });
      });
@@ -110,7 +112,6 @@ $(document).ready(function () {
                 $('#profile_msg').html(response.message);
                 $('#profile_msg').attr('style', 'display:block');
                 $('#profile_msg').attr('style', response.style);
-                $('#password_edit_form').load(' #password_edit_form');
             },
         error: function (error) { 
             console.log(error);

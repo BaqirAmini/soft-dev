@@ -14,7 +14,7 @@
                 
             <div class="box">
               <div class="box-header">
-                <button class="btn btn-primary pull-left" data-toggle="modal" data-target="#modal-new-company" id="btn-new-company">New Company</button>
+                <button class="btn btn-primary pull-left" data-toggle="modal" data-target="#modal-new-company" id="btn-new-company">Add Company</button>
               </div>
               <!-- /.box-header -->
               <div class="box-body" id="box-user">
@@ -216,7 +216,7 @@
                 @csrf
                  <!-- User couunt/limitation -->
                  <div class="form-group">
-                      <label for="users" class="col-sm-2 control-label">Users</label>
+                      <label for="users" class="col-sm-2 control-label">Users <span class="asterisk">*</span></label>
                <div class="col-sm-9">
                       <select name="user_count" class="form-control">
                         <option value="1" name="company">1 User</option>
@@ -230,57 +230,42 @@
                         <option value="10" name="company">10 Users</option>
                       </select>
                </div>
-               <div class="col-sm-1">
-                 <span class="asterisk">*</span>
-               </div>
               </div>
               <!-- User couunt/limitation -->
                 <!-- Company-Name -->
                 <div class="form-group">
-                        <label for="company-name" class="col-sm-2 control-label">Company Name</label>
+                        <label for="company-name" class="col-sm-2 control-label">Company Name <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="comp_name" type="text" class="form-control" name="comp_name" placeholder="Company Name">
                         </div>
-                          <div class="col-sm-1">
-                            <span class="asterisk">*</span>
-                          </div>
                 </div>
                 <!-- /. Company State -->
                 <div class="form-group">
-                        <label for="state" class="col-sm-2 control-label">State / Province</label>
+                        <label for="state" class="col-sm-2 control-label">State / Province <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="comp_state" type="text" class="form-control" name="comp_state" placeholder="Location State/Province">
                         </div>
-                          <div class="col-sm-1">
-                            <span class="asterisk">*</span>
-                          </div>
                 </div>
                 <!-- /. Company City -->
                 <div class="form-group">
-                        <label for="city" class="col-sm-2 control-label">City</label>
+                        <label for="city" class="col-sm-2 control-label">City <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="comp_city" type="text" class="form-control" name="comp_city" placeholder="City">
                         </div>
                 </div>
                 <!-- Company-Address -->
                 <div class="form-group">
-                        <label for="address" class="col-sm-2 control-label">Address</label>
+                        <label for="address" class="col-sm-2 control-label">Address <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="comp_address" type="text" class="form-control" name="comp_address" placeholder="Company Address">
                         </div>
-                          <div class="col-sm-1">
-                            <span class="asterisk">*</span>
-                          </div>
                 </div>
                 <!-- Company-Contact -->
                 <div class="form-group">
-                        <label for="contact" class="col-sm-2 control-label">Contact</label>
+                        <label for="contact" class="col-sm-2 control-label">Contact <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
                           <input id="comp_contact" type="text" class="form-control" name="comp_contact" placeholder="Contact NO">
                         </div>
-                          <div class="col-sm-1">
-                            <span class="asterisk">*</span>
-                          </div>
                 </div>
                 <!-- Company-Email -->
                 <div class="form-group has-feedback">

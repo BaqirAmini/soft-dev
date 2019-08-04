@@ -5,9 +5,9 @@
         <!-- Logo -->
         <a href="{{ route('dashboard') }}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><img src="/uploads/logo-white.png" alt="Logo" width="40" height="20"></span>
+          <span class="logo-mini"><img src="/uploads/cashco_white.png" alt="Logo" width="40" height="20"></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><img src="/uploads/logo-white.png" alt="Logo" width="70" height="35"></span>
+          <span class="logo-lg"><img src="/uploads/cashco_white.png" alt="Logo" width="70" height="35"></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -21,7 +21,7 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
             
-                <a href="#">
+                <a href="{{ route('profile') }}">
                   <img src="/uploads/user_photos/{{ Auth::user()->photo }}" class="user-image img-bordered" alt="User Image" style="width: 35px;height:35px;margin-top:-6px;">
                   <span class="hidden-xs">@if(Auth::check()) {{ Auth::user()->name }} {{ Auth::user()->lastname }} @endif</span>
                 </a>
