@@ -1,47 +1,54 @@
 $(document).ready(function () {
+
+/** =================================== click btn ADD to insert items in the CART ============================= */
+  var tax = $('input#tax').val();
+  // $(this).prop('disabled', true);
+  
+
+  // when button add clicked...
+  $('.btn_add_sale').click(function () {
+    // printJS('#sale_section', 'html');
+    
+    var itemID = $(this).data('item-id');
+    var itemName = $(this).data('item-name');
+    var itemPrice = $(this).data('item-price');
+    var taxable = $(this).data('item-taxable');
+
+
+    $.ajax({
+      type: "POST",
+      url: "cart",
+      data: { 'custID': cid, 'itemID': itemID, 'itemName': itemName, 'itemPrice': itemPrice, 'itemQty': 1, 'tax': tax, '_token': $('input[name=_token]').val() },
+      success: function (response) {
+        console.log(response);
+        $('#stock_message').css({ 'display': 'block', 'text-align': 'center', 'color': 'darkred' });
+        $('#stock_message').html(response.stock_msg);
+        $('#test').load(' #test');
+        $('#total_area').load(' #total_area');
+        location.reload();
+        // $('#payment_area').load(' #payment_area');
+        // $('.tax_value').attr('readonly', response.readonly);
+
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  });
+/** =================================== /. click btn ADD to insert items in the CART ============================= */
+
   $('#select_customer').change(function () {
     if ($('select#select_customer option:selected').val() == "") {
-      $('.btn_add_sale').prop('disabled', true);
-      $('.btn_add_sale').removeClass('btn btn-primary');
-      $('.btn_add_sale').addClass('btn btn-default');
+      $('#select_payment').css('display', 'none');
     } else {
+      $(this).attr('style', '');
+      $('#select_payment').css('display', 'block');
+      $('#btn_new_customer').prop('disabled', true);
+      $('#btn_new_customer').removeClass('btn-primary');
+      $('#btn_new_customer').addClass('btn-default');
       cid = $(this).val();
       $('.btn_print_sale').attr('data-print', cid);
-      var tax = $('input#tax').val();
-      $('.btn_add_sale').prop('disabled', false);
-      $('.btn_add_sale').removeClass('btn btn-default');
-      $('.btn_add_sale').addClass('btn btn-primary btn-sm');
-      // $(this).prop('disabled', true);
-      $('#btn_new_customer').prop('disabled', true);
 
-      // when button add clicked...
-      $('.btn_add_sale').click(function () {
-        // printJS('#sale_section', 'html');
-        var itemID = $(this).data('item-id');
-        var itemName = $(this).data('item-name');
-        var itemPrice = $(this).data('item-price');
-        var taxable = $(this).data('item-taxable');
-
-
-        $.ajax({
-          type: "POST",
-          url: "cart",
-          data: { 'custID': cid, 'itemID': itemID, 'itemName': itemName, 'itemPrice': itemPrice, 'itemQty': 1, 'tax': tax, '_token': $('input[name=_token]').val() },
-          success: function (response) {
-            console.log(response);
-            $('#stock_message').css({ 'display': 'block', 'text-align': 'center', 'color': 'darkred' });
-            $('#stock_message').html(response.stock_msg);
-            $('#test').load(' #test');
-            $('#total_area').load(' #total_area');
-            $('#payment_area').load(' #payment_area');
-            // $('.tax_value').attr('readonly', response.readonly);
-
-          },
-          error: function (error) {
-            console.log(error);
-          }
-        });
-      });
       // generate invoice-id with customer-selection
       // onCreateInvoice(custID);
 
@@ -109,6 +116,14 @@ $('#paid_all').change(function () {
   }
 });
 /** =========================== /. check CHECKBOX if all amount is paid ============================ */
+/** ============================================ If ALL AMOUNT is not paid (Is in DEBT) ==================================== */
+$('input#recieved').change(function () {
+  var payable = $('input#payable').val();
+  var recieved = $('input#recieved').val();
+  var recieveable = parseFloat(payable) - parseFloat(recieved);
+  $('input#payable').val(recieveable);
+});
+/** ============================================ /. If ALL AMOUNT is not paid (Is in DEBT) ==================================== */
 // SELECT PAYMENT METHOD
 function selectPayment() {
   var st = $('select#payment_type option:selected');
@@ -116,9 +131,9 @@ function selectPayment() {
     $('button#btn_print').prop('disabled', true);
     $('button#btn_print').removeClass('btn btn-primary');
     $('button#btn_print').addClass('btn btn-default');
-    // $('div#rvable').css('display', 'none');
-    // $('div#rvd').css('display', 'none');
-    // $('div#trans_area').css('display', 'none');
+    $('div#rvable').css('display', 'none');
+    $('div#rvd').css('display', 'none');
+    $('div#trans_area').css('display', 'none');
     $('#chk_area').css('display', 'none');
 
   } else if (st.val() == 'Cash') {
@@ -132,12 +147,12 @@ function selectPayment() {
       $('div#trans_area').hide();
     }
 
-    $('input#recieved').change(function () {
-      var payable = $('input#payable').val();
-      var recieved = $('input#recieved').val();
-      var recieveable = parseFloat(payable) - parseFloat(recieved);
-      $('input#payable').val(recieveable);
-    });
+    // $('input#recieved').change(function () {
+    //   var payable = $('input#payable').val();
+    //   var recieved = $('input#recieved').val();
+    //   var recieveable = parseFloat(payable) - parseFloat(recieved);
+    //   $('input#payable').val(recieveable);
+    // });
   } else if (st.val() == "Master Card" || st.val() == "Debit Card") {
     $('button#btn_print').prop('disabled', false);
     $('button#btn_print').removeClass('btn btn-default');
@@ -157,11 +172,9 @@ function onSaveSale() {
   var recieveable_amount = 0;
   if ($('#paid_all').is(':checked')) {
     recieved_amount = $('input#total').val();
-    alert('Recieved: ' + recieved_amount + ' Recievable: ' + recieveable_amount);
   } else {
     recieved_amount = $('input#recieved').val();
     recieveable_amount = $('input#payable').val();
-    alert('Recieved: ' + recieved_amount + ' Recievable: ' + recieveable_amount);
   }
   // var recieved_amount = $('input#recieved').val();
   // var recieveable_amount = $('input#payable').val();

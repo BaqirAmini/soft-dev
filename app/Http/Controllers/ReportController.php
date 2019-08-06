@@ -7,6 +7,7 @@ use Auth;
 use DB;
 use Gate;
 use Illuminate\Support\Carbon;
+
 class ReportController extends Controller
 {
     public function __construct()
@@ -181,6 +182,31 @@ class ReportController extends Controller
          } else {
              abort(403, 'This action is unauthorized.');
          }
+     }
+
+     public function getThisMonth()
+     {
+        $formated_date = '';
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isCashier')) {
+            $sales = DB::table('categories')
+                ->join('items','categories.ctg_id', '=', 'items.ctg_id')
+                ->join('sales', 'items.item_id', '=', 'sales.item_id')
+                ->select('sales.*', 'categories.ctg_name', 'items.item_name')
+                ->where('sales.comp_id', Auth::user()->comp_id)
+                ->whereBetween('sales.created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+            ->get();
+            $items = $sales->pluck('item_name');
+            // $dates = $sales->pluck('created_at');
+            $dates = $sales->pluck('created_at');
+            $qty_sold = $sales->pluck('qty_sold');
+        
+            
+          return view('reports_graph', compact(['items', 'dates', 'qty_sold']));
+            // return $items;
+            
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
      }
      # ====================================== /. CHARTS REPORT ========================
 

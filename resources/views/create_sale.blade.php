@@ -90,7 +90,7 @@
                   <p id="inv_message" style="display:none;"></p>
                   <!-- customer-selection -->
                     <div class="input-group col-md-12" id="choose-customer">
-                        <select class="form-control" id="select_customer" required>
+                        <select class="form-control" id="select_customer" required style="border: 2px solid rgb(211, 75, 75);">
                           <option value="">Select customer..</option>
                           @foreach($customers as $c)
                               <option value="{{ $c->cust_id }}">{{ $c->cust_name }} {{ $c->cust_lastname }}</option>
@@ -162,7 +162,7 @@
                 <!-- /. Total & Tax input -->
                 <!-- Payment -->
                 <div class="row col-md-12"  id="payment_area">
-                  <div class="col-xs-4">
+                  <div class="col-xs-4" id="select_payment" style="display: none;">
                     <label for="payment_type" class="lbl_payment">Payment Type</label>
                       <select name="payment_type" id="payment_type" class="form-control pull-left" onchange="selectPayment();" required style="margin-left:-12px;">
                           <option value="">Select Payment...</option>
@@ -234,12 +234,12 @@
                                     <td>{{ $item->item_name }}</td>
                                     <td> @if($item->quantity > 5) <button class="btn-sm  btn btn-info">{{ $item->quantity }}</button> @elseif($item->quantity <= 5) <button class="btn-sm btn btn-danger">{{ $item->quantity }}</button> @endif</td>
                                     <td>
-                                        <button class="btn btn-default btn-sm btn_add_sale" 
+                                        <button class="btn btn-primary btn-sm btn_add_sale" 
                                             data-item-id="{{ $item->item_id }}"
                                             data-item-name="{{ $item->item_name }}"
                                             data-item-price="{{ $item->sell_price }}" 
                                             data-item-taxable="{{ $item->taxable }}" 
-                                            disabled>
+                                            >
                                                Add
                                         </button>
                                     </td>

@@ -42,8 +42,9 @@
                   </div>
                 </div>
                 <!-- /.col -->
-                <div class="col-xs-4 col-md-4 col-lg-4 col-md-offset-4 col-xs-offset-4 col-lg-offset-4">
-                  <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                <div class="col-xs-5 col-md-5 col-lg-5 col-md-offset-4 col-xs-offset-4 col-lg-offset-4">
+                  <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button><br>
+                  <a href="{{ route('password.request') }}">Forgot Password</a>
                 </div>
                 <!-- /.col -->
               </div>

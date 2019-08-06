@@ -81,6 +81,7 @@
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('bower_components/jquery/dist/jquery.slim.js') }}"></script>
 <!-- Own-js files -->
+<script src="{{ asset('js/Chart.min.js') }}"></script>
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/script.js') }}"></script>
 <script src="{{ asset('js/inventory.js') }}"></script>
@@ -102,7 +103,7 @@
 <script src="{{ asset('bower_components/raphael/raphael.min.js') }}"></script>
 <script src="{{ asset('bower_components/admin-lte/dist/js/demo.js') }}"></script>
 <!-- ChartJS http://www.chartjs.org/-->
-<script src="{{ asset('bower_components/chart.js/chart.min.js') }}"></script>
+<script src="{{ asset('/bower_components/chart.js/Chart.js') }}"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script> -->
 
 <!-- datatables -->

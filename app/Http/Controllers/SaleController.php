@@ -34,8 +34,8 @@ class SaleController extends Controller
             if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
                     #cart
                     $carts = Cart::content();
-                    $total = Cart::total();
-                    $subTotal = Cart::subtotal();
+                    $total = Cart::total(2, '.', '');
+                    $subTotal = Cart::subtotal(2, '.', '');
                     $tax = Cart::tax();
                     # /.cart
                     $sales = DB::table('companies')

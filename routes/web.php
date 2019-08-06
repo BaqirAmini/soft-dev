@@ -85,18 +85,15 @@ Route::get('invoice/print', 'InvoiceController@onPrint');
 #Invoice
 
 #Reports
-
 Route::get('analytics/{time?}', 'ReportController@index')->name('report');
-Route::get('reports/graph', 'ReportController@chart');
+// ======================= CHARTS for sales ================= 
+Route::get('reports/graph', 'ReportController@getThisMonth')->name('this_month');
 #Reports
-
-#Charts
-Route::get('charts', 'ChartController@index')->name('chart');
-#charts
+// /. =========================/. CHARTS for sales ============================
 
 #testing
  Route::get('test', function() {
-     return view('customer_detail');
+     return view('auth.register');
  });
 // /.Items & Categories
 Route::get('/', 'HomeController@index')->name('dashboard');
