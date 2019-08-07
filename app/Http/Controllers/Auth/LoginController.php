@@ -19,13 +19,6 @@ class LoginController extends Controller
     |
     */
     use AuthenticatesUsers;
-
-    public function authenticate(Request $request) {
-        # this is not working you should refere 'AuthenticateUsers.php' inside laravel>foundation>auth
-        if (Auth::attempt(['username' => $request->user_name, 'password' => $request->password, 'status'=>1])) {
-                return redirect()->intended('login');
-        } 
-    }
     /**
      * Where to redirect users after login.
      *

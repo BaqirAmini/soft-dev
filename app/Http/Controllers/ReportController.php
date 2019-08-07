@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Auth;
 use DB;
 use Gate;
+use Charts;
 use Illuminate\Support\Carbon;
+use Faker\Provider\tr_TR\Payment;
 
 class ReportController extends Controller
 {
@@ -186,22 +188,39 @@ class ReportController extends Controller
 
      public function getThisMonth()
      {
-        $formated_date = '';
+        $formated_data = [];
         if (Gate::allows('isSystemAdmin') || Gate::allows('isCashier')) {
-            $sales = DB::table('categories')
-                ->join('items','categories.ctg_id', '=', 'items.ctg_id')
+            $sales = DB::table('items')
                 ->join('sales', 'items.item_id', '=', 'sales.item_id')
-                ->select('sales.*', 'categories.ctg_name', 'items.item_name')
+                ->select('sales.created_at', 'sales.qty_sold', 'sales.item_id', 'items.item_name', 'items.item_id')
                 ->where('sales.comp_id', Auth::user()->comp_id)
-                ->whereBetween('sales.created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+                ->whereBetween('sales.created_at', [Carbon::now()->startOfMonth()->toDateString(), Carbon::now()->endOfMonth()->toDateString()])
             ->get();
             $items = $sales->pluck('item_name');
             // $dates = $sales->pluck('created_at');
             $dates = $sales->pluck('created_at');
             $qty_sold = $sales->pluck('qty_sold');
-        
-            
-          return view('reports_graph', compact(['items', 'dates', 'qty_sold']));
+            $chart1 = Charts::create('area', 'highcharts')
+                ->title('Sold Categories')
+                ->labels($items)
+                ->values($qty_sold)
+                ->elementLabel("Items")
+                ->dimensions(1000, 500)
+                ->responsive(true);
+
+            $chart2 = Charts::create('pie', 'highcharts')
+                ->title('Sold Categories')
+                ->labels($sales->pluck('created_at'))
+                ->values($qty_sold)
+                ->elementLabel("Items")
+                ->dimensions(1000, 500)
+                ->responsive(false);
+
+    
+               
+           
+        //   return view('reports_graph')->with('chart', $chart);
+        return view('reports_graph', compact(['chart1', 'chart2']));
             // return $items;
             
         } else {

@@ -34,15 +34,13 @@
               </div>
               </div>
               <div class="row">
-                <div class="col-xs-8">
-                  <div class="checkbox icheck">
-                    <!-- <label>
-                      <input type="checkbox"> Remember Me
-                    </label> -->
-                  </div>
-                </div>
                 <!-- /.col -->
                 <div class="col-xs-5 col-md-5 col-lg-5 col-md-offset-4 col-xs-offset-4 col-lg-offset-4">
+                  <div class="checkbox icheck">
+                    <label>
+                      <input type="checkbox" name="remember_me"> Remember Me
+                    </label>
+                  </div>
                   <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button><br>
                   <a href="{{ route('password.request') }}">Forgot Password</a>
                 </div>

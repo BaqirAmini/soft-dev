@@ -12,7 +12,7 @@
   <!-- My-own styles -->
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
   <!-- Icon in title-bar -->
-  <link rel="icon" type="/uploads/cashco_blue.png" href="/uploads/cashco_blue.png">
+  <link rel="icon" type="/uploads/ic_cashco_for_title.png" href="/uploads/ic_cashco_for_title.png">
   <!-- bootstrap -->
   <link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
   <!-- datatables -->
@@ -48,6 +48,9 @@
 <!-- Body -->
 <body @if(!Request::is('login')) class="hold-transition skin-blue sidebar-mini" @endif>
 <div class="wrapper">
+
+  {!! Charts::assets() !!}
+
   @if(!Request::is('login') && !Request::is('logout'))
       @include('inc.header')
   @endif

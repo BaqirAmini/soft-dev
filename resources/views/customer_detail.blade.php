@@ -136,9 +136,9 @@
                                                 <tr>
                                                     <th>Invoice #</th>
                                                     <th>Payment Type</th>
-                                                    <th>Rcv. Amount</th>
-                                                    <th>Recievable</th>
-                                                    <th>Purchase Date</th>
+                                                    <th>Paid</th>
+                                                    <th>Balance</th>
+                                                    <th>Transaction Date</th>
                                                     <!-- <th>Action</th> -->
                                                 </tr>
                                             </thead>
