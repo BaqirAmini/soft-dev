@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Customer;
+use App\Payment;
 use Auth;
 use Illuminate\Support\Facades\Gate;
 use Validator;
@@ -109,9 +110,41 @@ class CustomerController extends Controller
         } else {
             abort(403, 'Sorry, this customer has not purchased anything yet.');
         }
-      
     }
 
+    # ================================ Make a payment ===================================
+    public function onPayment(Request $request)
+    {
+        $invoiceId = DB::table('invoices')->where('cust_id', $request->customer_id)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
+        $v = Validator::make($request->all(), [
+            'reciept_amount' => 'required|numeric|between:0,999999999999.99'
+        ]);
+        if ($v->passes()) {
+            $recAmount = $request->reciept_amount;
+            $pay = Payment::where('inv_id', '=', $invoiceId)->first();
+            $pay->recieved_amount += $recAmount;
+            $pay->recievable_amount -= $recAmount;
+            $pay->trans_type = "Credit";
+            if ($pay->save()) {
+                return response()->json([
+                    'result' => 'success',
+                    'style' => 'color:darkblue',
+                    'message' => 'Thanks, payment was success!'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'result' => 'fail',
+                'style' => 'color:darkred',
+                'message' => $v->errors()->all()
+            ]);
+        }
+        
+        
+        
+        
+    }
+    # ================================/. Make a payment ===================================
     /**
      * Display the specified resource.
      *

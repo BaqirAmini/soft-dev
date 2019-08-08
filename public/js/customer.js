@@ -1,5 +1,4 @@
 $(document).ready(function () {
-   
     $('#modal-customer').on('click', '#btn_add_customer', function () { 
 
             var businessName = $('input[name=business_name]').val();
@@ -101,10 +100,12 @@ $(document).ready(function () {
             $(this).attr('data-href', href);
             window.location = $(this).data('href');
      });  
+ 
 
      // When purchase-history link clicked
      $('#purchase_history').click(function () { 
             var custId = $(this).data('pur-cust-id');
+            alert(customerId);
             var href = "customer/purHistory/"+custId;
             $(this).attr('data-href', href);
             window.location = $(this).data('href');
@@ -119,6 +120,37 @@ $(document).ready(function () {
      });
       /** ================================/. INVOICE DETAIL ============================= */
 
+    /** ================================================== Make-payment ======================================================== */  
+    $('#form-make-payment').on('submit', function (e) { 
+        e.preventDefault();
+        var fData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: "/customer/custDetail/payment",
+            data: fData,
+            contentType: false,
+            processData: false,
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                if (response.result === 'success') {
+                    $('#modal-make-payment').modal('hide');
+                    $('#transaction').load(' #transaction');
+                } else {
+                    $('#modal-make-payment').modal('show');
+                    $('#msg_area').html('<li>' + response.message + '</li>')
+                }
+                $('#msg_area').css('display', 'block');
+                $('#msg_area').attr('style', response.style);
+            },
+            error:function (err) { 
+                console.log(err);
+             }
+        });
+        
+     });
+    
+    /** ==================================================/. Make-payment ======================================================== */  
 });
 
 

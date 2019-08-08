@@ -165,6 +165,7 @@
                                   </div>
                                </div>
                                 <a href="{{ route('customer') }}" type="button" class="btn btn-primary">&lt Back</a>
+                                <button class="btn btn-primary pull-right btn_make_payment" data-toggle="modal" data-target="#modal-make-payment">Make a payment</button>
                         </div>
                         <!-- /.tab-pane -->
                     </div>
@@ -181,4 +182,42 @@
 <!-- /.row -->
 </section>
 <!-- /.content -->
+
+<!-- =======================================  MODALS ================================================= -->
+<div class="modal fade" id="modal-make-payment">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Make a payment</h4>
+            </div>
+            <div class="modal-body">
+                <ul id="msg_area" style="display:none">
+                </ul>
+                <div class="register-box-body">
+                    <form class="form-horizontal" id="form-make-payment">
+                        <input type="hidden" name="customer_id" value="{{ $purchases[0]->cust_id }}">
+                        @csrf
+                        <div class="form-group" id="reciept_area">
+                            <label for="reciept_amount" class="col-sm-3 control-label">Reciept Amount <span class="asterisk">*</span></label>
+                            <div class="col-sm-9">
+                                <input id="cust_lastname" type="number" min="0" step="0.01" class="form-control" name="reciept_amount"
+                                    placeholder="Receipt Amount (Paid Amount)">
+                            </div>
+                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                                <button type="submit" id="btn_make_payment" data-c-id="{{ $purchases[0]->cust_id }}" class="btn btn-primary pull-left">Save</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+            <!-- end of modal-body div -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- =======================================/.  MODALS ================================================= -->
 @stop

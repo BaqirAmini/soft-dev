@@ -193,7 +193,7 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div>
+</div>
       <!-- /.new-customer modal -->
 
       <!-- customer-profile -->

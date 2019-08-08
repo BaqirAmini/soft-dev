@@ -110,6 +110,7 @@ class SaleController extends Controller
                 $payment = new Payment();
                 $payment->inv_id = $invoiceId;
                 $payment->comp_id = $compId;
+                $payment->trans_type = "Debit";
                 $payment->trans_code = $tCode;
                 $payment->payment_type = $paymentType;
                 $payment->recieved_amount = $recieved;

@@ -66,6 +66,7 @@ Route::get('customer/delete', 'CustomerController@destroy');
 Route::post('customer/edit', 'CustomerController@edit');
 #Purchase-history
 Route::get('customer/custDetail/{id?}', 'CustomerController@onPurchaseHistory');
+Route::post('customer/custDetail/payment', 'CustomerController@onPayment');
 Route::get('customer/custDetail/invoice/detail/{invId?}', 'InvoiceController@onDetail');
 // Route::get('customer/purHistory', 'CustomerController@onPurchaseHistory')->name('history');
 
