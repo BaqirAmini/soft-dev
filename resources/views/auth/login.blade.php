@@ -16,6 +16,11 @@
                       <strong style="color:rgb(240, 126, 126);font-size: 12px;">{{ $errors->first('username') }}</strong>
                   </span><br>
               @endif
+              @if (Session::has('inactive'))
+                  <span class="invalid-feedback" role="alert">
+                      <strong style="color:rgb(240, 126, 126);font-size: 12px;">{{ Session::get('inactive') }}</strong>
+                  </span><br><br>
+              @endif
               <div class="input-group">
                   <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                   <input id="name" type="text" class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" placeholder="User Name" autofocus>

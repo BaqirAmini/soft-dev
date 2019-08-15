@@ -15,7 +15,11 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.result === 'success') {
                         $('#modal-new-user').modal('hide');
-                        $('#data_tbl1').load(' #data_tbl1');
+                        // $('#data_tbl1').load(' #data_tbl1');
+                        setTimeout(function () { 
+                            location.reload();
+                         }, 5000);
+                        
                         // location.reload();
                     } else if(response.result === 'over') {
                         $('ul#status_msg').css('display', 'block');

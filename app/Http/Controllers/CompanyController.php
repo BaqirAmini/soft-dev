@@ -26,8 +26,13 @@ class CompanyController extends Controller
     # =============================== FOR SUPER-ADMIN to do something with companies ====================
     public function index()
     {
+            $id = Auth::user()->id;
+            $counts = DB::table('companies')
+                ->join('users', 'companies.company_id', '=', 'users.comp_id')
+                ->select('companies.user_count')
+                ->first();
         $companies = DB::table('companies')->get();
-        return view('company', compact('companies'));
+        return view('company', compact(['companies', 'counts']));
     }
 
     /**

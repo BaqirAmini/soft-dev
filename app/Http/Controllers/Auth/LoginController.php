@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 use DB;
@@ -35,4 +36,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    protected function credentials(Request $request)
+    {
+         $remember_me = $request->has('remember_me') ? true : false;
+            return ['username' => $request->username, 'password' => $request->password, 'status' =>1];
+            
+    }
+
 }

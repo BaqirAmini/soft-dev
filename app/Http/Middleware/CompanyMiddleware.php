@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+use Auth;
 class CompanyMiddleware
 {
     /**
@@ -15,14 +15,15 @@ class CompanyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check()) {
-            if (Auth::user()->compStatus() == 0) {
-                # code...
-            } else {
-                # code...
-            }
-            
-        }
-        return $next($request);
+       if (Auth::user()->role === 'Super Admin') {
+               return $next($request);
+       }
+          if (Auth::user()->company->comp_status == 1) {
+               return $next($request);
+          } else {
+               Auth::logout();
+               return redirect('login')->with('inactive', 'Sorry, this company is not active...!');
+          }
+       
     }
 }

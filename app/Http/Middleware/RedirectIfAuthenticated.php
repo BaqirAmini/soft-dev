@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
             // return redirect('/register');
             return redirect()->intended('dashboard');
         }
-
+        
          return $next($request);
     }
 }

@@ -77,7 +77,10 @@
           <input type="hidden" name="input_comp_id">
             <div class="input-group  col-md-12 com-sm-12 col-xs-6">
                 <select name="company_user_count" class="form-control">
-                     <option value="1" name="company_user_count">1 User</option>
+                  @for($a = 1; $a <= 10; $a++)
+                      <option value="{{ $a }}" name="company_user_count" @if($counts->user_count === $a) selected @endif>{{ $a }} User(s)</option>
+                  @endfor
+                     <!-- <option value="1" name="company_user_count">1 User</option>
                      <option value="2" name="company_user_count">2 Users</option>
                      <option value="3" name="company_user_count">3 Users</option>
                      <option value="4" name="company_user_count">4 Users</option>
@@ -86,7 +89,7 @@
                      <option value="7" name="company_user_count">7 Users</option>
                      <option value="8" name="company_user_count">8 Users</option>
                      <option value="9" name="company_user_count">9 Users</option>
-                     <option value="10" name="company_user_count">10 Users</option>
+                     <option value="10" name="company_user_count">10 Users</option> -->
                 </select>
               </div>
         </div>
@@ -285,11 +288,14 @@
       </div>
     </div>
     <!-- /.modal-content -->
+
   </div>
   <!-- /.modal-dialog -->
+ 
 </div>
 <!-- /.modal -->
 <!-- New Compan MODAL -->
        
 <!-- Modal-area -->
+
 @stop

@@ -26,8 +26,8 @@ class AndroidAPIController extends Controller
          $username = $request->username;
          $password = $request->password;
          
-        if (Auth::attempt(['name' => $username, 'password' => $password, 'status'=>1])) {
-            $users = DB::table('users')->select('*')->where('name', $username)->get(); 
+        if (Auth::attempt(['username' => $username, 'password' => $password, 'status'=>1])) {
+            $users = DB::table('users')->select('*')->where('username', $username)->get(); 
                foreach ($users as $user) {
                    $compId = $user->comp_id;
                    $userId = $user->id;
@@ -437,11 +437,12 @@ class AndroidAPIController extends Controller
                 if ($count < $user_count) {
                     $user = new User();
                     $user->comp_id = $request->compId;
-                    $user->name = $request->uName;
+                    $user->name = $request->uFname;
                     $user->lastname = $request->uLastname;
                     $user->phone = $request->uPhone;
                     $user->email = $request->uEmail;
                     $user->role = $request->uRole;
+                    $user->username = $request->uName;
                     $user->password = Hash::make($request->uPassword);
                     $user->save();
                     return response()->json([

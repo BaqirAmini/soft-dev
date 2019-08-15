@@ -3,6 +3,7 @@
 namespace App;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Company extends Model
 {
@@ -12,20 +13,6 @@ class Company extends Model
     protected $fillable = ['status', 'email','user_count'];
     
     public function user() {
-        return $this->hasMany(User::class);
-    }
-    
-    public function compStatus() {
-        if (Auth::check()) {
-            $id = Auth::user()->id;
-            $companies = DB::table('companies')
-            ->join('users', 'companies.company_id', '=', 'users.comp_id')
-            ->select('companies.comp_status')
-            ->where('users.id', $id)
-            ->get();
-            $compStatus = $companies[0]->comp_status;
-            return $compStatus;
-        }
-        
+        return $this->hasMany('App\User', 'comp_id');
     }
 }

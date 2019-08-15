@@ -19,20 +19,21 @@ $(document).ready(function () {
                 $(ref).removeClass(response.remove_class);
                 $(ref).addClass(response.add_class);
                 $(ref).html(response.label);
-                $('#data_tbl1').load(' #data_tbl1');
+                // $('#data_tbl1').load(' #data_tbl1');
                 if (response.user_count == "over") {
                     $('#add_user').prop('disabled', true);
                     $('#add_user').removeClass('btn btn-primary btn-sm');
                     $('#add_user').addClass('btn btn-default btn-sm');
                     $('#modal-new-user').modal('hide');
-                    $('p#role-msg').css('display', 'block');
-                    $('p#role-msg').attr('style', response.style);
+                    $('#status_msg').css('display', 'block');
+                    $('#status_msg').attr('style', response.style);
                     $('button#new_user').attr(response.style);
-                    $('p#role-msg').text(response.user_msg);
-                    $('p#role-msg').attr(response.style);
-                    $('p#role-msg').text(response.user_msg);
+                    $('#status_msg').html('<li>' + response.user_msg + '</li>');
+                    $('#status_msg').attr(response.style);
                 } 
-                
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
             },
             error: function (error) { 
                 console.log(error);
