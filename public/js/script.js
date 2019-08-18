@@ -19,6 +19,17 @@
      $('#data_tbl_purchase_history').DataTable();
   
      $('#modal-default').trigger('focus');
+
+     /* ================================ POPUP ================================== */
+   $('[data-toggle="popover"]').popover();   
+   $('#link_qty').popover({
+     content: $('#popover_form'),
+     container: 'body',
+     placement: 'top',
+      trigger: 'focus',
+      html: true,
+   });
+     /* ================================ /. POPUP ================================== */
      // invoice-detail
      $('#data_tbl_invoice_detail').DataTable();
      // MORISS chart

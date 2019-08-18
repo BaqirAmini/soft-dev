@@ -22,7 +22,7 @@
               <li class="dropdown user user-menu">
             
                 <a href="{{ route('profile') }}">
-                  <img src="/uploads/user_photos/{{ Auth::user()->photo }}" class="user-image img-bordered" alt="User Image" style="width: 35px;height:35px;margin-top:-6px;">
+                  <img src="/uploads/user_photos/{{ Auth::user()->photo }}" class="user-image img-bordered" alt="User Image" style="width: 30px;height:30px;margin-top:-6px;">
                   <span class="hidden-xs">@if(Auth::check()) {{ Auth::user()->name }} {{ Auth::user()->lastname }} @endif</span>
                 </a>
                 <ul class="dropdown-menu">

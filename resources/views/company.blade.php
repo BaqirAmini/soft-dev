@@ -78,18 +78,8 @@
             <div class="input-group  col-md-12 com-sm-12 col-xs-6">
                 <select name="company_user_count" class="form-control">
                   @for($a = 1; $a <= 10; $a++)
-                      <option value="{{ $a }}" name="company_user_count" @if($counts->user_count === $a) selected @endif>{{ $a }} User(s)</option>
+                      <option value="{{ $a }}" name="company_user_count" @foreach($counts as $c) @if($c == $a) selected @endif @endforeach>{{ $a }} User(s)</option>
                   @endfor
-                     <!-- <option value="1" name="company_user_count">1 User</option>
-                     <option value="2" name="company_user_count">2 Users</option>
-                     <option value="3" name="company_user_count">3 Users</option>
-                     <option value="4" name="company_user_count">4 Users</option>
-                     <option value="5" name="company_user_count">5 Users</option>
-                     <option value="6" name="company_user_count">6 Users</option>
-                     <option value="7" name="company_user_count">7 Users</option>
-                     <option value="8" name="company_user_count">8 Users</option>
-                     <option value="9" name="company_user_count">9 Users</option>
-                     <option value="10" name="company_user_count">10 Users</option> -->
                 </select>
               </div>
         </div>

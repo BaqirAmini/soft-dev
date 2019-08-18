@@ -43,7 +43,7 @@
                 <div class="col-xs-5 col-md-5 col-lg-5 col-md-offset-4 col-xs-offset-4 col-lg-offset-4">
                   <div class="checkbox icheck">
                     <label>
-                      <input type="checkbox" name="remember_me"> Remember Me
+                      <input type="checkbox" name="remember "> Remember Me
                     </label>
                   </div>
                   <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button><br>

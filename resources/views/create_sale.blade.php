@@ -79,7 +79,7 @@
  <section class="content" id="sale_section">
         <div class="row">
           <!-- left column -->
-          <div class="col-md-6">
+          <div class="col-md-4">
             <!-- general form elements -->
             <div class="box box-primary" id="box_cart">
               <div class="box-header with-border">
@@ -112,9 +112,8 @@
                                 <th>Delete</th>
                                 <th>Item</th>
                                 <th>Qty</th>
-                                <th>Unit Price</th>
-                                <th>Total Price</th>
-                                <th>Tax</th>
+                                <th>Price</th>
+                                <th>Total</th>
                               </tr>
                             </thead>
                           </table>
@@ -122,32 +121,25 @@
                       </div>
                         <hr>
                       @foreach($carts as $cart)
-                        <div class="row sale-list col-md-12 col-xs-12" style="display:block">
+                        <div class="row sale-list col-md-12 col-xs-12" style="display:block;text-align: center">
                           <input type="hidden" class="item_id" value="{{ $cart->id }}">
                           <div class="col-xs-1 col-md-1">
-                              <button class="btn btn-danger btn_remove_sale" data-item-id="{{ $cart->rowId }}" style="padding:5px 8px;"><i class="fa fa-remove"></i></button>
+                              <a href="" class="btn_remove_sale" data-item-id="{{ $cart->rowId }}" style="padding:5px 8px;"><i class="fa fa-remove"  style="color:rgb(165, 22, 22)"></i></a>
+                          </div>
+
+                         <div class="col-xs-12 col-md-3">
+                            <a href="#"> <span>{{ $cart->name }}</span></a>
+                         </div>
+                          <div class="col-xs-12 col-md-3">
+                            <a href="#" id="link_qty" rel="popover" data-title="Popover"> <span>{{ $cart->qty }}</span></a>
                           </div>
                           <div class="col-xs-12 col-md-3">
-                            <input type="text" class="form-control item_name"  placeholder="Item" value="{{ $cart->name }}" readonly>
+                            <a href="#"><span>${{ $cart->price }}</span></a>
                           </div>
-                          <div class="col-xs-12 col-md-2">
-                            <input type="number" class="form-control item_qty" min="0" value="{{ $cart->qty }}" placeholder="Qty" readonly>
-                          </div>
-                          <div class="col-xs-12 col-md-2">
-                            <input type="number"  class="form-control price" value="{{ $cart->price }}"  min="0" placeholder="Price" value="">
-                          </div>
-                          <div class="col-xs-12 col-md-2">   
-                          <div class="input-group">
-                            <span class="input-group-addon" style="padding-right: 5px;padding-left: 5px;">$</span>
-                            <input type="number" class="form-control subtotal" style="padding-right: 0px;padding-left: 0px;" min="0" step="0.01" placeholder="Sub Total" value="{{ $cart->qty * $cart->price }}" readonly>
-                          </div>
+                        <div class="input-group">
+                         <a href="#">${{ $cart->qty * $cart->price }}</a>
                         </div>
-                        <div class="col-xs-12 col-md-2"> 
-                          <div class="input-group">
-                            <span class="input-group-addon" style="padding-right: 5px;padding-left: 5px;">$</span>
-                            <input type="number" class="form-control tax_value" style="padding-right: 0px;padding-left: 0px;" min="0" step="0.01" placeholder="Tax" name="tax_value" >
-                          </div>
-                       </div>
+
                        </div>
                     @endforeach
                       </div>
@@ -155,14 +147,14 @@
                      <!-- Total & Tax input -->
                 <div class="row col-md-12 col-sm-10" style="margin-bottom:50px;margin-top:20px;" id="total_area">
                       <div class="input-group col-sm-5 col-xs-11">
-                        <span class="input-group-addon"><strong>Sub Total</strong></span>
-                        <input type="text" class="form-control col-md-5 col-xs-5 col-sm-5" max="999999.9999" id="total" value="{{$subTotal}}" placeholder="Total">
+                        <strong>Sub Total: </strong>
+                        <span id="sub_total" data-sub-total = "{{ $subTotal }}">${{$subTotal}}</span>
                       </div>
                 </div>
                 <!-- /. Total & Tax input -->
                 <!-- Payment -->
-                <div class="row col-md-12"  id="payment_area">
-                  <div class="col-xs-4" id="select_payment" style="display: none;">
+                <div class="row col-sm-12"  id="payment_area">
+                  <div class="col-xs-6 col-sm-6" id="select_payment" style="display: none;">
                     <label for="payment_type" class="lbl_payment">Payment Type</label>
                       <select name="payment_type" id="payment_type" class="form-control pull-left" onchange="selectPayment();" required style="margin-left:-12px;">
                           <option value="">Select Payment...</option>
@@ -171,7 +163,7 @@
                           <option value="Debit Card">Debit Card</option>
                       </select>
                   </div>
-                  <div class="col-xs-4 col-xs-offset-3">
+                  <div class="col-xs-4 col-sm-4 col-xs-offset-2">
                       <div class="checkbox pull-right" style="margin-top:20px;display: none" id="chk_area">
                         <label>
                           <input type="checkbox" id="paid_all"> Paid All
@@ -179,7 +171,7 @@
                       </div>
                   </div>
                   <!-- Amount Area -->
-                      <div class="col-md-12 col-xs-12" style="margin-left:-25px;margin-top:15px;">
+                      <div class="col-md-12 col-sm-12 col-xs-12" style="margin-left:-25px;margin-top:15px;">
                         <div class="col-md-4" id="trans_area" style="display: none;">
                           <label for="transCode" id="lbl_trans_code">Trans #</label>
                           <input type="number" class="form-control t-card" placeholder="Transaction Code" id="transCode">
@@ -198,11 +190,11 @@
                 <!-- /.box-body -->
                 <div class="box-footer">
                   <button id="btn_print" 
-                  class="btn btn-default pull-right btn_save_sale" 
-                  data-toggle="modal"
-                  data-target="#modal-print"
-                  onclick="onSaveSale();"
-                  disabled >Save Sale</button>
+                      class="btn btn-default pull-right btn_save_sale" 
+                      data-toggle="modal"
+                      data-target="#modal-print"
+                      onclick="onSaveSale();"
+                      disabled >Save Sale</button>
                 </div>
             </div>
             <!-- /.box -->
@@ -210,7 +202,7 @@
           </div>
           <!--/.col (left) -->
           <!-- right column -->
-          <div class="col-md-6">
+          <div class="col-md-8">
             <!-- Horizontal Form -->
             <div class="box box-info">
               <div class="box-header with-border">
@@ -218,35 +210,60 @@
               </div>
               <p id="stock_message" style="text-align:center;display:none">Message</p>
                 <div class="box-body">
-                        <table id="data_tbl3" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                    <th>Photo</th>
-                                    <th>Item</th>
-                                    <th>In Stock</th>
-                                    <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                            @foreach($items as $item)
-                                <tr>
-                                    <td><a href="#"><img src="uploads/product_images/{{ $item->item_image }}" alt="Item Image" height="30" width="30" class="img-circle img-bordered-xs"></a></td>
-                                    <td>{{ $item->item_name }}</td>
-                                    <td> @if($item->quantity > 5) <button class="btn-sm  btn btn-info">{{ $item->quantity }}</button> @elseif($item->quantity <= 5) <button class="btn-sm btn btn-danger">{{ $item->quantity }}</button> @endif</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm btn_add_sale" 
-                                            data-item-id="{{ $item->item_id }}"
-                                            data-item-name="{{ $item->item_name }}"
-                                            data-item-price="{{ $item->sell_price }}" 
-                                            data-item-taxable="{{ $item->taxable }}" 
-                                            >
-                                               Add
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach 
-                                </tbody>
-                              </table>
+                     <ul>
+                       @foreach($items as $item)
+                       <li style="list-style: none">
+                        <a href="#" data-item-id="{{ $item->item_id }}"
+                                    data-item-name="{{ $item->item_name }}"
+                                    data-item-price="{{ $item->sell_price }}"
+                                    class="link_add_item">
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="info-box" style="text-align: center;background: rgb(243, 247, 248);color: black;">
+                              <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
+                              <span class="info-box-icon" style="background: rgb(243, 247, 248)">
+                                <img src="uploads/product_images/{{ $item->item_image }}" alt="Item Image"
+                                  height="90" width="90" style="margin-top:-10px">
+                              </span>
+                          
+                              <div class="info-box-content">
+                                <span class="info-box-text">{{ $item->item_name }}</span>
+                                <span class="info-box-text">${{ $item->sell_price }}</span>
+                                <span class="info-box-number">{{ $item->quantity }}</span>
+                              </div>
+                              <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                          </div>
+                        </a>
+                        @if($item->quantity <= 0)
+                          <a href="#" data-item-id="{{ $item->item_id }}"
+                                    data-item-name="{{ $item->item_name }}"
+                                    data-item-price="{{ $item->sell_price }}"
+                                    class="link_add_item" readonly>
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="info-box" style="text-align: center;background: rgb(243, 247, 248);color: black;">
+                              <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
+                              <span class="info-box-icon" style="background: rgb(243, 247, 248)">
+                                <img src="uploads/product_images/{{ $item->item_image }}" alt="Item Image"
+                                  height="90" width="90" style="margin-top:-10px">
+                              </span>
+                          
+                              <div class="info-box-content">
+                                <span class="info-box-text">{{ $item->item_name }}</span>
+                                <span class="info-box-text">${{ $item->sell_price }}</span>
+                                <span class="info-box-number">{{ $item->quantity }}</span>
+                              </div>
+                              <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                          </div>
+                        </a>
+                        @else
+                        
+                        @endif
+                       </li>
+                       @endforeach
+                     </ul>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -363,5 +380,39 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<!-- ========================= Editable values for CREATE-SALE====================================-->
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Default Modal</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- =========================/. Editable values for CREATE-SALE====================================-->
 <!-- /. MODAL -->
+
+<!-- ========================= Content of POPOVER ======================= -->
+<div class="hidden">
+  <form id="popover_form">
+    <input type="text" name="value" id="value" class="form-control" placeholder="Some value here..."><br>
+    <button type="submit" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-ok"></span></button>
+    <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+  </form>
+</div>
+<!-- ========================= /. Content of POPOVER ======================= -->
 @stop

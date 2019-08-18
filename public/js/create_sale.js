@@ -6,7 +6,7 @@ $(document).ready(function () {
   
 
   // when button add clicked...
-  $('.btn_add_sale').click(function () {
+  $('.link_add_item').click(function () {
     // printJS('#sale_section', 'html');
     
     var itemID = $(this).data('item-id');
@@ -14,26 +14,25 @@ $(document).ready(function () {
     var itemPrice = $(this).data('item-price');
     var taxable = $(this).data('item-taxable');
 
+     $.ajax({
+       type: "POST",
+       url: "cart",
+       data: { 'custID': cid, 'itemID': itemID, 'itemName': itemName, 'itemPrice': itemPrice, 'itemQty': 1, 'tax': tax, '_token': $('input[name=_token]').val() },
+       success: function (response) {
+         console.log(response);
+         $('#stock_message').css({ 'display': 'block', 'text-align': 'center', 'color': 'darkred' });
+         $('#stock_message').html(response.stock_msg);
+         $('#test').load(' #test');
+         $('#total_area').load(' #total_area');
+         location.reload();
+         // $('#payment_area').load(' #payment_area');
+         // $('.tax_value').attr('readonly', response.readonly);
 
-    $.ajax({
-      type: "POST",
-      url: "cart",
-      data: { 'custID': cid, 'itemID': itemID, 'itemName': itemName, 'itemPrice': itemPrice, 'itemQty': 1, 'tax': tax, '_token': $('input[name=_token]').val() },
-      success: function (response) {
-        console.log(response);
-        $('#stock_message').css({ 'display': 'block', 'text-align': 'center', 'color': 'darkred' });
-        $('#stock_message').html(response.stock_msg);
-        $('#test').load(' #test');
-        $('#total_area').load(' #total_area');
-        location.reload();
-        // $('#payment_area').load(' #payment_area');
-        // $('.tax_value').attr('readonly', response.readonly);
-
-      },
-      error: function (error) {
-        console.log(error);
-      }
-    });
+       },
+       error: function (error) {
+         console.log(error);
+       }
+     });
   });
 /** =================================== /. click btn ADD to insert items in the CART ============================= */
 
@@ -171,7 +170,7 @@ function onSaveSale() {
   var recieved_amount = 0;
   var recieveable_amount = 0;
   if ($('#paid_all').is(':checked')) {
-    recieved_amount = $('input#total').val();
+    recieved_amount = $('span#sub_total').data('sub-total');
   } else {
     recieved_amount = $('input#recieved').val();
     recieveable_amount = $('input#payable').val();
@@ -182,26 +181,26 @@ function onSaveSale() {
   var transCode = $('#transCode').val();
   var tax = $('input.tax_value').val();
 
-    $.ajax({
-      type: "POST",
-      url: "sale",
-      dataType: "json",
-      // data: {'_token': $('input[name=_token]').val()},
-      data: {'custID': cid, 'payment': pntType, 'recieved': recieved_amount, 'recieveable': recieveable_amount, 'transCode': transCode, 'tax': tax, '_token': $('input[name=_token]').val() },
-      success: function (response) {
-        $('#inv_message').css('display', 'block');
-        $('#inv_message').attr('style', response.style);
-        $('#inv_message').html(response.sale_msg);
-        $('#inv_message').fadeOut(4000);
-        _invoiceID = response.invoice_id;
-        // $('#sale_section').load(' #sale_section');
-        setTimeout(function () { location.reload(); }, 5000);
+     $.ajax({
+       type: "POST",
+       url: "sale",
+       dataType: "json",
+       // data: {'_token': $('input[name=_token]').val()},
+       data: {'custID': cid, 'payment': pntType, 'recieved': recieved_amount, 'recieveable': recieveable_amount, 'transCode': transCode, 'tax': tax, '_token': $('input[name=_token]').val() },
+       success: function (response) {
+         $('#inv_message').css('display', 'block');
+         $('#inv_message').attr('style', response.style);
+         $('#inv_message').html(response.sale_msg);
+         $('#inv_message').fadeOut(4000);
+         _invoiceID = response.invoice_id;
+         // $('#sale_section').load(' #sale_section');
+         setTimeout(function () { location.reload(); }, 5000);
 
-      },
-      error: function (error) { 
-          console.log(error);
-       }
-    });
+       },
+       error: function (error) { 
+           console.log(error);
+        }
+     });
 
 }
 // To generate bill/invoice

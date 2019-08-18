@@ -39,8 +39,7 @@ class LoginController extends Controller
 
     protected function credentials(Request $request)
     {
-         $remember_me = $request->has('remember_me') ? true : false;
-            return ['username' => $request->username, 'password' => $request->password, 'status' =>1];
+        return ['username' => $request->username, 'password' => $request->password, 'status' =>1];
             
     }
 

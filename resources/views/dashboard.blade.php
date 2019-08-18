@@ -295,16 +295,10 @@
           <input type="hidden" name="input_comp_id">
           <div class="input-group  col-md-10 com-sm-10 col-xs-12 col-md-offset-1">
             <select name="company_user_count" class="form-control" autocomplete="off">
-              <option value="1" name="company_user_count">1 User</option>
-              <option value="2" name="company_user_count">2 Users</option>
-              <option value="3" name="company_user_count">3 Users</option>
-              <option value="4" name="company_user_count">4 Users</option>
-              <option value="5" name="company_user_count">5 Users</option>
-              <option value="6" name="company_user_count">6 Users</option>
-              <option value="7" name="company_user_count">7 Users</option>
-              <option value="8" name="company_user_count">8 Users</option>
-              <option value="9" name="company_user_count">9 Users</option>
-              <option value="10" name="company_user_count">10 Users</option>
+              @for($a = 1; $a <= 10; $a++) 
+                <option value="{{ $a }}" name="company_user_count">{{ $a }} User(s)
+                </option>
+                @endfor
             </select>
           </div>
         </div>
