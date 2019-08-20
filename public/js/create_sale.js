@@ -16,7 +16,7 @@ $(document).ready(function () {
 
      $.ajax({
        type: "POST",
-       url: "cart",
+       url: "/cart",
        data: { 'custID': cid, 'itemID': itemID, 'itemName': itemName, 'itemPrice': itemPrice, 'itemQty': 1, 'tax': tax, '_token': $('input[name=_token]').val() },
        success: function (response) {
          console.log(response);
@@ -52,7 +52,7 @@ $(document).ready(function () {
       // onCreateInvoice(custID);
 
     }
-  })
+  });
   // To remove an item from the cart
   $('.btn_remove_sale').click(function () {
     var itemId = $(this).data('item-id');
@@ -183,7 +183,7 @@ function onSaveSale() {
 
      $.ajax({
        type: "POST",
-       url: "sale",
+       url: "/sale",
        dataType: "json",
        // data: {'_token': $('input[name=_token]').val()},
        data: {'custID': cid, 'payment': pntType, 'recieved': recieved_amount, 'recieveable': recieveable_amount, 'transCode': transCode, 'tax': tax, '_token': $('input[name=_token]').val() },

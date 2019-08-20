@@ -54,9 +54,10 @@ Route::post('manageUser/userPhoto', 'UserManageController@changePhoto');
 # End of User-Management
 
 #Sales-management
-Route::post('sale', 'SaleController@store');
-Route::get('sale', 'SaleController@index')->name('sale');
-Route::get('deleteSale', 'SaleController@destroy');
+Route::post('/sale', 'SaleController@store');
+Route::get('/sale', 'SaleController@index')->name('sale');
+Route::get('/deleteSale', 'SaleController@destroy');
+Route::post('/sale/searchItem', 'SaleController@SearchItem')->name('sale.search');
 # /.Sales-management
 
 #Customers

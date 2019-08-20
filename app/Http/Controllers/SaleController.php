@@ -56,9 +56,32 @@ class SaleController extends Controller
             
     }
 
-    public function invoice()
+    public function SearchItem(Request $request)
     {
-        
+        #cart
+        $carts = Cart::content();
+        $total = Cart::total(2, '.', '');
+        $subTotal = Cart::subtotal(2, '.', '');
+        $tax = Cart::tax();
+        # /.cart
+        $searchInput = $request->search;
+        $categories = DB::table('categories')->get();
+        $items = DB::table('categories')
+            ->join('items', 'categories.ctg_id', '=', 'items.ctg_id')
+            ->select('categories.ctg_name', 'items.*')
+            ->where('items.comp_id', Auth::user()->comp_id)
+            ->where('ctg_name', 'LIKE', '%'.$searchInput.'%')
+            ->orWhere('item_name', 'LIKE', '%'.$searchInput.'%')
+            ->get();
+        $customers = Customer::all()->where('comp_id', Auth::user()->comp_id);
+        $sales = DB::table('companies')
+            ->join('items', 'companies.company_id', '=', 'items.comp_id')
+            ->join('sales', 'items.item_id', '=', 'sales.item_id')
+            ->join('invoices', 'invoices.inv_id', '=', 'sales.inv_id')
+            ->select('sales.*', 'items.item_name', 'companies.*', 'invoices.*')
+            ->where('items.comp_id', Auth::user()->comp_id)
+            ->get();
+        return view('create_sale', compact(['items', 'customers', 'sales', 'carts', 'total', 'subTotal', 'tax']));
     }
 
     /**

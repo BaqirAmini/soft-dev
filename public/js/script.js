@@ -21,13 +21,14 @@
      $('#modal-default').trigger('focus');
 
      /* ================================ POPUP ================================== */
-   $('[data-toggle="popover"]').popover();   
    $('#link_qty').popover({
-     content: $('#popover_form'),
+     trigger: 'click',
+     title: 'Test',
      container: 'body',
      placement: 'top',
-      trigger: 'focus',
-      html: true,
+     content: function () { 
+       return $('#popover_form');
+      },
    });
      /* ================================ /. POPUP ================================== */
      // invoice-detail

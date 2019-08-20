@@ -131,7 +131,7 @@
                             <a href="#"> <span>{{ $cart->name }}</span></a>
                          </div>
                           <div class="col-xs-12 col-md-3">
-                            <a href="#" id="link_qty" rel="popover" data-title="Popover"> <span>{{ $cart->qty }}</span></a>
+                            <a href="#" id="link_qty" data-html="true" data-toggle="popover" > <span>{{ $cart->qty }}</span></a>
                           </div>
                           <div class="col-xs-12 col-md-3">
                             <a href="#"><span>${{ $cart->price }}</span></a>
@@ -206,7 +206,25 @@
             <!-- Horizontal Form -->
             <div class="box box-info">
               <div class="box-header with-border">
-                <h3 class="box-title">Items</h3>
+                <div class="content-header">
+                    <div class="box-title">
+                        <h3 class="box-title">Items</h3>
+                    </div>
+                </div>
+                  {{--=============== Search items ==================--}}
+                  <form action="{{ route('sale.search') }}" enctype="multipart/form-data" method="post" class="pull-right col-sm-12 col-md-6 col-lg-6">
+                      {{ csrf_field() }}
+                      <div class="input-group  col-lg-offset-2">
+                          <input type="text" name="search" placeholder="Search items to sell"
+                                 class="form-control">
+                          <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default">
+                                <span class=" glyphicon glyphicon-search"></span>
+                            </button>
+                          </span>
+                      </div>
+                  </form>
+                  {{--=============== /.Search items ==================--}}
               </div>
               <p id="stock_message" style="text-align:center;display:none">Message</p>
                 <div class="box-body">
@@ -221,7 +239,7 @@
                             <div class="info-box" style="text-align: center;background: rgb(243, 247, 248);color: black;">
                               <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
                               <span class="info-box-icon" style="background: rgb(243, 247, 248)">
-                                <img src="uploads/product_images/{{ $item->item_image }}" alt="Item Image"
+                                <img src="/uploads/product_images/{{ $item->item_image }}" alt="Item Image"
                                   height="90" width="90" style="margin-top:-10px">
                               </span>
                           
@@ -407,12 +425,14 @@
 <!-- /. MODAL -->
 
 <!-- ========================= Content of POPOVER ======================= -->
-<div class="hidden">
-  <form id="popover_form">
-    <input type="text" name="value" id="value" class="form-control" placeholder="Some value here..."><br>
-    <button type="submit" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-ok"></span></button>
-    <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove"></span></button>
-  </form>
+<div class="hide">
+  <div class="form-group ">
+    <form id="popover_form">
+      <input type="text" name="value" id="value" class="form-control" placeholder="Some value here..."><br>
+        <button type="submit" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-ok"></span></button>
+        <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+    </form>
+  </div>
 </div>
 <!-- ========================= /. Content of POPOVER ======================= -->
 @stop
