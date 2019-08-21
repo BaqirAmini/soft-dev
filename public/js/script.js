@@ -24,7 +24,7 @@
    $('#link_qty').popover({
      trigger: 'click',
      title: 'Test',
-     container: 'body',
+     container: '.container',
      placement: 'top',
      content: function () { 
        return $('#popover_form');

@@ -1,13 +1,17 @@
 
 @extends('layouts.master')
 @section('content')
+    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+        {{ Breadcrumbs::render('users') }}
+    </div>
+
 <div class="modal fade" id="modal-user">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"><b>User Management</b></i></h4>
+        <h4 class="modal-title"><b>User Management</b></h4>
       </div>
       <!-- @csrf -->
       <div class="modal-body">

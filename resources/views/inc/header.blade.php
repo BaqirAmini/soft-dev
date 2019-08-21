@@ -15,12 +15,10 @@
           <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-    
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
-            
                 <a href="{{ route('profile') }}">
                   <img src="/uploads/user_photos/{{ Auth::user()->photo }}" class="user-image img-bordered" alt="User Image" style="width: 30px;height:30px;margin-top:-6px;">
                   <span class="hidden-xs">@if(Auth::check()) {{ Auth::user()->name }} {{ Auth::user()->lastname }} @endif</span>

@@ -1,5 +1,32 @@
 @extends('layouts.master')
 @section('content')
+  {{--================ Breadcrumbs ==================--}}
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    @if(Request::is('analytics/today'))
+      {{ Breadcrumbs::render('today') }}
+    @elseif(Request::is('analytics/yesterday'))
+      {{ Breadcrumbs::render('yesterday') }}
+    @elseif(Request::is('analytics/last7days'))
+      {{ Breadcrumbs::render('last7days') }}
+    @elseif(Request::is('analytics/thisWeek'))
+      {{ Breadcrumbs::render('thisWeek') }}
+    @elseif(Request::is('analytics/lastWeek'))
+      {{ Breadcrumbs::render('lastWeek') }}
+    @elseif(Request::is('analytics/last30days'))
+      {{ Breadcrumbs::render('last30days') }}
+    @elseif(Request::is('analytics/thisMonth'))
+      {{ Breadcrumbs::render('thisMonth') }}
+    @elseif(Request::is('analytics/lastMonth'))
+      {{ Breadcrumbs::render('lastMonth') }}
+    @elseif(Request::is('analytics/thisYear'))
+      {{ Breadcrumbs::render('thisYear') }}
+    @elseif(Request::is('analytics/lastYear'))
+      {{ Breadcrumbs::render('lastYear') }}
+    @elseif(Request::is('analytics/allTime'))
+      {{ Breadcrumbs::render('allTime') }}
+    @endif
+  </div>
+
   <div class="content">
     <div class="row">
         <div class="col-md-12">

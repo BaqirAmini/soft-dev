@@ -147,7 +147,7 @@
                   </ul>
                 </li>
                 <li>
-                  <a href="{{ url('reports/graph') }}"><i class="fa fa-circle-o"></i> Charts</a></li>
+                  <a href="{{ route('graph') }}"><i class="fa fa-circle-o"></i> Charts</a></li>
               </ul>
             </li>
            @endif

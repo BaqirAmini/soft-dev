@@ -23,7 +23,8 @@ $(document).ready(function () {
          $('#stock_message').css({ 'display': 'block', 'text-align': 'center', 'color': 'darkred' });
          $('#stock_message').html(response.stock_msg);
          $('#test').load(' #test');
-         $('#total_area').load(' #total_area');
+         /*$('#total_area').load(' #total_area');
+         $('#box-items-for-sale').load(' #total_area');*/
          location.reload();
          // $('#payment_area').load(' #payment_area');
          // $('.tax_value').attr('readonly', response.readonly);

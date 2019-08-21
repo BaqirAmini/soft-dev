@@ -1,7 +1,11 @@
 
 @extends('layouts.master')
 @section('content')
-<div class="content">
+<div class="content" style="margin-top:-12px;">
+    {{--================ Breadcrumbs ==================--}}
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-left: -14px">
+        {{ Breadcrumbs::render('inventory') }}
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="box">

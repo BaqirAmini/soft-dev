@@ -1,6 +1,10 @@
 
 @extends('layouts.master')
 @section('content')
+  {{--================ Breadcrumbs ==================--}}
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    {{ Breadcrumbs::render('new-sale') }}
+  </div>
 <!-- new-customer modal -->
 <div class="modal fade" id="modal-customer">
   <div class="modal-dialog">
@@ -109,7 +113,7 @@
                           <table class="col-md-12 table-responsive tbl-sales-label">
                             <thead>
                               <tr>
-                                <th>Delete</th>
+                                <th></th>
                                 <th>Item</th>
                                 <th>Qty</th>
                                 <th>Price</th>
@@ -121,7 +125,7 @@
                       </div>
                         <hr>
                       @foreach($carts as $cart)
-                        <div class="row sale-list col-md-12 col-xs-12" style="display:block;text-align: center">
+                        <div class="sale-list col-md-12 col-sm-12 col-xs-12" style="display:block;text-align: center">
                           <input type="hidden" class="item_id" value="{{ $cart->id }}">
                           <div class="col-xs-1 col-md-1">
                               <a href="" class="btn_remove_sale" data-item-id="{{ $cart->rowId }}" style="padding:5px 8px;"><i class="fa fa-remove"  style="color:rgb(165, 22, 22)"></i></a>
@@ -204,7 +208,7 @@
           <!-- right column -->
           <div class="col-md-8">
             <!-- Horizontal Form -->
-            <div class="box box-info">
+            <div class="box box-info" id="box-items-for-sale">
               <div class="box-header with-border">
                 <div class="content-header">
                     <div class="box-title">
@@ -212,7 +216,7 @@
                     </div>
                 </div>
                   {{--=============== Search items ==================--}}
-                  <form action="{{ route('sale.search') }}" enctype="multipart/form-data" method="post" class="pull-right col-sm-12 col-md-6 col-lg-6">
+                  <form action="{{ route('sale.search') }}" enctype="multipart/form-data" method="post" class="pull-right col-sm-12 col-md-6 col-lg-6" id="search_item_form">
                       {{ csrf_field() }}
                       <div class="input-group  col-lg-offset-2">
                           <input type="text" name="search" placeholder="Search items to sell"
@@ -226,25 +230,24 @@
                   </form>
                   {{--=============== /.Search items ==================--}}
               </div>
-              <p id="stock_message" style="text-align:center;display:none">Message</p>
+              <p id="stock_message" style="text-align:center;display:none"></p>
                 <div class="box-body">
-                     <ul>
+                     <ul style="padding-left:-20px !important;">
                        @foreach($items as $item)
                        <li style="list-style: none">
                         <a href="#" data-item-id="{{ $item->item_id }}"
                                     data-item-name="{{ $item->item_name }}"
                                     data-item-price="{{ $item->sell_price }}"
                                     class="link_add_item">
-                          <div class="col-md-4 col-sm-6 col-xs-12">
-                            <div class="info-box" style="text-align: center;background: rgb(243, 247, 248);color: black;">
+                          <div class="col-md-3 col-sm-6 col-xs-12" style="margin:-1px -5px;">
+                            <div class="info-box" style="background: rgb(243, 247, 248);color: black;">
                               <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
                               <span class="info-box-icon" style="background: rgb(243, 247, 248)">
-                                <img src="/uploads/product_images/{{ $item->item_image }}" alt="Item Image"
-                                  height="90" width="90" style="margin-top:-10px">
+                                <img src="{{ url('/uploads/product_images/'.$item->item_image) }}" alt="Item Image"
+                                  height="60" width="60" style="margin-top:-10px">
                               </span>
-                          
-                              <div class="info-box-content">
-                                <span class="info-box-text">{{ $item->item_name }}</span>
+                              <div class="info-box-content" style="margin-left:-10px;">
+                                <span class="info-box-text" style="font-size:12px;">{{ $item->item_name }}</span>
                                 <span class="info-box-text">${{ $item->sell_price }}</span>
                                 <span class="info-box-number">{{ $item->quantity }}</span>
                               </div>
@@ -376,7 +379,7 @@
 
 <!-- MODAL -->
 <div class="modal fade" id="modal-print">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -388,9 +391,9 @@
           <input type="hidden" name="invoice_id_for_print">
         <p>Do you want to print an invoice?</p>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer col-md-offset-3">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary btn_print_sale"><i class="fa fa-print"></i> Print</button>
+        <button type="button" class="btn btn-primary btn_print_sale pull-left"><i class="fa fa-print"></i> Print</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -425,14 +428,14 @@
 <!-- /. MODAL -->
 
 <!-- ========================= Content of POPOVER ======================= -->
-<div class="hide">
-  <div class="form-group ">
-    <form id="popover_form">
-      <input type="text" name="value" id="value" class="form-control" placeholder="Some value here..."><br>
+  <div class="hide">
+    <div class="form-group ">
+      <form id="popover_form">
+        <input type="text" name="value" id="value" class="form-control" placeholder="Some value here..."><br>
         <button type="submit" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-ok"></span></button>
         <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove"></span></button>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 <!-- ========================= /. Content of POPOVER ======================= -->
 @stop

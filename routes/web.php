@@ -89,7 +89,7 @@ Route::get('invoice/print', 'InvoiceController@onPrint');
 #Reports
 Route::get('analytics/{time?}', 'ReportController@index')->name('report');
 // ======================= CHARTS for sales ================= 
-Route::get('reports/graph', 'ReportController@getThisMonth')->name('this_month');
+Route::get('/reports/graph', 'ReportController@getThisMonth')->name('graph');
 #Reports
 // /. =========================/. CHARTS for sales ============================
 

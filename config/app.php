@@ -177,7 +177,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+//        Charts/Graph
         ConsoleTVs\Charts\ChartsServiceProvider::class,
+//        Excel-data export/import
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         
 
     ],
@@ -230,7 +233,10 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         // Shopping-cart
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+//        Charts/Graph
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
+//        Excel-data import/export
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     
         

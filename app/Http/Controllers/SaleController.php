@@ -66,12 +66,11 @@ class SaleController extends Controller
         # /.cart
         $searchInput = $request->search;
         $categories = DB::table('categories')->get();
-        $items = DB::table('categories')
-            ->join('items', 'categories.ctg_id', '=', 'items.ctg_id')
-            ->select('categories.ctg_name', 'items.*')
+        $items = DB::table('companies')
+            ->join('items', 'companies.company_id', '=', 'items.comp_id')
+            ->select('items.*')
             ->where('items.comp_id', Auth::user()->comp_id)
-            ->where('ctg_name', 'LIKE', '%'.$searchInput.'%')
-            ->orWhere('item_name', 'LIKE', '%'.$searchInput.'%')
+            ->where('item_name', 'LIKE', '%'.$searchInput.'%')
             ->get();
         $customers = Customer::all()->where('comp_id', Auth::user()->comp_id);
         $sales = DB::table('companies')

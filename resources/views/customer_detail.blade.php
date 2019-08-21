@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('content')
-
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        {{ Breadcrumbs::render('customer_detail') }}
+    </div>
 <section class="content" >
 <div class="row">
     <div class="col-md-12" >
@@ -12,6 +14,7 @@
             <!-- box-header 1 -->
             <div class="box-header">
                 <div class="content-header">
+                    <h3 class="box-title">Customer Detail</h3>
                     <button type="button" class="btn btn-primary pull-right" id="btn_enable_cust_edit"><i class="fa fa-pencil"></i></button>  
                 </div>
             </div>

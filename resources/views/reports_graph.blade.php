@@ -8,6 +8,9 @@
 </head>
   <link rel="stylesheet" href="{{ asset('bower_components/morris.js/morris.css') }}">
 <section class="content">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-top: -55px; margin-left: -15px">
+            {{ Breadcrumbs::render('chart') }}
+        </div>
   <div class="row">
      <div class="col-md-12">
         <div class="box box-primary">

@@ -1,7 +1,9 @@
 
-</style>
 @extends('layouts.master')
 @section('content')
+ <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+       {{ Breadcrumbs::render('comp-setting') }}
+ </div>
   <div class="content">      
     <p id="comp-setting-msg" style="text-align: center;display: none;">Message</p>
         <!-- Horizontal Form -->
@@ -85,7 +87,8 @@
                     &nbsp;
                   </div>
                 </div>
-              </div>
+
+
               <!-- /.box-body -->
               <div class="box-footer">
                 <a href="{{ route('dashboard') }}" class="btn btn-default">Cancel</a>
@@ -93,7 +96,8 @@
               </div>
               <!-- /.box-footer -->
             </form>
-          @endforeach
-      
+          </div>
+        </div>
   </div>
+@endforeach
 @stop
