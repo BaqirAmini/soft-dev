@@ -6,6 +6,18 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-left: -14px">
         {{ Breadcrumbs::render('inventory') }}
     </div>
+    @if(count($errors) > 0)
+     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        <ul style="color:darkred">
+           @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+           @endforeach
+        </ul>
+     @if(Session('success'))
+         <strong>{{ Session('success') }}</strong>
+     @endif
+    </div>
+    @endif
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -14,6 +26,20 @@
                     <section class="content-header">
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modal-item">Add Item</button>
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modal-category">Add Category</button>
+                {{--   Dropdown for Excel   --}}
+                        <div class="dropdown pull-right">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">More
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header">Excel Sheets</li>
+                                <li><a href="{{ route('item.export') }}">Export Excel</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#modal-excel">Import Excel</a></li>
+                                <li class="divider"></li>
+                                {{--<li class="dropdown-header">Dropdown header 2</li>
+                                <li><a href="#">About Us</a></li>--}}
+                            </ul>
+                        </div>
+                {{--   /. Dropdown for Excel   --}}
                     </section>
                 </div>
                <div class="box-body">
@@ -90,25 +116,25 @@
           <h4 class="modal-title">Add Categories</h4>
         </div>
         <div class="modal-body">
-            
+
             <div class="register-box-body">
                 <ul id="ctg_message" style="display:none">
                 </ul>
                 <form class="form-horizontal" id="new_ctg_form">
                   @csrf
-                    <div class="form-group">                       
+                    <div class="form-group">
                             <label for="category" class="col-sm-2 control-label">Category Name <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                                 <input id="ctg_name" type="text" class="form-control" name="ctg_name" placeholder="Category Name">
-                            </div>  
+                            </div>
                     </div>
-                    <div class="form-group">                        
+                    <div class="form-group">
                             <label for="description" class="col-sm-2 control-label">Description</label>
                             <div class="col-sm-9">
                                 <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description (Optional)">
-                            </div>                       
+                            </div>
                     </div>
-            
+
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">cancel</button>
                       <button type="submit" id="btn_add_ctg" class="btn btn-primary pull-left">Add Now</button>
@@ -170,7 +196,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                 </div>
                     <div class="form-group">
                             <label for="quantity" class="col-sm-2 control-label">Quantity <span class="asterisk">*</span></label>
@@ -178,11 +204,11 @@
                                 <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">
                            </div>
                     </div>
-                    <div class="form-group">                       
+                    <div class="form-group">
                             <label for="barcode" class="col-sm-2 control-label">Barcode</label>
                             <div class="col-sm-9">
                                 <input id="barcode" type="number" class="form-control" name="barcode_number" placeholder="Barcode Number">
-                            </div>                     
+                            </div>
                     </div>
                     <div class="form-group">
                             <label for="purchase-price" class="col-sm-2 control-label">Purchase Price <span class="asterisk">*</span></label>
@@ -209,7 +235,7 @@
                     <button type="submit" id="btn_add_item" class="btn btn-primary pull-left">Add Now</button>
                 </div>
             </div>
-               
+
             </div>
             </form>
         </div>
@@ -234,13 +260,13 @@
                 <form class="form-horizontal"  enctype="multipart/form-data" id="edit_item_form_data">
                     <input type="hidden" name="item_id">
                   @csrf
-                    <div class="form-group has-feedback">                       
+                    <div class="form-group has-feedback">
                             <label for="product" class="col-sm-2 control-label">Item <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="item_name" placeholder="Item Name">
-                            </div>           
+                            </div>
                     </div>
-                    <div class="form-group">                      
+                    <div class="form-group">
                             <label for="desc" class="col-sm-2 control-label">Desc</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="item_desc" placeholder="Description">
@@ -281,10 +307,10 @@
                      </div>
                 </div>
                 <!-- tax -->
-                    
+
             </div>
             </div>
-    
+
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                       <button type="submit" class="btn btn-primary pull-left">Change</button>
@@ -320,6 +346,42 @@
     </div>
       <!-- /.modal -->
     <!-- /.delete-item -->
+<div class="modal fade" id="modal-excel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Import Excel Sheets</h4>
+            </div>
+            <div class="modal-body">
+                <ul id="msg_area" style="display:none">
+                </ul>
+                <div class="register-box-body">
+                    <form action="{{ route('item.import') }}" method="post" enctype="multipart/form-data" class="form-horizontal" id="form-import-excel">
+                        @csrf
+                        <div class="input-group input-group-md">
+                            <input type="text" class="form-control" disabled="disabled">
+                            <div class="input-group-addon">
+                                <label class="excel_upload">
+                                    <span>Choose</span>
+                                    <input type="file" id="excel_file" class="upload logo-file-input form-control" name="excel_file">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary pull-left">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- end of modal-body div -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
   @stop
-  
-   
+

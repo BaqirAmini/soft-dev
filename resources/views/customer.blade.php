@@ -11,6 +11,20 @@
                 @can('isSystemAdmin')
                   <section class="content-header">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#modal-customer">Add Customer</button>
+                      {{--   Dropdown for Excel   --}}
+                      <div class="dropdown pull-right">
+                          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">More
+                              <span class="caret"></span></button>
+                          <ul class="dropdown-menu">
+                              <li class="dropdown-header">Excel Sheets</li>
+                              <li><a href="{{ route('customer.export') }}">Export Excel</a></li>
+                              <li><a href="#" data-toggle="modal" data-target="#modal-excel">Import Excel</a></li>
+                              <li class="divider"></li>
+                             {{-- <li class="dropdown-header">Dropdown header 2</li>
+                                <li><a href="#">About Us</a></li>--}}
+                          </ul>
+                      </div>
+                      {{--   /. Dropdown for Excel   --}}
                   </section>
                 @endcan
             </div>
@@ -184,7 +198,7 @@
                             </div>
                         </div>
                     </form>
-                
+
                       <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                           <button type="button" id="btn_add_customer" class="btn btn-primary pull-left">Add Now</button>
@@ -210,7 +224,7 @@
               </div>
               <div class="modal-body">
                 <!-- profile-tabs -->
-                
+
                         <div class="nav-tabs-custom">
                           <ul class="nav nav-tabs">
                             <li class="active"><a href="#activity" data-toggle="tab">About</a></li>
@@ -237,7 +251,7 @@
                               </div>
                               <!-- /.post -->
                             </div>
-                           
+
                             <div class="tab-pane" id="settings">
                               <form class="form-horizontal" id="customer-profile-form">
                                 <input type="hidden" name="cust_id">
@@ -295,7 +309,7 @@
                                             <span class="asterisk">*</span>
                                           </div>
                                    </div>
-                               
+
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-default pull-left" id="btn-edit-customer" data-dismiss="modal">Cancel</button>
                                   <button type="submit" class="btn btn-primary pull-left" id="btn-edit-customer">Change</button>
@@ -313,12 +327,48 @@
                     <!-- /.row -->
                 <!-- /. profile-tabs -->
               </div>
-              
+
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
         </div>
-  
       <!-- /. customer-profile -->
+
+    <div class="modal fade" id="modal-excel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Import Excel Sheets</h4>
+                </div>
+                <div class="modal-body">
+                    <ul id="msg_area" style="display:none">
+                    </ul>
+                    <div class="register-box-body">
+                        <form action="{{ route('item.import') }}" method="post" class="form-horizontal" id="form-import-excel">
+                            @csrf
+                            <div class="input-group input-group-md">
+                                <input type="text" class="form-control" disabled="disabled">
+                                <div class="input-group-addon">
+                                    <label class="excel_upload">
+                                        <span>Choose</span>
+                                        <input type="file" id="excel_file" class="upload logo-file-input form-control" name="excel_file">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary pull-left">Upload</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- end of modal-body div -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <!-- /. Modal AREA -->
 @stop

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\Payment;
 use Auth;
+use Excel;
 use Illuminate\Support\Facades\Gate;
 use Validator;
 use function GuzzleHttp\json_encode;
@@ -31,7 +34,7 @@ class CustomerController extends Controller
             abort(403, 'This action is unauthorized.');
         }
 
-       
+
     }
 
     /**
@@ -61,7 +64,7 @@ class CustomerController extends Controller
             'cEmail' => 'nullable|string|email',
             'cState' => 'required|string|max:64',
             'cAddr' => 'required|string|max:256'
-        ]); 
+        ]);
         if ($validation->passes()) {
 
             $customer = new Customer();
@@ -79,7 +82,7 @@ class CustomerController extends Controller
                 'result' => 'success',
                 'style' => 'color:grey'
             ]);
-            
+
         } else {
             return response()->json([
                 'message' => $validation->errors()->all(),
@@ -87,8 +90,8 @@ class CustomerController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-        
-       
+
+
     }
     # Show balance of a specific customer
     public function onPurchaseHistory($id = null)
@@ -139,10 +142,10 @@ class CustomerController extends Controller
                 'message' => $v->errors()->all()
             ]);
         }
-        
-        
-        
-        
+
+
+
+
     }
     # ================================/. Make a payment ===================================
     /**
@@ -174,7 +177,7 @@ class CustomerController extends Controller
             'cust_state' => 'required|string|min:4|max:64',
             'cust_address' => 'required|string|min:4|max:64'
         ]);
-       
+
         if ($v->passes()) {
             $editCustomer = Customer::findOrfail($request->cust_id);
             $editCustomer->business_name = $request->business_name;
@@ -196,9 +199,9 @@ class CustomerController extends Controller
                 'style' => 'color:red'
             ]);
       }
-      
-          
-            
+
+
+
     }
 
     /**
@@ -232,7 +235,74 @@ class CustomerController extends Controller
         } else {
             abort(403, 'This action is unauthorized');
         }
-        
-        
+
+
     }
+
+    /*======================= Import/Export Excel =====================*/
+    public function importExcel(Request $request) {
+        /*$request->validate([
+           'excel_file' => 'required|mimes:xlsx, xls'
+        ]);*/
+        if ($request->hasFile('excel_file')) {
+            $path = $request->file('excel_file')->getRealPath();
+            $data = Excel::load($path)->get();
+            foreach ($data->toArray() as $key => $value) {
+                foreach ($value as $row) {
+                    $insert_data[] = array(
+                        'comp_id' => $row[Auth::user()->comp_id],
+                        'ctg_id' => $row['ctg'],
+                        'sup_id' => $row['supplier'],
+                        'item_name' => $row['item_name'],
+                        'item_desc' => $row['item_desc'],
+                        'item_image' => $row['item_image'],
+                        'puchase_price' => $row['puchase_price'],
+                        'sell_price' => $row['sell_price'],
+                        'quantity' => $row['qty'],
+                        'barcode_number' => $row['barcode'],
+                        'discount' => $row['discount'],
+                        'taxable' => $row['taxable'],
+                    );
+                }
+            }
+            if (!empty($insert_data)) {
+                DB::table('items')->insert($insert_data);
+                return back()->with('success', 'Excel data imported successfully!');
+            }
+
+        }
+    }
+
+//    Export excel
+    public function exportExcel() {
+        $c = '';
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isCashier')) {
+            $compId = Auth::user()->comp_id;
+            $c = Company::where('company_id', $compId)->get(['comp_name']);
+            $customers = Customer::where('comp_id', $compId)->get();
+            $customers_array[] = array('Business Name', 'First Name', 'Last Name', 'Phone', 'Email', 'State/Province', 'Address', 'Reg. Date');
+            foreach ($customers as $customer) {
+                $customers_array[] = array(
+                    'Business Name' => $customer->business_name,
+                    'First Name' => $customer->cust_name,
+                    'Last Name' => $customer->cust_lastname,
+                    'Phone' => $customer->cust_phone,
+                    'Email' => $customer->cust_email,
+                    'State/Province' => $customer->cust_state,
+                    'Address' => $customer->cust_addr,
+                    'Reg. Date' => carbon::parse($customer->created_at)->format('d-M-Y')
+                );
+            }
+            Excel::create('Customer', function ($excel) use ($customers_array) {
+                $excel->setTitle('Customers');
+                $excel->sheet('Customers', function ($sheet) use ($customers_array) {
+                    $sheet->fromArray($customers_array, null, 'A1', false, false);
+                });
+            })->download('xlsx');
+
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
+    }
+    /* ============================= Import/Export Excel ========================*/
 }

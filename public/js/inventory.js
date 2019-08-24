@@ -1,6 +1,6 @@
-$(document).ready(function () { 
+$(document).ready(function () {
   // Add new item
-    $('#item_form_data').on('submit', function (e) { 
+    $('#item_form_data').on('submit', function (e) {
         e.preventDefault();
         var itemData = new FormData(this);
         $.ajax({
@@ -21,22 +21,22 @@ $(document).ready(function () {
                 $('#item_message').css({'display':'block'});
                 $('#item_message').attr('style', response.style);
                 $('#item_message').html('<li>'+response.item_msg+'</li>');
-                
+
              },
-             error: function (error) { 
+             error: function (error) {
                  console.log(error);
               }
         });
      });
      // Deleting items row
-$('#Item_data_table').on('click', '.btn_delete_product', function () { 
+$('#Item_data_table').on('click', '.btn_delete_product', function () {
         var itemID = $(this).data('product-id');
         $('input[name=item_id]').val(itemID);
     });
  });
 
  // Editing items
- $('#Item_data_table').on('click', '.btn_edit_item', function () { 
+ $('#Item_data_table').on('click', '.btn_edit_item', function () {
     var itemId = $(this).data('item-id');
     var itemName = $(this).data('item-name');
     var itemDesc = $(this).data('item-desc');
@@ -44,18 +44,18 @@ $('#Item_data_table').on('click', '.btn_delete_product', function () {
     var itemSell = $(this).data('item-sell');
     var itemQty = $(this).data('item-qty');
     var barcode = $(this).data('item-barcode');
-    $('#edit_item_form_data input[name=item_id').val(itemId);
-    $('#edit_item_form_data input[name=item_name').val(itemName);
-    $('#edit_item_form_data input[name=item_desc').val(itemDesc);
-    $('#edit_item_form_data input[name=quantity').val(itemQty);
-    $('#edit_item_form_data input[name=barcode_number').val(barcode);
-    $('#edit_item_form_data input[name=purchase_price').val(itemPurchase);
-    $('#edit_item_form_data input[name=sell_price').val(itemSell);
-    
+    $('#edit_item_form_data input[name=item_id]').val(itemId);
+    $('#edit_item_form_data input[name=item_name]').val(itemName);
+    $('#edit_item_form_data input[name=item_desc]').val(itemDesc);
+    $('#edit_item_form_data input[name=quantity]').val(itemQty);
+    $('#edit_item_form_data input[name=barcode_number]').val(barcode);
+    $('#edit_item_form_data input[name=purchase_price]').val(itemPurchase);
+    $('#edit_item_form_data input[name=sell_price]').val(itemSell);
+
   });
 
-  // Now update items 
-  $('#edit_item_form_data').on('submit', function (e) { 
+  // Now update items
+  $('#edit_item_form_data').on('submit', function (e) {
     e.preventDefault();
     var editData = $(this).serialize();
     $.ajax({
@@ -74,7 +74,7 @@ $('#Item_data_table').on('click', '.btn_delete_product', function () {
             $("#item_edit_message").html('<li>' + response.edit_msg + '</li>');
             $("#item_edit_message").attr('style', response.style);
         },
-        error: function (error) { 
+        error: function (error) {
             console.log(error);
          }
     });
@@ -93,7 +93,7 @@ $('#Item_data_table').on('click', '.btn_delete_product', function () {
              $('#modal-delete-item').modal('hide');
              $('#Item_data_table').load(' #Item_data_table');
          },
-         error: function (error) { 
+         error: function (error) {
              console.log(error);
           }
      });

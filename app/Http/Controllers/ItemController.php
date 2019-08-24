@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Item;
+use Excel;
 use Validator;
 
 class ItemController extends Controller
@@ -35,9 +37,79 @@ class ItemController extends Controller
         } else {
             abort(403, 'This action is unauthorized.');
         }
-        
-        
     }
+
+/*======================= Import/Export Excel =====================*/
+    public function importExcel(Request $request) {
+        /*$request->validate([
+           'excel_file' => 'required|mimes:xlsx, xls'
+        ]);*/
+            if ($request->hasFile('excel_file')) {
+                $path = $request->file('excel_file')->getRealPath();
+                $data = Excel::load($path)->get();
+                foreach ($data->toArray() as $key => $value) {
+                    /*foreach ($value as $row) {
+                        $insert_data[] = array(
+                            'comp_id' => $row[Auth::user()->comp_id],
+                            'ctg_id' => 23,
+                            'sup_id' => $row['supplier'],
+                            'item_name' => $row['item_name'],
+                            'item_desc' => $row['item_desc'],
+                            'item_image' => $row['item_image'],
+                            'puchase_price' => $row['puchase_price'],
+                            'sell_price' => $row['sell_price'],
+                            'quantity' => $row['qty'],
+                            'barcode_number' => $row['barcode'],
+                            'discount' => $row['discount'],
+                            'taxable' => $row['taxable'],
+                        );
+                    }
+                    DB::table('items')->insert($insert_data);*/
+
+                }
+                /*if (!empty($insert_data)) {
+                    DB::table('items')->insert($insert_data);
+                    return back()->with('success', 'Excel data imported successfully!');
+                }*/
+
+            }
+    }
+
+//    Export excel
+    public function exportExcel() {
+        if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
+            $compId = Auth::user()->comp_id;
+            $items = DB::table('items')
+                ->join('categories', 'categories.ctg_id', '=', 'items.ctg_id')
+                ->select('items.*',  'categories.ctg_name')
+                ->where('items.comp_id',  $compId)
+                ->get()->toArray();
+            $items_array[] = array('Category', 'Item', 'Desc', 'In Stock', 'Barcode #', 'Taxable', 'Purchase Price', 'Sell Price', 'Reg. Date');
+            foreach ($items as $item) {
+                $items_array[] = array(
+                  'Category' => $item->ctg_name,
+                  'Item' => $item->item_name,
+                  'Desc' => $item->item_desc,
+                  'In Stock' => $item->quantity,
+                  'Barcode #' => $item->barcode_number,
+                  'Taxable' => $item->taxable,
+                  'Puchase Price' => '$'.$item->purchase_price,
+                  'Sell Price' => '$'.$item->sell_price,
+                  'Reg. Date' => carbon::parse($item->created_at)->format('d-M-Y')
+                );
+            }
+            Excel::create('Items In Inventory', function ($excel) use ($items_array) {
+                $excel->setTitle('Items In Inventory');
+                $excel->sheet('Items In Inventory', function ($sheet) use ($items_array) {
+                   $sheet->fromArray($items_array, null, 'A1', false, false);
+                });
+            })->download('xlsx');
+
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
+    }
+/* ============================= Import/Export Excel ========================*/
 
     /**
      * Show the form for creating a new resource.
@@ -46,7 +118,7 @@ class ItemController extends Controller
      */
     public function create()
     {
-       
+
     }
 
     /**
@@ -70,7 +142,7 @@ class ItemController extends Controller
         if ($validation->passes()) {
             $userId = Auth::user()->id;
             $compId = Auth::user()->comp_id;
-            
+
             $companies = DB::table('companies')
             ->join('users', 'companies.company_id', '=', 'users.comp_id')
             ->select('companies.comp_status')
@@ -183,8 +255,8 @@ class ItemController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-        
-       
+
+
     }
 
     /**
@@ -211,7 +283,7 @@ class ItemController extends Controller
         } else {
             abort(403, 'This action is unauthorized.');
         }
-        
-        
+
+
     }
 }

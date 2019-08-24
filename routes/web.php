@@ -34,18 +34,20 @@ Route::post('category/edit', 'CategoryController@edit');
 
 Route::get('item', 'ItemController@index')->name('item');
 Route::post('item/add', 'ItemController@store');
+Route::post('item/import', 'ItemController@importExcel')->name('item.import');
+Route::get('/item/export', 'ItemController@exportExcel')->name('item.export');
 Route::get('item/delete', 'ItemController@destroy');
 Route::post('item/update', 'ItemController@update');
 
 #User-Management
 #users of a specific company
 // Route::get('/users/{compId?}', 'UserManageController@usersOfSpecificCompany');
-# Authenticated company can see    
+# Authenticated company can see
 Route::get('manageUser', 'UserManageController@index')->name('user');
 Route::post('manageUser', 'UserManageController@changeRole');
-Route::post('manageUser/status', 'UserManageController@onStatus'); 
+Route::post('manageUser/status', 'UserManageController@onStatus');
  // Super-admin only changes status of system-admins
-Route::post('systemAdmin/status', 'UserManageController@onSystemAdminStatus'); 
+Route::post('systemAdmin/status', 'UserManageController@onSystemAdminStatus');
 Route::get('manageUser/profile', 'UserManageController@showUserProfile')->name('profile');
 Route::post('manageUser/register', 'UserManageController@createUser');
 Route::post('manageUser/userInfo1', 'UserManageController@changePersonInfo');
@@ -65,6 +67,8 @@ Route::post('customer', 'CustomerController@store');
 Route::get('customer', 'CustomerController@index')->name('customer');
 Route::get('customer/delete', 'CustomerController@destroy');
 Route::post('customer/edit', 'CustomerController@edit');
+Route::get('customer/export', 'CustomerController@exportExcel')->name('customer.export');
+Route::post('customer/export', 'CustomerController@importExcel')->name('customer.import');
 #Purchase-history
 Route::get('customer/custDetail/{id?}', 'CustomerController@onPurchaseHistory');
 Route::post('customer/custDetail/payment', 'CustomerController@onPayment');
@@ -88,7 +92,7 @@ Route::get('invoice/print', 'InvoiceController@onPrint');
 
 #Reports
 Route::get('analytics/{time?}', 'ReportController@index')->name('report');
-// ======================= CHARTS for sales ================= 
+// ======================= CHARTS for sales =================
 Route::get('/reports/graph', 'ReportController@getThisMonth')->name('graph');
 #Reports
 // /. =========================/. CHARTS for sales ============================
