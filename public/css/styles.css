@@ -1,7 +1,7 @@
 /* ===================== Prevent Navbar From Scrolling ===================== */
 .main-header {
     position: fixed !important;
-    width: 100%;    
+    width: 100%;
 }
 /* =================== content of any page ============== */
 
@@ -89,7 +89,7 @@ h5 {
     padding: 30px;
 }
 /* profile-image */
-#user_profile_img, #company_logo_img, #specific_company_logo {
+#user_profile_img, #company_logo_img, #specific_company_logo, #any_user_img {
     width: 80px;
     height: 80px;
     margin-right: 20px;
@@ -98,6 +98,11 @@ h5 {
 #user_profile_photo {
     display: none;
 }
+/*=============================== ANY-USER change by SYSTEM-ADMIN ==============================*/
+#any_user_photo {
+    display: none;
+}
+/*=============================== /. ANY-USER change by SYSTEM-ADMIN ==============================*/
 /* =========================================== LOGO of company ==================================== */
 .modal-body input[type="file"], #company_logo, #clogo {
     display: none;
@@ -145,7 +150,7 @@ h5 {
 .tbl-sales-label th {
     text-align:left;
     width: 30px;
-    
+
 }
 
 #box_cart {

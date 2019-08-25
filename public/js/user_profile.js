@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // New User Reg
-    $('#new_user_form').on('submit', function (e) { 
+    $('#new_user_form').on('submit', function (e) {
             e.preventDefault();
             var formValues = new FormData(this);
             // Send form values through AJAX
@@ -16,10 +16,10 @@ $(document).ready(function () {
                     if (response.result === 'success') {
                         $('#modal-new-user').modal('hide');
                         // $('#data_tbl1').load(' #data_tbl1');
-                        setTimeout(function () { 
+                        setTimeout(function () {
                             location.reload();
                          }, 5000);
-                        
+
                         // location.reload();
                     } else if(response.result === 'over') {
                         $('ul#status_msg').css('display', 'block');
@@ -38,7 +38,7 @@ $(document).ready(function () {
                     $('ul#role-msg').attr(response.style);
                     // $('#data_tbl1').load(' #data_tbl1');
                 },
-                error: function (error) { 
+                error: function (error) {
                     console.log(error);
                     // $('button#new_user').attr(error.style);
                     // $('ul#role-msg').css('display', 'block');
@@ -77,7 +77,7 @@ $(document).ready(function () {
      // /. New Super-admin
 
     // form-data for changing user-profile
-    $('#user-edit-profile-form').on('submit', function (e) { 
+    $('#user-edit-profile-form').on('submit', function (e) {
         e.preventDefault();
         var data = new FormData(this);
         // Send them through AJAX
@@ -92,16 +92,16 @@ $(document).ready(function () {
                 $('#profile_msg').html(response.message);
                 $('#profile_msg').attr('style', response.style);
                 // $('#user_profile_box').load(' #user_profile_box');
-                
+
             },
-            error: function (error) { 
+            error: function (error) {
                 console.log(error);
              }
         });
      });
 
      /* ==================================== UPDATE PASSWORD ====================== */
-    $('#password_edit_form').on('submit', function (e) { 
+    $('#password_edit_form').on('submit', function (e) {
         e.preventDefault();
         var data = new FormData(this);
         $.ajax({
@@ -117,15 +117,15 @@ $(document).ready(function () {
                 $('#profile_msg').attr('style', 'display:block');
                 $('#profile_msg').attr('style', response.style);
             },
-        error: function (error) { 
+        error: function (error) {
             console.log(error);
          }
         });
      });
      /* ================================== /. UPDATE PASSWORD ======================== */
-     
 
-    /* ========================== PREVIEW IMAGE BEFORE UPLOAD ================ */ 
+
+    /* ========================== PREVIEW IMAGE BEFORE UPLOAD ================ */
     $('#user_profile_photo').change(function () {
         photo = $('input[name=user_photo]').val();
         var img = new FormData($('#user-profile-photo-form')[0]);
@@ -153,12 +153,117 @@ $(document).ready(function () {
          if (input.files && input.files[0]) {
              var reader = new FileReader();
              reader.onload = function (e) {
-                 $('#user_profile_img').attr('src', e.target.result)
+                 $('#user_profile_img').attr('src', e.target.result);
              }
              reader.readAsDataURL(input.files[0]);
          }
      }
-   /* ===========================/. PREVIEW IMAGE BEFORE UPLOAD ===================== */ 
+   /* ===========================/. PREVIEW IMAGE BEFORE UPLOAD ===================== */
+
+    /*===================================== Change ANY-USER-INFO-by SYSTEM-ADMIN================================*/
+    $('#data_tbl1').on('click', '.which-user', function () {
+       var userId = $(this).data('user-id');
+       $(this).attr('data-href', 'manageUser/anyProfile/'+userId);
+       window.location = $(this).data('href');
+    });
+
+    // Change personal-info
+    $('#any_user_edit_info').on('submit', function (e) {
+       e.preventDefault();
+       var data = new FormData(this);
+       $.ajax({
+           type: 'POST',
+           url: '/manageUser/anyProfile/editInfo1',
+           data: data,
+           dataType: 'json',
+           processData: false,
+           contentType: false,
+           cache: false,
+           success: function (response) {
+               if (response.result === 'success') {
+                   setTimeout(function () {
+                       location.reload();
+                   }, 3000);
+
+               }
+               $('#any_user_msg').css('display', 'block');
+               $('#any_user_msg').html(response.msg);
+               $('#any_user_msg').attr('style',response.style);
+           },
+           error: function (e) {
+               console.log(e);
+           }
+       });
+
+    });
+
+    // Reset password
+    $('#any_user_reset_password').on('submit', function (e) {
+        e.preventDefault();
+        var data = new FormData(this);
+       $.ajax({
+          type: 'POST',
+          url: '/manageUser/anyProfile/editInfo2',
+          data: data,
+          dataType: 'json',
+           contentType: false,
+           processData: false,
+           cache: false,
+           success:function (response) {
+              if (response.result === 'success') {
+                  setTimeout(function () {
+                      location.reload();
+                  }, 3000);
+              }
+               $('#any_user_msg').css('display', 'block');
+               $('#any_user_msg').html(response.msg);
+               $('#any_user_msg').attr('style',response.style);
+           },
+           error:function (err) {
+               console.log(err);
+           }
+       });
+    });
+
+    // Change any-user photo
+    $('#any_user_photo').change(function () {
+        var formData = new FormData($('#any_user_edit_photo_form')[0]);
+        $.ajax({
+           type: 'POST',
+            url: '/manageUser/anyProfile/changePhoto',
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            data: formData,
+            success:function (response) {
+               if (response.result === 'success') {
+                   setTimeout(function () {
+                       location.reload();
+                   }, 3000);
+               }
+                $('#any_user_msg').css('display', 'block');
+                $('#any_user_msg').html(response.msg);
+                $('#any_user_msg').attr('style',response.style);
+            },
+            error:function (err) {
+                console.log(err);
+            }
+
+        });
+        readURL(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#any_user_img').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    /*===================================== /. Change ANY-USER-INFO-by SYSTEM-ADMIN================================*/
 });
 
 var photo = '';

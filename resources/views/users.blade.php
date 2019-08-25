@@ -49,11 +49,11 @@
           <div class="col-lg-12 col-xs-12">
             <div class="box">
               <div class="box-header">
-                <h3 class="box-title">User Management <strong></h3>
+                <h3 class="box-title">User Management</h3>
               </div>
               <!-- /.box-header -->
               <div class="box-body">
-                
+
             <div class="box">
                 <div class="box-header">
                     <div class="box-header">
@@ -63,7 +63,7 @@
                         <button class="btn btn-default" disabled id="add_user" data-toggle="modal" data-target="#modal-new-user">Add
                           User</button>
                         @endif
-                       
+
                     </div>
                 </div>
                 <div class="box-body">
@@ -86,7 +86,8 @@
                         <tbody>
                           @foreach($users as $user)
                           <tr>
-                            <td><a href="#"><img src="uploads/user_photos/{{$user->photo}}" alt="User Image" height="40" width="40" class="img-circle img-bordered"></a>
+                            <td>
+                                <a href="#" data-user-id="{{ $user->id }}"  class="which-user"><img src="uploads/user_photos/{{$user->photo}}" alt="User Image" height="40" width="40" class="img-circle img-bordered"></a>
                             </td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->name }}</td>
@@ -113,7 +114,11 @@
           <!-- /.col -->
         </div>
         <!-- /.row -->
+            </div>
+          </div>
+        </div>
       </section>
+
       <!-- /.content -->
 
 <!-- Modal-area -->
@@ -129,7 +134,7 @@
                 <ul id="role-msg" style="display: none"></ul>
                   <div class="register-box-body">
                       <p class="login-box-msg">Register a new user</p>
-                  
+
                       <form class="form-horizontal" id="new_user_form">
                         <!-- <input type="hidden" name="counter" value="0"> -->
                         @csrf
@@ -137,7 +142,7 @@
                         <div class="form-group">
                             <label for="firstname" class="col-sm-2 control-label">First Name <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
-                              <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name"> 
+                              <input id="first_name" type="text" class="form-control" name="first_name" placeholder="First Name">
                             </div>
                         </div>
                         <!-- /. first-name -->
@@ -161,7 +166,7 @@
                                 <input id="email" type="email" class="form-control" name="email" placeholder="Email (Optional)">
                               </div>
                        </div>
-                      
+
                         <!-- roles -->
                         <div class="form-group">
                           <label for="role" class="col-sm-2 control-label">Role <span class="asterisk">*</span></label>
@@ -196,7 +201,7 @@
                                   placeholder="Confirm Password">
                               </div>
                        </div>
-                       
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary pull-left">Register</button>
@@ -223,7 +228,7 @@
                 </div>
                 <div class="modal-body">
                     <img src="{{ asset('bower_components/admin-lte/dist/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
-                    
+
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

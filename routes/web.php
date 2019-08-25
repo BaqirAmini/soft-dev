@@ -46,6 +46,13 @@ Route::post('item/update', 'ItemController@update');
 Route::get('manageUser', 'UserManageController@index')->name('user');
 Route::post('manageUser', 'UserManageController@changeRole');
 Route::post('manageUser/status', 'UserManageController@onStatus');
+
+// Change password & info of any user by system-admin
+Route::get('manageUser/anyProfile/{uid?}', 'UserManageController@profile');
+Route::post('/manageUser/anyProfile/editInfo1', 'UserManageController@editInfo1');
+Route::post('/manageUser/anyProfile/editInfo2', 'UserManageController@resetUserInfo');
+Route::post('/manageUser/anyProfile/changePhoto', 'UserManageController@anyUserPhoto');
+
  // Super-admin only changes status of system-admins
 Route::post('systemAdmin/status', 'UserManageController@onSystemAdminStatus');
 Route::get('manageUser/profile', 'UserManageController@showUserProfile')->name('profile');

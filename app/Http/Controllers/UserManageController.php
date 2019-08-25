@@ -20,7 +20,7 @@ class UserManageController extends Controller
 
     # List users for authenticated System-admin
     public function index()
-    { 
+    {
         if (Gate::allows('isSystemAdmin')) {
             if (Auth::check()) {
                 $userId = Auth::user()->id;
@@ -44,12 +44,12 @@ class UserManageController extends Controller
                 $user_count = $countValues[0]->user_count;
                 # ================ /. Enable/Disable button (Add User) =====================
                 return view('users', compact(['users', 'count', 'user_count', 'activeCount', 'existingCount']));
-            } 
+            }
         } else {
             abort(403, 'This action is unauthorized.');
         }
-          
-        
+
+
     }
     # List users of a specific company that Super-admin can see
    /* public function usersOfSpecificCompany($compId)
@@ -57,7 +57,7 @@ class UserManageController extends Controller
         $users = DB::table('users')->select('*')->where('comp_id', $compId)->get();
         return view('company_setting', compact('users'));
     } */
-    # /. 
+    # /.
     #Manage roles...
     public function changeRole(Request $request) {
             $user = User::findOrFail($request->role_id);
@@ -66,19 +66,19 @@ class UserManageController extends Controller
                 return response()->json([
                     'role_msg' => 'The role changed successfully!'
                 ]);
-                
+
             } else {
                return response()->json([
                 'role_msg' => 'The role changed successfully!'
                ]);
             }
-        
+
     }
     #Change user status
     public function changeStatus(Request $request) {
         $user = User::findOrfail('id', $request->userId);
         $user->status = $request->status;
-        
+
         if ($user->save()) {
             return response()->json([
                 's_value' => $user->status
@@ -107,7 +107,7 @@ class UserManageController extends Controller
             'password_confirmation' => 'required'
 
         ]);
-        
+
         if ($validation->passes()) {
             $user = new User();
             $countValues = DB::table('companies')
@@ -119,7 +119,7 @@ class UserManageController extends Controller
             $compStatus = $countValues[0]->comp_status;
 
             if ($compStatus == 1) {
-                  
+
                     if( $count < $user_count ) {
                         $user->comp_id = $compId;
                         $user->name = $request->first_name;
@@ -129,20 +129,20 @@ class UserManageController extends Controller
                         $user->role = $request->role;
                         $user->username = $request->user_name;
                         $user->password = Hash::make($request->password);
-                        $user->save(); 
+                        $user->save();
                     return response()->json([
                             'user_msg' => "User registered successfully!",
                             'result' => 'success',
                             'style' => 'color:grey'
-                        ]); 
+                        ]);
                     }
-                    
+
                     return response()->json([
                         'user_msg' => 'Sorry, your user count has reached to its maximum size.',
                         'result' => 'over',
                         'style' => 'color:darkred'
                     ]);
-     
+
             } else if($compStatus == 0) {
                 return response()->json([
                     'user_msg' => 'Sorry, the company is not active.',
@@ -150,7 +150,7 @@ class UserManageController extends Controller
                     'style' => 'color:darkred'
                 ]);
             }
-          
+
         } else {
             return response()->json([
                 'user_msg' => $validation->errors()->all(),
@@ -158,7 +158,7 @@ class UserManageController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-        
+
     }
 
     # =================================== USER-PROFILE ==================================
@@ -198,7 +198,7 @@ class UserManageController extends Controller
                         } else {
                             return response()->json([
                                 'message' => 'Sorry, password confirmation does not match, try again.',
-                                'style' => 'color:darkred' 
+                                'style' => 'color:darkred'
                             ]);
                         }
                 } else {
@@ -243,8 +243,8 @@ class UserManageController extends Controller
                 'style' => 'color:red'
             ]);
         }
-        
-        
+
+
     }
     # ========================= /. Update only USER-PHOTO ========================
     // Change photo of profile
@@ -294,14 +294,14 @@ class UserManageController extends Controller
             ->get();
         // See number of define users in companies
         $user_count = $countValues[0]->user_count;
-        
+
         $user = User::findOrfail($request->userId);
         $statusValue = $request->statusValue;
         if ($statusValue == 1) {
-            $user->status = 0;  
+            $user->status = 0;
         } else if( $statusValue == 0) {
             if ($count < $user_count) {
-                $user->status = 1;  
+                $user->status = 1;
             } else {
                 return response()->json([
                     'user_msg' => 'Sorry, your user count has reached to its maximum size.',
@@ -309,10 +309,10 @@ class UserManageController extends Controller
                     'style' => 'color:darkred'
                 ]);
             }
-            
-          
+
+
         }
-        
+
         if($user->save()) {
             if ($user->status == 1) {
                 return response()->json([
@@ -327,7 +327,7 @@ class UserManageController extends Controller
                     'label' => 'Inactive'
                 ]);
             }
-            
+
         } else {
             return 'User status not changed!';
         }
@@ -335,7 +335,7 @@ class UserManageController extends Controller
     # ==================================== CHANGE STATUS OF SYSTEM-ADMINS ===============================
     public function onSystemAdminStatus(Request $request)
     {
-       
+
         if (Gate::allows('isSuperAdmin')) {
                 $user = User::findOrfail($request->userId);
                 $statusValue = $request->statusValue;
@@ -365,10 +365,10 @@ class UserManageController extends Controller
         } else {
             abort(403, 'This action is unauthorized.');
         }
-        
+
     }
 
-    # ======================== AUTHENTICATED/SPECIFIC COMPANY ====================== 
+    # ======================== AUTHENTICATED/SPECIFIC COMPANY ======================
     // The default settings of company
     public function onDefault()
     {
@@ -416,9 +416,9 @@ class UserManageController extends Controller
     public function onChangeLogo(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'company_logo' => 'nullable|image|mimes:png,jpg,jpeg,png|max:2048'
+            'company_logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048'
         ]);
-        
+
         if ($v->passes()) {
             $company = Company::findOrfail($request->cid);
             if ($request->hasFile('company_logo')) {
@@ -441,10 +441,104 @@ class UserManageController extends Controller
                 'result' => 'fail'
             ]);
         }
-        
-        
-        
+
+
+
     }
       # /. ============================== AUTHENTICATED/SPECIFIC COMPANY =========================
-  
+
+    # ================================================= any User-profile that changed by system-admin ================================
+    public function profile($uid = null) {
+        if (Gate::allows('isSystemAdmin')) {
+            $users = DB::table('users')->select('*')->where('id', $uid)->get();
+            return view('change_any_user_info', compact('users'));
+        }
+    }
+
+//    Change Personal Info
+    public function editInfo1(Request $request) {
+        $v = Validator::make($request->all(), [
+           'user_name' => 'required|string|min:5|max:64',
+           'first_name' => 'required|string|min:3|max:64',
+           'user_lastname' => 'nullable|string|min:3|max:64',
+           'user_phone' => 'required|string|min:10|max:64',
+           'user_email' => 'nullable|string|min:10|max:64',
+        ]);
+        if ($v->passes()) {
+            $user = User::findorfail($request->user_id);
+            $user->username = $request->user_name;
+            $user->name = $request->first_name;
+            $user->lastname = $request->user_lastname;
+            $user->phone = $request->user_phone;
+            $user->email = $request->user_email;
+            $user->save();
+            return response()->json([
+               'result' => 'success',
+               'style' => 'color:darkblue',
+               'msg' => 'User info changed successfully!'
+            ]);
+        } else {
+            return response()->json([
+                'result' => 'fail',
+                'style' => 'color:darkred',
+                'msg' => $v->errors()->all()
+            ]);
+        }
+
+    }
+
+//    Reset Any-user password
+    public function resetUserInfo(Request $request) {
+        $v = Validator::make($request->all(), [
+            'new_password' => 'required|string|min:6'
+        ]);
+        if ($v->passes()) {
+            $user = User::findorfail($request->user_id);
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+            return response()->json([
+               'result' => 'success',
+               'msg' => 'Password reset successfully!',
+               'style' => 'color:darkblue'
+            ]);
+        } else {
+            return response()->json([
+               'result' => 'fail',
+               'msg' => $v->errors()->all(),
+               'style' => 'color:darkred'
+            ]);
+        }
+    }
+
+//    Change ANY-USER photo
+    public function anyUserPhoto(Request $request) {
+        $v = Validator::make($request->all(), [
+           'user_photo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+        ]);
+
+        if ($v->passes()) {
+            $user = User::findorfail($request->user_id);
+            if ($request->hasFile('user_photo')) {
+                $img = $request->file('user_photo');
+                $path = 'uploads/user_photos/';
+                $img_name = rand().'.'.$img->getClientOriginalExtension();
+                $user->photo = $img_name;
+                $img->move($path, $img_name);
+                $user->save();
+                return response()->json([
+                   'result' => 'success',
+                   'msg' => 'Profile photo updated successfully!',
+                   'style' => 'color:darkblue'
+                ]);
+            }
+        } else {
+            return response()->json([
+               'result' => 'fail',
+               'msg' => $v->errors()->all(),
+               'style' => 'color:darkred'
+            ]);
+        }
+    }
+    # =================================================/. any User-profile that changed by system-admin ================================
+
 }
