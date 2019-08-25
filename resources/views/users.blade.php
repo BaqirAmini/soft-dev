@@ -87,7 +87,7 @@
                           @foreach($users as $user)
                           <tr>
                             <td>
-                                <a href="#" data-user-id="{{ $user->id }}"  class="which-user"><img src="uploads/user_photos/{{$user->photo}}" alt="User Image" height="40" width="40" class="img-circle img-bordered"></a>
+                                <a @if($user->role !== 'System Admin') href="#" data-user-id="{{ $user->id }}"  class="which-user" @endif ><img src="uploads/user_photos/{{$user->photo}}" alt="User Image" height="40" width="40" class="img-circle img-bordered"></a>
                             </td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->name }}</td>
