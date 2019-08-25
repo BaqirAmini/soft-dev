@@ -55,7 +55,7 @@ Route::post('manageUser', 'UserManageController@changeRole');
 Route::post('manageUser/status', 'UserManageController@onStatus');
 
 // Change password & info of any user by system-admin
-Route::get('manageUser/anyProfile/{uid?}', 'UserManageController@profile');
+Route::get('manageUser/anyProfile/{uid?}', 'UserManageController@profile')->name('user.info');
 Route::post('/manageUser/anyProfile/editInfo1', 'UserManageController@editInfo1');
 Route::post('/manageUser/anyProfile/editInfo2', 'UserManageController@resetUserInfo');
 Route::post('/manageUser/anyProfile/changePhoto', 'UserManageController@anyUserPhoto');

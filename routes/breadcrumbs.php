@@ -119,6 +119,12 @@ Breadcrumbs::for('users', function ($trail) {
     $trail->push('Users', route('user'));
 });
 
+// Dashboard > Users > User Info
+Breadcrumbs::for('user-info', function ($trail) {
+   $trail->parent('users');
+   $trail->push('User Info', route('user.info'));
+});
+
 // Dashboard / Company Setting
 Breadcrumbs::for('comp-setting', function ($trail) {
     $trail->parent('dashboard');
@@ -136,6 +142,12 @@ Breadcrumbs::for('stores', function ($trail) {
 Breadcrumbs::for('company_setting', function ($trail) {
     $trail->parent('stores');
     $trail->push('Company Setting', route('company'));
+});
+
+// Dashboard > Stores > company-setting > System-Admin Info
+Breadcrumbs::for('sa-info', function ($trail) {
+    $trail->parent('company_setting');
+    $trail->push('System-Admin Info', route('superadmin.profile'));
 });
 
 // Dashboard > Super Admins
