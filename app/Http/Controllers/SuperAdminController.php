@@ -21,7 +21,7 @@ class SuperAdminController extends Controller
 
         $superAdmins = DB::table('users')->select('*')->where('role', 'Super Admin')->get();
         return view('super_admin', compact(['superAdmins', 'companies']));
-        
+
     }
 
     # Create new super-admins
@@ -56,7 +56,7 @@ class SuperAdminController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-        
+
     }
     #SUPER-ADMIN statsu management
     public function onStatus(Request $request)
@@ -87,4 +87,5 @@ class SuperAdminController extends Controller
             return 'User status not changed!';
         }
     }
+
 }

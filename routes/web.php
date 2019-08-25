@@ -8,6 +8,13 @@ Route::post('super-admin/create', 'SuperAdminController@create');
 #Company
 Route::get('company', 'CompanyController@index')->name('company');
 Route::post('company/register', 'CompanyController@store');
+
+# Change any-system-admin-info by Super-admin
+Route::get('/system-admin/anyProfile/{id?}', 'UserManageController@specificSystemAdminProfile')->name('superadmin.profile');
+Route::post('/system-admin/anyProfile/editInfo1', 'UserManageController@changeInfo1');
+Route::post('/system-admin/anyProfile/editInfo2', 'UserManageController@changeInfo2');
+Route::post('/system-admin/anyProfile/editPhoto', 'UserManageController@editSystemAdminPhoto');
+
 # === Company-settings === #
 Route::get('company/setting/{id?}', 'CompanyController@onSetCompany')->name('company.setting');
 Route::post('company/logo', 'CompanyController@changeLogo');

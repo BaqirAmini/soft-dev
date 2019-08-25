@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Company;
 use Auth;
+use Doctrine\DBAL\Schema\Table;
 use Gate;
 use Validator;
 use Illuminate\Support\Facades\Hash;
@@ -446,6 +447,101 @@ class UserManageController extends Controller
 
     }
       # /. ============================== AUTHENTICATED/SPECIFIC COMPANY =========================
+
+    # ======================================== profile of ANY-SYSTEM-ADMIN ==============================
+//    Profile of any system-admin
+    public function specificSystemAdminProfile($id = null) {
+        $systemAdms = DB::table('users')->select('*')->where('id', $id)->get();
+        return view('change_system_admin_info', compact('systemAdms'));
+    }
+
+//    Change personal info
+    public function changeInfo1(Request $request) {
+        $v = Validator::make($request->all(), [
+            'user_name' => 'required|string|min:5|max:64',
+            'first_name' => 'required|string|min:3|max:64',
+            'user_lastname' => 'nullable|string|min:3|max:64',
+            'user_phone' => 'required|string|min:10|max:64',
+            'user_email' => 'nullable|string|min:10|max:64',
+        ]);
+        if ($v->passes()) {
+            $sa = User::findorfail($request->user_id);
+            $sa->username = $request->user_name;
+            $sa->name = $request->first_name;
+            $sa->lastname = $request->user_lastname;
+            $sa->phone = $request->user_phone;
+            $sa->email = $request->user_email;
+            $sa->save();
+            return response()->json([
+               'result' => 'success',
+               'msg' => 'System info changed successfully!',
+               'style' => 'color:darkblue'
+            ]);
+        } else {
+            return response()->json([
+                'result' => 'fail',
+                'msg' => $v->errors()->all(),
+                'style' => 'color:darkred'
+            ]);
+        }
+
+    }
+
+    //    Change Password
+    public function changeInfo2(Request $request) {
+        $v = Validator::make($request->all(), [
+            'new_password' => 'required|string|min:6'
+        ]);
+        if ($v->passes()) {
+            $sa = User::findorfail($request->user_id);
+            $sa->password = Hash::make($request->new_password);
+            $sa->save();
+            return response()->json([
+                'result' => 'success',
+                'msg' => 'Password reset was successful!',
+                'style' => 'color:darkblue'
+            ]);
+        } else {
+            return response()->json([
+                'result' => 'fail',
+                'msg' => $v->errors()->all(),
+                'style' => 'color:darkred'
+            ]);
+        }
+
+    }
+
+    //    Change ANY-SYSTEM-ADMIN photo
+    public function editSystemAdminPhoto(Request $request) {
+        $v = Validator::make($request->all(), [
+            'user_photo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+        ]);
+
+        if ($v->passes()) {
+            $user = User::findorfail($request->user_id);
+            if ($request->hasFile('user_photo')) {
+                $img = $request->file('user_photo');
+                $path = 'uploads/user_photos/';
+                $img_name = rand().'.'.$img->getClientOriginalExtension();
+                $user->photo = $img_name;
+                $img->move($path, $img_name);
+                $user->save();
+                return response()->json([
+                    'result' => 'success',
+                    'msg' => 'Profile photo updated successfully!',
+                    'style' => 'color:darkblue'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'result' => 'fail',
+                'msg' => $v->errors()->all(),
+                'style' => 'color:darkred'
+            ]);
+        }
+    }
+    # ========================================/. profile of ANY-SYSTEM-ADMIN ==============================
+
 
     # ================================================= any User-profile that changed by system-admin ================================
     public function profile($uid = null) {

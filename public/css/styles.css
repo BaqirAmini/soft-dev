@@ -89,7 +89,7 @@ h5 {
     padding: 30px;
 }
 /* profile-image */
-#user_profile_img, #company_logo_img, #specific_company_logo, #any_user_img {
+#user_profile_img, #company_logo_img, #specific_company_logo, #any_user_img, #any_system_admin_img{
     width: 80px;
     height: 80px;
     margin-right: 20px;
@@ -103,6 +103,13 @@ h5 {
     display: none;
 }
 /*=============================== /. ANY-USER change by SYSTEM-ADMIN ==============================*/
+/* ============================= ANY-SYSTEM-ADMIN changed by SUPER-ADMIN =======================*/
+ #any_system_admin_photo {
+     display: none;
+ }
+/* ============================= /. ANY-SYSTEM-ADMIN changed by SUPER-ADMIN =======================*/
+
+
 /* =========================================== LOGO of company ==================================== */
 .modal-body input[type="file"], #company_logo, #clogo {
     display: none;

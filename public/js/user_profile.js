@@ -264,6 +264,111 @@ $(document).ready(function () {
         }
     }
     /*===================================== /. Change ANY-USER-INFO-by SYSTEM-ADMIN================================*/
+
+
+    /* =================================== Change any-system-admin info by SUPER-ADMIN ===========================*/
+    $('.any_system_admin_link').click(function () {
+        var id = $(this).data('sa-id');
+        var href = "/system-admin/anyProfile/" + id;
+        $(this).attr('data-href', href);
+        window.location = $(this).data('href');
+    });
+
+    // Change personal Info
+    $('#any_system_admin_edit_info').on('submit', function (e) {
+       e.preventDefault();
+       var formData = new FormData(this);
+       $.ajax({
+          type: 'POST',
+          url: '/system-admin/anyProfile/editInfo1',
+          data: formData,
+          processData: false,
+          contentType: false,
+          cache: false,
+          dataType: 'json',
+          success: function (response) {
+              if (response.result === 'success') {
+                  setTimeout(function () {
+                      location.reload();
+                  }, 3000);
+              }
+              $('#any_system_admin_msg').css('display', 'block');
+              $('#any_system_admin_msg').html(response.msg);
+              $('#any_system_admin_msg').attr('style',response.style);
+          },
+          error: function (err) {
+              console.log(err);
+          }
+       });
+    });
+
+    // Change PASSWORD
+    $('#any_system_admin_reset_password').on('submit', function (e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+        $.ajax({
+            type: 'POST',
+            url: '/system-admin/anyProfile/editInfo2',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            success: function (response) {
+                if (response.result === 'success') {
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                }
+                $('#any_system_admin_msg').css('display', 'block');
+                $('#any_system_admin_msg').html(response.msg);
+                $('#any_system_admin_msg').attr('style',response.style);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+
+    // Change any-system-admin photo
+    $('#any_system_admin_photo').change(function () {
+        var formData = new FormData($('#any_system_admin_edit_photo_form')[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/system-admin/anyProfile/editPhoto',
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            data: formData,
+            success:function (response) {
+                if (response.result === 'success') {
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                }
+                $('#any_system_admin_msg').css('display', 'block');
+                $('#any_system_admin_msg').html(response.msg);
+                $('#any_system_admin_msg').attr('style',response.style);
+            },
+            error:function (err) {
+                console.log(err);
+            }
+
+        });
+        readURL(this);
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#any_system_admin_img').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    /* ===================================/. Change any-system-admin info by SUPER-ADMIN ===========================*/
 });
 
 var photo = '';

@@ -64,7 +64,7 @@
                               </div>
                               <div class="form-group">
                                 <label for="state" class="col-sm-2 control-label">State/Province <span class="asterisk">*</span></label>
-                          
+
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="cstate" placeholder="State" value="{{ $c->comp_state }}">
                                 </div>
@@ -77,7 +77,7 @@
                               </div>
                               <div class="form-group">
                                 <label for="address" class="col-sm-2 control-label">Company Address <span class="asterisk">*</span></label>
-                          
+
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="caddress" placeholder="Address" value="{{ $c->comp_address }}">
                                 </div>
@@ -90,7 +90,7 @@
                               </div>
                               <div class="form-group">
                                 <label for="email" class="col-sm-2 control-label">Email</label>
-                          
+
                                 <div class="col-sm-9">
                                   <input type="email" class="form-control" name="cemail" placeholder="Email" value="{{ $c->email }}">
                                 </div>
@@ -157,7 +157,9 @@
                             <tbody>
                               @foreach($users as $user)
                               <tr>
-                                <td><a href="#"><img src="/uploads/user_photos/{{$user->photo}}" class="img-circle img-bordered" alt="User Image" height="40" width="40"></a>
+                                <td><a  @if($user->role === 'System Admin') href="#" class="any_system_admin_link" data-sa-id="{{ $user->id }}" @endif>
+                                        <img src="/uploads/user_photos/{{$user->photo}}" class="img-circle img-bordered" alt="User Image" height="40" width="40">
+                                    </a>
                                 </td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->name }}</td>
@@ -177,11 +179,11 @@
                         </div>
                         <!-- ====================== /. Users of a specific company ==================== -->
                      </div>
-                   
+
                 </div>
               </div>
-            
-            
+
+
             </div>
 
         </div>
@@ -242,7 +244,7 @@
                   <input id="email" type="email" class="form-control" name="email" placeholder="Email (Optional)">
                 </div>
               </div>
-  
+
               <!-- roles -->
               <div class="form-group">
                 <label for="role" class="col-sm-2 control-label">Role</label>
@@ -276,7 +278,7 @@
                     placeholder="Confirm Password">
                 </div>
               </div>
-  
+
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary pull-left">Register</button>
