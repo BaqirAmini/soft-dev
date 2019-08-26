@@ -13,11 +13,15 @@
                 <li>{{ $error }}</li>
            @endforeach
         </ul>
-     @endif
-     @if($msg = Session::get('success'))
-         <strong>{{ $msg }}</strong>
-     @endif
     </div>
+        <br>
+    @endif
+    @if($msg = Session::get('success'))
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <span style="color:cornflowerblue">{{ $msg }}</span>
+        </div>
+        <br>
+    @endif
 
     <div class="row">
         <div class="col-md-12">
