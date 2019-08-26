@@ -241,35 +241,32 @@ class CustomerController extends Controller
 
     /*======================= Import/Export Excel =====================*/
     public function importExcel(Request $request) {
-        /*$request->validate([
-           'excel_file' => 'required|mimes:xlsx, xls'
-        ]);*/
-        if ($request->hasFile('excel_file')) {
-            $path = $request->file('excel_file')->getRealPath();
-            $data = Excel::load($path)->get();
-            foreach ($data->toArray() as $key => $value) {
+        $request->validate([
+            'select_excel' => 'required|mimes:xlsx, xls'
+        ]);
+        if ($request->hasFile('select_excel')) {
+            $filePath = $request->file('select_excel')->getRealPath();
+            $data = Excel::load($filePath)->get();
+            $value = $data->toArray();
+            if ($data->count() > 0) {
                 foreach ($value as $row) {
-                    $insert_data[] = array(
-                        'comp_id' => $row[Auth::user()->comp_id],
-                        'ctg_id' => $row['ctg'],
-                        'sup_id' => $row['supplier'],
-                        'item_name' => $row['item_name'],
-                        'item_desc' => $row['item_desc'],
-                        'item_image' => $row['item_image'],
-                        'puchase_price' => $row['puchase_price'],
-                        'sell_price' => $row['sell_price'],
-                        'quantity' => $row['qty'],
-                        'barcode_number' => $row['barcode'],
-                        'discount' => $row['discount'],
-                        'taxable' => $row['taxable'],
+                    $insert_customer[] = array(
+                        'comp_id' => Auth::user()->comp_id,
+                        'business_name' => $row['business_name'],
+                        'cust_name' => $row['first_name'],
+                        'cust_lastname' => $row['last_name'],
+                        'cust_phone' => $row['phone'],
+                        'cust_email' => $row['email'],
+                        'cust_state' => $row['province'],
+                        'cust_addr' => $row['address']
                     );
                 }
-            }
-            if (!empty($insert_data)) {
-                DB::table('items')->insert($insert_data);
+                if (!empty($insert_customer)) {
+//                        DB::table('categories')->select('ctg_id')->where()->get();
+                    DB::table('customers')->insert($insert_customer);
+                }
                 return back()->with('success', 'Excel data imported successfully!');
             }
-
         }
     }
 

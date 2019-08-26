@@ -13,11 +13,12 @@
                 <li>{{ $error }}</li>
            @endforeach
         </ul>
-     @if(Session('success'))
-         <strong>{{ Session('success') }}</strong>
+     @endif
+     @if($msg = Session::get('success'))
+         <strong>{{ $msg }}</strong>
      @endif
     </div>
-    @endif
+
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -235,9 +236,9 @@
                     <button type="submit" id="btn_add_item" class="btn btn-primary pull-left">Add Now</button>
                 </div>
             </div>
-
-            </div>
             </form>
+            </div>
+
         </div>
     </div>
         <!-- end of modal-body div -->

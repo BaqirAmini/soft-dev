@@ -41,37 +41,43 @@ class ItemController extends Controller
 
 /*======================= Import/Export Excel =====================*/
     public function importExcel(Request $request) {
-        /*$request->validate([
+        $request->validate([
            'excel_file' => 'required|mimes:xlsx, xls'
-        ]);*/
+        ]);
             if ($request->hasFile('excel_file')) {
                 $path = $request->file('excel_file')->getRealPath();
                 $data = Excel::load($path)->get();
-                foreach ($data->toArray() as $key => $value) {
-                    /*foreach ($value as $row) {
-                        $insert_data[] = array(
-                            'comp_id' => $row[Auth::user()->comp_id],
-                            'ctg_id' => 23,
-                            'sup_id' => $row['supplier'],
-                            'item_name' => $row['item_name'],
-                            'item_desc' => $row['item_desc'],
-                            'item_image' => $row['item_image'],
-                            'puchase_price' => $row['puchase_price'],
-                            'sell_price' => $row['sell_price'],
-                            'quantity' => $row['qty'],
-                            'barcode_number' => $row['barcode'],
-                            'discount' => $row['discount'],
-                            'taxable' => $row['taxable'],
-                        );
+                $value = $data->toArray();
+                if ($data->count() > 0) {
+                        foreach ($value as $row) {
+                            $insert_ctg[] = array(
+                                'comp_id' => Auth::user()->comp_id,
+                                'ctg_id' => $row['ctg_name']
+                            );
+                            $ctgIds = DB::table('categories')->select('ctg_id')->where('ctg_name', $row['ctg_name'])->get();
+                            $insert_item[] = array(
+                                'comp_id' => Auth::user()->comp_id,
+                                'ctg_id' => $ctgIds->pluck('ctg_id'),
+                                'sup_id' => $row['supplier'],
+                                'item_name' => $row['item_name'],
+                                'item_desc' => $row['item_desc'],
+                                'item_image' => $row['item_image'],
+                                'purchase_price' => $row['purchase_price'],
+                                'sell_price' => $row['sell_price'],
+                                'quantity' => $row['qty'],
+                                'barcode_number' => $row['barcode'],
+                                'discount' => $row['discount'],
+                                'taxable' => $row['taxable']
+                            );
+                        }
+                    if (!empty($insert_ctg) && !empty($insert_item)) {
+//                        DB::table('categories')->select('ctg_id')->where()->get();
+                        DB::table('categories')->insert($insert_ctg);
+                        DB::table('items')->insert($insert_item);
+
                     }
-                    DB::table('items')->insert($insert_data);*/
-
-                }
-                /*if (!empty($insert_data)) {
-                    DB::table('items')->insert($insert_data);
                     return back()->with('success', 'Excel data imported successfully!');
-                }*/
-
+                }
             }
     }
 
