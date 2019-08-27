@@ -63,7 +63,7 @@
                           <input id="cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Address">
                         </div>
                     </div>
-                    
+
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                       <button type="button" id="btn_add_customer" class="btn btn-primary pull-left">Register</button>
@@ -99,7 +99,7 @@
                           @foreach($customers as $c)
                               <option value="{{ $c->cust_id }}">{{ $c->cust_name }} {{ $c->cust_lastname }}</option>
                           @endforeach
-                        </select>            
+                        </select>
                         <span class="input-group-btn" style="padding-left: 20px;">
                           <button class="btn btn-primary" id="btn_new_customer" type="button" data-toggle="modal" data-target="#modal-customer"><i class="fa fa-user-plus" style="padding:3px;"></i></button>
                         </span>
@@ -147,7 +147,7 @@
                        </div>
                     @endforeach
                       </div>
-              
+
                      <!-- Total & Tax input -->
                 <div class="row col-md-12 col-sm-10" style="margin-bottom:50px;margin-top:20px;" id="total_area">
                       <div class="input-group col-sm-5 col-xs-11">
@@ -193,8 +193,8 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                  <button id="btn_print" 
-                      class="btn btn-default pull-right btn_save_sale" 
+                  <button id="btn_print"
+                      class="btn btn-default pull-right btn_save_sale"
                       data-toggle="modal"
                       data-target="#modal-print"
                       onclick="onSaveSale();"
@@ -268,7 +268,7 @@
                                 <img src="uploads/product_images/{{ $item->item_image }}" alt="Item Image"
                                   height="90" width="90" style="margin-top:-10px">
                               </span>
-                          
+
                               <div class="info-box-content">
                                 <span class="info-box-text">{{ $item->item_name }}</span>
                                 <span class="info-box-text">${{ $item->sell_price }}</span>
@@ -280,7 +280,7 @@
                           </div>
                         </a>
                         @else
-                        
+
                         @endif
                        </li>
                        @endforeach
@@ -345,7 +345,7 @@
             </tr>
             </thead>
             <tbody id="invoice_body">
-              
+
             </tbody>
           </table>
         </div>
@@ -391,7 +391,7 @@
           <input type="hidden" name="invoice_id_for_print">
         <p>Do you want to print an invoice?</p>
       </div>
-      <div class="modal-footer col-md-offset-3">
+      <div class="modal-footer col-md-offset-3" id="btn_modal_print">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary btn_print_sale pull-left"><i class="fa fa-print"></i> Print</button>
       </div>

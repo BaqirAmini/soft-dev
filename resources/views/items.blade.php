@@ -21,6 +21,11 @@
             <span style="color:cornflowerblue">{{ $msg }}</span>
         </div>
         <br>
+    @elseif($msg = Session::get('error'))
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <span style="color:cornflowerblue">{{ $msg }}</span>
+        </div>
+        <br>
     @endif
 
     <div class="row">

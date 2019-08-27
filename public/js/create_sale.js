@@ -1,14 +1,13 @@
 $(document).ready(function () {
-
 /** =================================== click btn ADD to insert items in the CART ============================= */
   var tax = $('input#tax').val();
   // $(this).prop('disabled', true);
-  
+
 
   // when button add clicked...
   $('.link_add_item').click(function () {
     // printJS('#sale_section', 'html');
-    
+
     var itemID = $(this).data('item-id');
     var itemName = $(this).data('item-name');
     var itemPrice = $(this).data('item-price');
@@ -72,7 +71,7 @@ $(document).ready(function () {
     });
   });
 
-  // when btn-delete-invoice clicked invoice_id should be sent to its modal 
+  // when btn-delete-invoice clicked invoice_id should be sent to its modal
   $('#data_tbl_purchase_history').on('click', '.btn_delete_invoice', function () {
     var invoiceId = $(this).data('inv-id');
     $('input[name=cust_inv_id]').val(invoiceId);
@@ -195,15 +194,22 @@ function onSaveSale() {
          $('#inv_message').fadeOut(4000);
          _invoiceID = response.invoice_id;
          // $('#sale_section').load(' #sale_section');
-         setTimeout(function () { location.reload(); }, 5000);
+         // setTimeout(function () { location.reload(); }, 5000);
 
        },
-       error: function (error) { 
+       error: function (error) {
            console.log(error);
         }
      });
 
 }
+// ======================= while btn CANCEL or PRINT of print-modal clicked, the page should be refreshed =================================
+$('#btn_modal_print button').click(function () {
+    location.reload();
+});
+
+// ======================= /.while btn CANCEL or PRINT of print-modal clicked, the page should be refreshed =================================
+
 // To generate bill/invoice
 function onCreateInvoice(customer) {
   var custID = customer;
@@ -291,7 +297,7 @@ function doPrint(i) {
     w.close();
   }, 10);
   w.document.close(); // necessary for IE >= 10
-  w.focus(); // necessary for IE >= 10 
+  w.focus(); // necessary for IE >= 10
   return true;
 
 }

@@ -42,7 +42,6 @@ class ItemController extends Controller
 
 /*======================= Import/Export Excel =====================*/
     public function importExcel(Request $request) {
-        $inserted = false;
         $request->validate([
            'excel_file' => 'required|mimes:xlsx, xls'
         ]);
@@ -85,9 +84,13 @@ class ItemController extends Controller
                     }
                     if ( !empty($insert_item)) {
 //                        DB::table('categories')->select('ctg_id')->where()->get();
-                        DB::table('items')->insert($insert_item);
+                       $itemInserted = DB::table('items')->insert($insert_item);
+                       if ($itemInserted) {
+                           return back()->with('success', 'Excel data imported successfully!');
+                       } else {
+                           return back()->with('error', 'Sorry, the fields in excel sheet do not match with our criteria.');
+                       }
                     }
-                    return back()->with('success', 'Excel data imported successfully!');
 
                 }
             }
