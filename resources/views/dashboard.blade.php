@@ -11,7 +11,7 @@
   @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isStockManager', App\User::class) || Auth::user()->can('isCashier', App\User::class))
     <div class="col-lg-3 col-xs-6" id="test">
       <!-- small box -->
-      <div class="small-box bg-aqua">
+      <div class="callout callout-info small-box bg-aqua">
         <div class="inner">
           <h3>{{ $usersCount }}</h3>
           <p>Users</p>
@@ -24,11 +24,11 @@
         @endcan
       </div>
     </div>
-    
+
     <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-green">
+      <div class="callout callout-danger small-box bg-green">
         <div class="inner">
           <h3>${{ $totalAmount }}</h3>
           <p>Sales</p>
@@ -44,7 +44,7 @@
     <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-yellow">
+      <div class="callout callout-warning small-box bg-yellow">
         <div class="inner">
           <h3>{{ $custCount }}</h3>
           <p>Customers</p>
@@ -57,11 +57,11 @@
         @endif
       </div>
     </div>
-    
+
     <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-red">
+      <div class="callout callout-success small-box bg-red">
         <div class="inner">
           <h3>{{ $invenTotal }}</h3>
           <p>Inventories</p>
@@ -125,7 +125,7 @@
       <!-- /. stores/companies -->
   @endcan
   </div>
- 
+
   <!-- List of companies -->
       @can('isSuperAdmin')
         <div class="box">
@@ -134,7 +134,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-    
+
               <div class="box">
                 <div class="box-header">
                   <button class="btn btn-primary pull-left" data-toggle="modal" data-target="#modal-new-company" id="btn-new-company">Add Company</button>
@@ -174,7 +174,7 @@
                             data-target="#modal-edit-user-count"> <span
                               class="label label-primary">{{ $company->user_count }}</span> </button></td>
                       </tr>
-    
+
                       @endforeach
                     </tbody>
                   </table>
@@ -272,7 +272,7 @@
                       class="glyphicon glyphicon-print"></i></button>
                 </div>
               </div>
-          
+
             </div>
           </div>
           @endif
@@ -298,7 +298,7 @@
           <input type="hidden" name="input_comp_id">
           <div class="input-group  col-md-10 com-sm-10 col-xs-12 col-md-offset-1">
             <select name="company_user_count" class="form-control" autocomplete="off">
-              @for($a = 1; $a <= 10; $a++) 
+              @for($a = 1; $a <= 10; $a++)
                 <option value="{{ $a }}" name="company_user_count">{{ $a }} User(s)
                 </option>
                 @endfor
@@ -422,14 +422,14 @@
           <h4 class="modal-title">Add Categories</h4>
         </div>
         <div class="modal-body">
-  
+
           <div class="register-box-body">
             <ul id="ctg_message" style="display:none">
               <li>Message</li>
             </ul>
             <form class="form-horizontal" id="new_ctg_form">
               @csrf
-  
+
               <div class="form-group has-feedback">
                   <label for="ctg-name" class="col-sm-2 control-label">Category Name</label>
                   <div class="col-sm-9">
@@ -445,7 +445,7 @@
                     <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description (Optional)">
                   </div>
               </div>
-  
+
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                 <button type="submit" id="btn_add_ctg" class="btn btn-primary pull-left">Add Now</button>
@@ -510,7 +510,7 @@
                     </div>
                   </div>
                 </div>
-              
+
               </div>
               <div class="form-group">
                   <label for="quantity" class="col-sm-2 control-label">Quantity</label>
@@ -571,7 +571,7 @@
     <!-- end of modal-body div -->
   </div>
   <!-- new Item Modal -->
-  
+
   <!-- Edit Item Modal-->
   <div class="modal fade" id="modal-edit-item">
     <div class="modal-dialog">
@@ -650,10 +650,10 @@
                 </div>
               </div>
               <!-- tax -->
-  
+
           </div>
         </div>
-  
+
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-primary pull-left">Change</button>
@@ -664,7 +664,7 @@
     <!-- end of modal-body div -->
   </div>
   <!-- Edit Item Modal -->
-  
+
   <!-- delete-item -->
   <div class="modal fade" id="modal-delete-item">
     <div class="modal-dialog">

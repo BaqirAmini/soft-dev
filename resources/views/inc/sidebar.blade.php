@@ -12,9 +12,9 @@
       </div>
       <div class="modal-footer col-md-offset-3">
         <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Cancel</button>
-        
+
           <button type="submit" class="btn btn-primary pull-left" onclick="document.getElementById('logout-form1').submit();">Logout</button>
-        
+
       </div>
     </div>
     <!-- /.modal-content -->
@@ -34,29 +34,29 @@
        <section class="sidebar">
          <!-- Sidebar user panel -->
          <div class="user-panel">
-           
+
            <div class="pull-left image">
                @if(isset($logo[0])) <a href="{{ route('myCompany.specific') }}"><img src="/uploads/logos/{{ $logo[0]->comp_logo }}" width="50" height="50" class="img-circle img-bordered"
-                  alt="Logo"></a> 
+                  alt="Logo"></a>
                 @endif
            </div>
-              @if(isset($logo[0])) 
+              @if(isset($logo[0]))
                 <div class="pull-left info">
                   <p>{{ $logo[0]->comp_name }}</p>
                   <a href="#">{{ $logo[0]->email }}</a>
-                </div> 
+                </div>
               @endif
          </div>
-       
+
          <!-- sidebar menu: : style can be found in sidebar.less -->
          <ul class="sidebar-menu" data-widget="tree">
            <li class="header">MAIN NAVIGATION</li>
-           <li>
+           <li class="active">
              <a href="{{ route('dashboard') }}">
                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
              </a>
            </li>
-         @can('isSuperAdmin')  
+         @can('isSuperAdmin')
            <!-- <li>
              <a href="{{ route('company') }}">
                <i class="fa fa-home"></i> <span>Companies/Stores</span>
@@ -65,7 +65,7 @@
           @endcan
 <!-- Settings for companies -->
         @can('isSuperAdmin')
-        <li class="treeview">
+        <li class="treeview menu-open">
           <a href="#">
             <i class="fa fa-gear"></i>
             <span>Settings</span>
@@ -85,9 +85,9 @@
           </ul>
         </li>
         @endcan
-         
+
          @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isCashier', App\User::class))
-           <li>
+           <li class="treeview menu-open">
              <a href="{{ route('customer') }}">
                <i class="fa fa-users"></i>
                <span>Customers</span>
@@ -173,7 +173,7 @@
                    <i class="fa fa-power-off"></i>
                    <span>Log Out</span>
                  </a>
-             </li>           
+             </li>
          </ul>
        </section>
        <!-- /.sidebar -->
