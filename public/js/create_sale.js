@@ -261,7 +261,7 @@ function onPrintInvoice(custID, invcID) {
       $('#spn_cust_name').html(data[0].cust_name + " " + data[0].cust_lastname);
       // Company details on bill
       $('#company_name').html(data[0].comp_name);
-      $('#company_address').html(data[0].comp_name + "<br>" + data[0].comp_state + ", " + data[0].comp_address + "<br>" + data[0].contact_no + "<br>" + data[0].email + "<br>" + data[0].website);
+      $('#company_address').html(data[0].comp_name + "<br>" + data[0].comp_state + ", " + data[0].comp_address + "<br>" + data[0].contact_no + "<br>" + data[0].email + "<br>");
       $('#customer_address #customer_detail').html(data[0].cust_state + ", " + data[0].cust_addr + "<br>" + data[0].cust_phone);
       // Sold-date
       var d = new Date(Date.parse(data[0].created_at));
@@ -269,9 +269,9 @@ function onPrintInvoice(custID, invcID) {
       $('#sold_date').html('Sold Date: ' + date);
       $('#print_table > #invoice_body').empty();
       $.each(data, function (i, elem) {
-        $('#print_table > #invoice_body').append('<tr><td style="margin-right:30px;">'
-          + elem.qty_sold + '</td><td style="margin-right:30px;">'
-          + elem.item_name + '</td><td style="margin-right:30px;">$'
+        $('#print_table > #invoice_body').append('<tr style="border-bottom: 1px darkgray dashed"><td style="text-align: center">'
+          + elem.qty_sold + '</td><td style="text-align: center">'
+          + elem.item_name + '</td><td style="text-align: center">$'
           + elem.subtotal + '</td></tr>')
         total = parseFloat(total) + parseFloat(elem.subtotal);
       });
@@ -286,12 +286,18 @@ $('button.btn_print_sale').click(function () {
   // cid (customer-id) is globally declared.
   var invoiceId = $('input[name=invoice_id_for_print]').val();
   onPrintInvoice(cid, _invoiceID);
-
-
 });
 function doPrint(i) {
-  w = window.open("");
+  w = window.open();
+  w.document.write('<html><head><title>' + document.title  + '</title>');
+  w.document.write('</head><body >');
+  w.document.write('<h1>' + document.title  + '</h1>');
+  w.document.write("<link rel=\"stylesheet\" href=\"css/bootstrap.css\" type=\"text/css\"/>");
+  w.document.write("<link rel=\"stylesheet\" href=\"css/bootstrap-theme.css\" type=\"text/css\"/>");
+  w.document.write("<link rel=\"stylesheet\" href=\"css/styles.css\" type=\"text/css\"/>");
+  w.document.write('</head><body onload="window.print();window.close()">');
   w.document.write(i.innerHTML);
+<<<<<<< HEAD
   w.setTimeout(function () {
     w.print();
     w.close();
@@ -300,6 +306,15 @@ function doPrint(i) {
   w.focus(); // necessary for IE >= 10
   return true;
 
+=======
+  w.document.write('</body></html>');
+    w.document.close(); // necessary for IE >= 10
+    w.focus(); // necessary for IE >= 10
+    setTimeout(function () {
+        w.print();
+    }, 200);
+    return false;
+>>>>>>> bch-bug
 }
 // End
 // Print Invoice

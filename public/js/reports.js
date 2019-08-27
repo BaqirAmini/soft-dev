@@ -1,18 +1,25 @@
 $(document).ready(function () {
-    $('#btn_print_reports').click(function () { 
+    $('#btn_print_reports').click(function () {
         var printContents = document.getElementById('report_print_area').innerHTML;
         w = window.open();
-        w.document.write("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" media=\"print\"/>");
+        w.document.write('<html><head><title>' + document.title  + '</title>');
+        w.document.write("<link rel=\"stylesheet\" href=\"css/bootstrap.css\" type=\"text/css\"/>");
+        w.document.write("<link rel=\"stylesheet\" href=\"css/bootstrap-theme.css\" type=\"text/css\"/>");
+        w.document.write("<link rel=\"stylesheet\" href=\"css/styles.css\" type=\"text/css\"/>");
+        w.document.write('</head><body onload="window.print();window.close()">');
+        // w.document.write('<h1>' + document.title  + '</h1>');
         w.document.write(printContents);
-        w.document.write('<scr' + 'ipt type="text/javascript">' + 'window.onload = function() { window.print(); window.close(); };' + '</sc' + 'ript>');
-
+        w.document.write('</body></html>');
         w.document.close(); // necessary for IE >= 10
         w.focus(); // necessary for IE >= 10
-
+        setTimeout(function () {
+            w.print();
+        }, 500);
+        return false;
      });
 
      /* =================================== ANALYTICS in dashboard =================================== */
-    $('#analytic').change(function () { 
+    $('#analytic').change(function () {
        var t = $(this).val();
        $.ajax({
            type: "GET",
