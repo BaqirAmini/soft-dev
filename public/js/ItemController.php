@@ -53,7 +53,7 @@ class ItemController extends Controller
                         foreach ($value as $row) {
                                 $insert_ctg[] = array(
                                     'comp_id' => Auth::user()->comp_id,
-                                    'ctg_name' => $row['category'],
+                                    'ctg_name' => $row['ctg_name'],
                                     'created_at' => carbon::now(),
                                     'updated_at' => carbon::now()
                                 );
@@ -61,18 +61,20 @@ class ItemController extends Controller
                     $ctg_inserted = DB::table('categories')->insert($insert_ctg);
                     if ($ctg_inserted) {
                         foreach ($value as $row) {
-                            $ctgIds = DB::table('categories')->select('ctg_id')->where('comp_id', Auth::user()->comp_id)->where('ctg_name', $row['category'])->get();
+                            $ctgIds = DB::table('categories')->select('ctg_id')->where('comp_id', Auth::user()->comp_id)->where('ctg_name', $row['ctg_name'])->get();
 //                                return $ctgIds;
                             foreach ($ctgIds as $cid) {
                                 $insert_item[] = array(
                                     'comp_id' => Auth::user()->comp_id,
                                     'ctg_id' => $cid->ctg_id,
-                                    'item_name' => $row['item'],
-                                    'item_desc' => $row['description'],
-                                    'purchase_price' => $row['cost'],
+                                    'sup_id' => $row['supplier'],
+                                    'item_name' => $row['item_name'],
+                                    'item_desc' => $row['item_desc'],
+                                    'purchase_price' => $row['purchase_price'],
                                     'sell_price' => $row['sell_price'],
-                                    'quantity' => $row['quantity'],
+                                    'quantity' => $row['qty'],
                                     'barcode_number' => $row['barcode'],
+                                    'discount' => $row['discount'],
                                     'taxable' => $row['taxable'],
                                     'created_at' => carbon::now(),
                                     'updated_at' => carbon::now()

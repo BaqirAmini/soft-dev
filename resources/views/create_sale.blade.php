@@ -239,14 +239,14 @@
                                     data-item-name="{{ $item->item_name }}"
                                     data-item-price="{{ $item->sell_price }}"
                                     class="link_add_item">
-                          <div class="col-md-3 col-sm-6 col-xs-12" style="margin:-1px -5px;">
-                            <div class="info-box" style="background: rgb(243, 247, 248);color: black;">
+                          <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                            <div class="info-box" style="background: rgb(243, 247, 248);color: black;"  style="min-width: 250px;">
                               <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
                               <span class="info-box-icon" style="background: rgb(243, 247, 248)">
                                 <img src="{{ url('/uploads/product_images/'.$item->item_image) }}" alt="Item Image"
                                   height="60" width="60" style="margin-top:-10px">
                               </span>
-                              <div class="info-box-content" style="margin-left:-10px;">
+                              <div class="info-box-content">
                                 <span class="info-box-text" style="font-size:12px;">{{ $item->item_name }}</span>
                                 <span class="info-box-text">${{ $item->sell_price }}</span>
                                 <span class="info-box-number">{{ $item->quantity }}</span>
@@ -302,8 +302,8 @@
       <div class="row">
         <div class="col-md-6 col-lg-6 col-xs-12">
           <h3 class="page-header">
-            <i class="fa fa-globe" id="company_name" ></i>, Inc.
-            <small class="pull-right" id="sold_date"></small>
+            <i class="fa fa-globe" id="company_name" ></i>
+              <b class="pull-right">Invoice # <span id="inv_no"></span></b><br>
           </h3>
         </div>
         <!-- /.col -->
@@ -327,9 +327,6 @@
                             <span id="spn_cust_name"></span><br>
                             <span id="customer_detail"></span>
                         </address>
-                    </td>
-                    <td>
-                        <b>Invoice # <span id="inv_no"></span></b><br>
                     </td>
                 </tr>
             </table>
@@ -362,14 +359,14 @@
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-6">
           <div>
-            <table class="col-md-offset-1 col-lg-offset-1 col-sm-offset-1">
+            <table class="pull-right" style="margin-right: -280px !important;">
+                <tr>
+                    <br>
+                    <th>Tax:</th>
+                    <td></td>
+                </tr>
               <tr>
                 <th>Total:</th>
-                <td id="inv_total"></td>
-              </tr>
-              <tr>
-                  <br>
-                <th>Tax:</th>
                 <td id="inv_total"></td>
               </tr>
             </table>
