@@ -1,13 +1,13 @@
- $(document).ready(function () { 
+ $(document).ready(function () {
      // load datatable
      $('#Item_data_table').DataTable();
      $('#data_tbl1').DataTable();
-  
+
      // sale-datatable
      $('#data_tbl3').DataTable();
      //categories-datatable
      $('#data_tbl4').DataTable();
-  
+
      //customer-datatable
      $('#data_tbl5').DataTable();
      //daily-report-datatable
@@ -17,19 +17,24 @@
      $('#data_comp_tbl').DataTable();
      // Purchase-history
      $('#data_tbl_purchase_history').DataTable();
-  
+
      $('#modal-default').trigger('focus');
 
      /* ================================ POPUP ================================== */
-   $('#link_qty').popover({
-     trigger: 'click',
-     title: 'Test',
-     container: '.container',
-     placement: 'top',
-     content: function () { 
-       return $('#popover_form');
-      },
-   });
+     $.fn.editable.defaults.mode = 'modal';
+     // Edit qty of items in cart
+     $('.link_qty').editable({
+         pk: 1,
+         url: 'cart/editQty',
+         title: 'Enter username'
+     });
+
+     // Edit unit price of items in cart
+     $('.link_price').editable({
+         pk: 1,
+         url: '/post',
+         title: 'Enter username'
+     });
      /* ================================ /. POPUP ================================== */
      // invoice-detail
      $('#data_tbl_invoice_detail').DataTable();
@@ -93,4 +98,3 @@
          ]
        }); */
  });
- 

@@ -11,6 +11,7 @@
   <meta name="asset" id="asset" content="{{ asset('/') }}">
   <!-- My-own styles -->
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
   <!-- Icon in title-bar -->
   <link rel="icon" type="/uploads/ic_cashco_for_title.png" href="/uploads/ic_cashco_for_title.png">
   <!-- bootstrap -->
@@ -18,20 +19,24 @@
   <!-- datatables -->
   <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
   <!-- <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/responsive.bootstrap.min.css') }}"> -->
-  
+
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="{{ asset('bower_components/Ionicons/css/ionicons.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/dist/css/AdminLTE.min.css') }}">
- 
+
   <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/dist/css/skins/skin-blue.min.css') }}">
   <!-- date-picker -->
   <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 
   <!-- MORRIS CHART -->
   <link rel="stylesheet" href="{{ asset('bower_components/morris.js/morris.css') }}">
+
+    {{--    bootstrap X-editable css --}}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-editable.css') }}">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,7 +51,7 @@
 
 </head>
 <!-- Body -->
-<body @if(!Request::is('login')) class="hold-transition skin-blue sidebar-mini" @endif>
+<body @if(!Request::is('login')) class="hold-transition skin-blue sidebar-mini sidebar-collapse" @endif>
 <div class="wrapper">
 
   {!! Charts::assets() !!}
@@ -69,8 +74,8 @@
 
   <!-- Main Footer -->
  @if(!Request::is('login')) @include('inc.footer') @endif
-  
-  
+
+
 <!-- REQUIRED JS SCRIPTS -->
 
 
@@ -95,8 +100,11 @@
 <script src="{{ asset('js/category.js') }}"></script>
 <script src="{{ asset('js/company.js') }}"></script>
 <script src="{{ asset('js/reports.js') }}"></script>
+
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+
 
 <!-- AdminLTE App -->
 <script src="{{ asset('bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
@@ -116,8 +124,12 @@
 <!-- jQuery Number
 <script src="{{ asset('js/jquery.number.min.js') }}"></script> -->
  <!-- date-picker -->
- <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}">
+{{-- <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}">--}}
 
+      {{--  js file of x-editable    --}}
+  <script src="{{ asset('js/bootstrap-editable.min.js') }}"></script>
 
+</div>
 </body>
+
 </html>

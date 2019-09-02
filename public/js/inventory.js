@@ -33,6 +33,13 @@ $('#Item_data_table').on('click', '.btn_delete_product', function () {
         var itemID = $(this).data('product-id');
         $('input[name=item_id]').val(itemID);
     });
+
+
+/* ================================== Importing Excel-file ========================================================*/
+    $('#excel_file').change(function () {
+       $('#item_excel_name').val($(this)[0].files[0].name);
+    });
+/* ==================================/. Importing Excel-file ========================================================*/
  });
 
  // Editing items

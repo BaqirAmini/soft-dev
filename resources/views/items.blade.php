@@ -371,7 +371,7 @@
                     <form action="{{ route('item.import') }}" method="post" enctype="multipart/form-data" class="form-horizontal" id="form-import-excel">
                         @csrf
                         <div class="input-group input-group-md">
-                            <input type="text" class="form-control" disabled="disabled">
+                            <input type="text" class="form-control" id="item_excel_name" disabled="disabled">
                             <div class="input-group-addon">
                                 <label class="excel_upload">
                                     <span>Choose</span>

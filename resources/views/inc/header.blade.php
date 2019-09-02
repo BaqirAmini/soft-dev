@@ -27,13 +27,13 @@
                   <!-- User image -->
                   <li class="user-header">
                 @if(Auth::check())    <img src="/uploads/user_photos/{{ Auth::user()->photo }}" class="img-circle" alt="User Image"> @endif
-    
+
                     <p>
                         @if(Auth::check()) {{ Auth::user()->name }} {{ Auth::user()->lastname }}   - {{ Auth::user()->role }} @endif
                       <!-- <small>Member since Nov. 2018</small> -->
                     </p>
                   </li>
-                 
+
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
@@ -44,11 +44,10 @@
                     </div>
                   </li>
                 </ul>
-              
+
               </li>
             </ul>
           </div>
         </nav>
       </header>
-      
- 
+

@@ -135,10 +135,10 @@
                             <a href="#"> <span>{{ $cart->name }}</span></a>
                          </div>
                           <div class="col-xs-12 col-md-3">
-                            <a href="#" id="link_qty" data-html="true" data-toggle="popover" > <span>{{ $cart->qty }}</span></a>
+                            <a href="#" class="link_qty" id="test_n"> <span>{{ $cart->qty }}</span></a>
                           </div>
                           <div class="col-xs-12 col-md-3">
-                            <a href="#"><span>${{ $cart->price }}</span></a>
+                            <a href="#" class="link_price"><span>${{ $cart->price }}</span></a>
                           </div>
                         <div class="input-group">
                          <a href="#">${{ $cart->qty * $cart->price }}</a>
@@ -206,9 +206,9 @@
           </div>
           <!--/.col (left) -->
           <!-- right column -->
-          <div class="col-md-8">
+          <div class="col-md-8" style="padding: 0px;">
             <!-- Horizontal Form -->
-            <div class="box box-info" id="box-items-for-sale">
+            <div class="box box-primary" id="box-items-for-sale">
               <div class="box-header with-border">
                 <div class="content-header">
                     <div class="box-title">
@@ -220,7 +220,7 @@
                       {{ csrf_field() }}
                       <div class="input-group  col-lg-offset-2">
                           <input type="text" name="search" placeholder="Search items to sell"
-                                 class="form-control">
+                                 class="form-control" required>
                           <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                                 <span class=" glyphicon glyphicon-search"></span>
@@ -232,7 +232,7 @@
               </div>
               <p id="stock_message" style="text-align:center;display:none"></p>
                 <div class="box-body">
-                     <ul style="padding-left:-20px !important;">
+                     <ul style="width:100%;margin-left: -15px;">
                        @foreach($items as $item)
                        <li style="list-style: none">
                         <a href="#" data-item-id="{{ $item->item_id }}"
@@ -434,7 +434,7 @@
 <!-- /. MODAL -->
 
 <!-- ========================= Content of POPOVER ======================= -->
-  <div class="hide">
+  <div class="hidden">
     <div class="form-group ">
       <form id="popover_form">
         <input type="text" name="value" id="value" class="form-control" placeholder="Some value here..."><br>

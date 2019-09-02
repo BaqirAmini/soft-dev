@@ -94,6 +94,7 @@ Route::get('customer/custDetail/invoice/detail/{invId?}', 'InvoiceController@onD
 #Cart routes
 Route::post('cart', 'CartController@addToCart');
 Route::get('cart/removeItem', 'CartController@removeItem');
+Route::post('cart/editQty', 'CartController@editQty');
 # /.Cart
 
 #Invoice-routes

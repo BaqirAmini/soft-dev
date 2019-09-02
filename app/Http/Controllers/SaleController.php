@@ -53,7 +53,7 @@ class SaleController extends Controller
             } else {
                 abort(403, 'This action is unauthorized.');
             }
-            
+
     }
 
     public function SearchItem(Request $request)
@@ -64,14 +64,10 @@ class SaleController extends Controller
         $subTotal = Cart::subtotal(2, '.', '');
         $tax = Cart::tax();
         # /.cart
-        $searchInput = $request->search;
+        $searchInput = strtoupper($request->search);
         $categories = DB::table('categories')->get();
-        $items = DB::table('companies')
-            ->join('items', 'companies.company_id', '=', 'items.comp_id')
-            ->select('items.*')
-            ->where('items.comp_id', Auth::user()->comp_id)
-            ->where('item_name', 'LIKE', '%'.$searchInput.'%')
-            ->get();
+//        $items = Item::all()->where('comp_id', Auth::user()->comp_id)->orWhere('item_name', 'LIKE', '%'.$searchInput.'%');
+        $items = DB::table('items')->select('*')->where('item_name', 'LIKE', '%'.$searchInput.'%')->get();
         $customers = Customer::all()->where('comp_id', Auth::user()->comp_id);
         $sales = DB::table('companies')
             ->join('items', 'companies.company_id', '=', 'items.comp_id')
@@ -107,7 +103,7 @@ class SaleController extends Controller
         $recievable = $request->recieveable;
         # current company-id
         $compId = Auth::user()->comp_id;
-        # currend user-id to define who sells 
+        # currend user-id to define who sells
         $seller = Auth::user()->id;
 
         # First generate invoice in TABLE invoices that is needed in TABLE payments
@@ -167,7 +163,7 @@ class SaleController extends Controller
             ]);
         }
         # /. Genereate invoice .....
-          
+
     }
 
     /**

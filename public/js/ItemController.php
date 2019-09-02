@@ -53,7 +53,7 @@ class ItemController extends Controller
                         foreach ($value as $row) {
                                 $insert_ctg[] = array(
                                     'comp_id' => Auth::user()->comp_id,
-                                    'ctg_name' => $row['ctg_name'],
+                                    'ctg_name' => $row['category'],
                                     'created_at' => carbon::now(),
                                     'updated_at' => carbon::now()
                                 );
@@ -61,20 +61,18 @@ class ItemController extends Controller
                     $ctg_inserted = DB::table('categories')->insert($insert_ctg);
                     if ($ctg_inserted) {
                         foreach ($value as $row) {
-                            $ctgIds = DB::table('categories')->select('ctg_id')->where('comp_id', Auth::user()->comp_id)->where('ctg_name', $row['ctg_name'])->get();
+                            $ctgIds = DB::table('categories')->select('ctg_id')->where('comp_id', Auth::user()->comp_id)->where('ctg_name', $row['category'])->get();
 //                                return $ctgIds;
                             foreach ($ctgIds as $cid) {
                                 $insert_item[] = array(
                                     'comp_id' => Auth::user()->comp_id,
                                     'ctg_id' => $cid->ctg_id,
-                                    'sup_id' => $row['supplier'],
-                                    'item_name' => $row['item_name'],
-                                    'item_desc' => $row['item_desc'],
-                                    'purchase_price' => $row['purchase_price'],
+                                    'item_name' => $row['item'],
+                                    'item_desc' => $row['description'],
+                                    'purchase_price' => $row['cost'],
                                     'sell_price' => $row['sell_price'],
-                                    'quantity' => $row['qty'],
+                                    'quantity' => $row['quantity'],
                                     'barcode_number' => $row['barcode'],
-                                    'discount' => $row['discount'],
                                     'taxable' => $row['taxable'],
                                     'created_at' => carbon::now(),
                                     'updated_at' => carbon::now()
@@ -105,18 +103,18 @@ class ItemController extends Controller
                 ->select('items.*',  'categories.ctg_name')
                 ->where('items.comp_id',  $compId)
                 ->get()->toArray();
-            $items_array[] = array('Category', 'Item', 'Desc', 'In Stock', 'Barcode #', 'Taxable', 'Purchase Price', 'Sell Price', 'Reg. Date');
+            $items_array[] = array('category', 'item', 'description', 'cost', 'sell_price', 'quantity', 'barcode', 'taxable', 'date');
             foreach ($items as $item) {
                 $items_array[] = array(
-                  'Category' => $item->ctg_name,
-                  'Item' => $item->item_name,
-                  'Desc' => $item->item_desc,
-                  'In Stock' => $item->quantity,
-                  'Barcode #' => $item->barcode_number,
-                  'Taxable' => $item->taxable,
-                  'Puchase Price' => '$'.$item->purchase_price,
-                  'Sell Price' => '$'.$item->sell_price,
-                  'Reg. Date' => carbon::parse($item->created_at)->format('d-M-Y')
+                  'category' => $item->ctg_name,
+                  'item' => $item->item_name,
+                  'description' => $item->item_desc,
+                  'cost' => $item->purchase_price,
+                  'sell_price' => $item->sell_price,
+                  'quantity' => $item->quantity,
+                  'barcode' => '$'.$item->barcode_number,
+                  'taxable' => '$'.$item->taxable,
+                  'date' => carbon::parse($item->created_at)->format('d-M-Y')
                 );
             }
             Excel::create('Items In Inventory', function ($excel) use ($items_array) {

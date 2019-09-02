@@ -87,7 +87,7 @@
         @endcan
 
          @if(Auth::user()->can('isSystemAdmin', App\User::class) || Auth::user()->can('isCashier', App\User::class))
-           <li class="treeview menu-open">
+           <li>
              <a href="{{ route('customer') }}">
                <i class="fa fa-users"></i>
                <span>Customers</span>

@@ -358,14 +358,14 @@
                     <ul id="msg_area" style="display:none">
                     </ul>
                     <div class="register-box-body">
-                        <form action="{{ route('customer.import') }}" method="POST"  class="form-horizontal" enctype="multipart/form-data">
+                        <form action="{{ route('customer.import') }}" method="post"  enctype="multipart/form-data"  class="form-horizontal">
                             @csrf
                             <div class="input-group input-group-md">
-                                <input type="text" class="form-control" disabled="disabled">
+                                <input type="text" class="form-control" id="excel_name" disabled="disabled">
                                 <div class="input-group-addon">
                                     <label class="excel_upload">
                                         <span>Choose</span>
-                                        <input type="file" id="select_excel" class="upload logo-file-input form-control" name="select_excel">
+                                        <input type="file" id="excel_import_file" class="upload logo-file-input form-control" name="excel">
                                     </label>
                                 </div>
                             </div>

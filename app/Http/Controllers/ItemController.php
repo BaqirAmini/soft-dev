@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ini_set('max_execution_time', 600);
 use App\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -103,18 +103,18 @@ class ItemController extends Controller
                 ->select('items.*',  'categories.ctg_name')
                 ->where('items.comp_id',  $compId)
                 ->get()->toArray();
-            $items_array[] = array('Category', 'Item', 'Desc', 'In Stock', 'Barcode #', 'Taxable', 'Purchase Price', 'Sell Price', 'Reg. Date');
+            $items_array[] = array('category', 'item', 'description', 'quantity', 'barcode', 'taxable', 'cost', 'sell_price', 'date');
             foreach ($items as $item) {
                 $items_array[] = array(
-                  'Category' => $item->ctg_name,
-                  'Item' => $item->item_name,
-                  'Desc' => $item->item_desc,
-                  'In Stock' => $item->quantity,
-                  'Barcode #' => $item->barcode_number,
-                  'Taxable' => $item->taxable,
-                  'Puchase Price' => '$'.$item->purchase_price,
-                  'Sell Price' => '$'.$item->sell_price,
-                  'Reg. Date' => carbon::parse($item->created_at)->format('d-M-Y')
+                  'category' => $item->ctg_name,
+                  'item' => $item->item_name,
+                  'description' => $item->item_desc,
+                  'quantity' => $item->quantity,
+                  'barcode' => $item->barcode_number,
+                  'taxable' => $item->taxable,
+                  'cost' => '$'.$item->purchase_price,
+                  'sell_price' => '$'.$item->sell_price,
+                  'date' => carbon::parse($item->created_at)->format('d-M-Y')
                 );
             }
             Excel::create('Items In Inventory', function ($excel) use ($items_array) {

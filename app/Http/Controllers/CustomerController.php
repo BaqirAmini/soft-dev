@@ -242,32 +242,61 @@ class CustomerController extends Controller
     /*======================= Import/Export Excel =====================*/
     public function importExcel(Request $request) {
         $request->validate([
-            'select_excel' => 'required|mimes:xlsx, xls'
+            'excel' => 'required'
         ]);
-        if ($request->hasFile('select_excel')) {
-            $filePath = $request->file('select_excel')->getRealPath();
-            $data = Excel::load($filePath)->get();
-            $value = $data->toArray();
-            if ($data->count() > 0) {
-                foreach ($value as $row) {
-                    $insert_customer[] = array(
-                        'comp_id' => Auth::user()->comp_id,
-                        'business_name' => $row['business_name'],
-                        'cust_name' => $row['first_name'],
-                        'cust_lastname' => $row['last_name'],
-                        'cust_phone' => $row['phone'],
-                        'cust_email' => $row['email'],
-                        'cust_state' => $row['province'],
-                        'cust_addr' => $row['address']
-                    );
-                }
-                if (!empty($insert_customer)) {
+            if ($request->hasFile('excel')) {
+                $filePath = $request->file('excel')->getRealPath();
+                $data = Excel::load($filePath)->get();
+                $value = $data->toArray();
+                if (!empty($data) && $data->count()) {
+                    if ($data->count() > 0) {
+                        foreach ($value as $row) {
+                            $insert_customer[] = array(
+                                'comp_id' => Auth::user()->comp_id,
+                                'business_name' => $row['business_name'],
+                                'cust_name' => $row['first_name'],
+                                'cust_lastname' => $row['last_name'],
+                                'cust_phone' => $row['phone'],
+                                'cust_email' => $row['email'],
+                                'AccountNumber' => $row['account_number'],
+                                'AccountTypeID' => $row['account_type_id'],
+                                'cust_addr' => $row['address1'],
+                                'Address2' => $row['address2'],
+                                'AssessFinanceCharges' => $row['assess_finance_charges'],
+                                'Company' => $row['company'],
+                                'AccountBalance' => $row['account_balance'],
+                                'CreditLimit' => $row['credit_limit'],
+                                'TotalSales' => $row['total_sales'],
+                                'AccountOpened' => $row['account_opened'],
+                                'TotalSavings' => $row['total_savings'],
+                                'CurrentDiscount' => $row['current_discount'],
+                                'PriceLevel' => $row['price_level'],
+                                'TaxExempt' => $row['tax_exempt'],
+                                'Notes' => $row['notes'],
+                                'DBTimeStamp' => $row['db_time_stamp'],
+                                'TaxNumber' => $row['tax_number'],
+                                'PictureName' => $row['picture_name'],
+                                'Title' => $row['title'],
+                                'FaxNumber' => $row['fax_number'],
+                                'CashierID' => $row['cashier_id'],
+                                'SalesRepID' => $row['sales_rep_id'],
+                                'Country' => $row['country'],
+                                'cust_state' => $row['province'],
+                                'zip_code' => $row['zip_code'],
+                                'cust_status' => $row['status'],
+                                'created_at' => carbon::now(),
+                                'updated_at' => carbon::now()
+                            );
+                        }
+                        if (!empty($insert_customer)) {
 //                        DB::table('categories')->select('ctg_id')->where()->get();
-                    DB::table('customers')->insert($insert_customer);
+                            DB::table('customers')->insert($insert_customer);
+                        }
+                        return back()->with('success', 'Excel data imported successfully!');
+                    }
                 }
-                return back()->with('success', 'Excel data imported successfully!');
             }
-        }
+
     }
 
 //    Export excel
@@ -277,17 +306,74 @@ class CustomerController extends Controller
             $compId = Auth::user()->comp_id;
             $c = Company::where('company_id', $compId)->get(['comp_name']);
             $customers = Customer::where('comp_id', $compId)->get();
-            $customers_array[] = array('Business Name', 'First Name', 'Last Name', 'Phone', 'Email', 'State/Province', 'Address', 'Reg. Date');
+            $customers_array[] = array(
+                'business_name',
+                'first_name',
+                'last_name',
+                'phone',
+                'email',
+                'account_number',
+                'account_type_id',
+                'assess_finance_charges',
+                'company',
+                'account_balance',
+                'credit_limit',
+                'total_sales',
+                'account_opened',
+                'total_savings',
+                'current_discount',
+                'price_level',
+                'tax_exempt',
+                'notes',
+                'db_time_stamp',
+                'tax_number',
+                'picture_name',
+                'title',
+                'fax_number',
+                'cashier_id',
+                'sales_rep_id',
+                'country',
+                'province',
+                'address1',
+                'address2',
+                'status',
+                'zip_code',
+                'date',
+                );
             foreach ($customers as $customer) {
                 $customers_array[] = array(
-                    'Business Name' => $customer->business_name,
-                    'First Name' => $customer->cust_name,
-                    'Last Name' => $customer->cust_lastname,
-                    'Phone' => $customer->cust_phone,
-                    'Email' => $customer->cust_email,
-                    'State/Province' => $customer->cust_state,
-                    'Address' => $customer->cust_addr,
-                    'Reg. Date' => carbon::parse($customer->created_at)->format('d-M-Y')
+                    'business_name' => $customer->business_name,
+                    'first_name' => $customer->cust_name,
+                    'last_name' => $customer->cust_lastname,
+                    'phone' => $customer->cust_phone,
+                    'email' => $customer->cust_email,
+                    'account_number' => $customer->AccountNumber,
+                    'account_type_id' => $customer->AccountTypeID,
+                    'assess_finance_charges' => $customer->AssessFinanceCharges,
+                    'company' => $customer->Company,
+                    'account_balance' => $customer->AccountBalance,
+                    'credit_limit' => $customer->CreditLimit,
+                    'total_sales' => $customer->TotalSales,
+                    'account_opened' => $customer->AccountOpened,
+                    'total_savings' => $customer->TotalSavings,
+                    'current_discount' => $customer->CurrentDiscount,
+                    'price_level' => $customer->PriceLevel,
+                    'tax_exempt' => $customer->TaxExempt,
+                    'notes' => $customer->Notes,
+                    'db_time_stamp' => $customer->DBTimeStamp,
+                    'tax_number' => $customer->TaxNumber,
+                    'picture_name' => $customer->PictureName,
+                    'title' => $customer->Title,
+                    'fax_number' => $customer->FaxNumber,
+                    'cashier_id' => $customer->CashierID,
+                    'sales_rep_id' => $customer->SalesRepID,
+                    'country' => $customer->Country,
+                    'province' => $customer->cust_state,
+                    'address1' => $customer->cust_addr,
+                    'address2' => $customer->Address2,
+                    'status' => $customer->cust_status,
+                    'zip_code' => $customer->zip_code,
+                    'date' => carbon::parse($customer->created_at)->format('d-M-Y')
                 );
             }
             Excel::create('Customer', function ($excel) use ($customers_array) {
