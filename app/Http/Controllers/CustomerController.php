@@ -98,22 +98,28 @@ class CustomerController extends Controller
     # Show balance of a specific customer
     public function onPurchaseHistory($id = null)
     {
+//        Customers' transactions
         $purchases = DB::table('customers')
             ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
             ->join('payments', 'invoices.inv_id', '=', 'payments.inv_id')
-            ->select('customers.*', 'invoices.*', 'payments.*')
+            ->select( 'invoices.*', 'payments.*')
             // ->where('customers.cust_id', $custId)
             ->where('customers.comp_id', Auth::user()->comp_id)
             ->where('customers.cust_id', $id)
             ->get();
+
+//        customer personal-info
+        $customers = DB::table('customers')->select('*')->where('comp_id', Auth::user()->comp_id)->where('cust_id', $id)->get();
+
         // return view('customer_purchase_history', compact('purchases'));
         $recieved = $purchases->sum('recieved_amount');
         $recievable = $purchases->sum('recievable_amount');
         $totalTransaction = $recievable + $recieved;
         if (count($purchases) > 0) {
-            return view('customer_detail', compact(['purchases', 'recieved', 'recievable', 'totalTransaction']));
+            return view('customer_detail', compact(['customers','purchases', 'recieved', 'recievable', 'totalTransaction']));
         } else {
-            abort(403, 'Sorry, this customer has not purchased anything yet.');
+//           return back()->with('no_purchase', 'Sorry, this customer has not done any transaction yet.');
+            return view('customer_detail', compact(['customers','purchases', 'recieved', 'recievable', 'totalTransaction']));
         }
     }
 

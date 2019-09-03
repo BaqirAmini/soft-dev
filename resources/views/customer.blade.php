@@ -38,6 +38,13 @@
                                 <li><a href="#">About Us</a></li>--}}
                           </ul>
                       </div>
+                      <br>
+
+                    <div>
+                        @if($msg = Session::get('no_purchase'))
+                            <h4 style="color: darkred">{{$msg}}</h4>
+                        @endif
+                    </div>
                       {{--   /. Dropdown for Excel   --}}
                   </section>
                 @endcan
