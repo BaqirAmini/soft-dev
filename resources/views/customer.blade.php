@@ -4,6 +4,20 @@
         {{ Breadcrumbs::render('customer') }}
     </div>
   <div class="content">
+      @if(count($errors) > 0)
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <ul style="color:darkred">
+                  @foreach($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                  @endforeach
+              </ul>
+          </div>
+      @endif
+      @if($msg = Session::get('success'))
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <span style="color: #0b93d5">{{ $msg }}</span>
+              </div><br>
+      @endif
     <div class="row">
         <div class="col-md-12">
           <div class="box">
@@ -18,7 +32,7 @@
                           <ul class="dropdown-menu">
                               <li class="dropdown-header">Excel Sheets</li>
                               <li><a href="{{ route('customer.export') }}">Export Excel</a></li>
-                              <li><a href="#" data-toggle="modal" data-target="#modal-excel">Import Excel</a></li>
+                              <li><a href="#" data-toggle="modal" data-target="#modal-customer-excel">Import Excel</a></li>
                               <li class="divider"></li>
                              {{-- <li class="dropdown-header">Dropdown header 2</li>
                                 <li><a href="#">About Us</a></li>--}}
@@ -62,7 +76,6 @@
                             <td>{{ $customer->cust_email }}</td>
                             <td>{{ $customer->cust_addr }}</td>
                             <td>{{ $customer->cust_state }}</td>
-                            <td>{{ $customer->cust_addr }}</td>
                             <td>{{ Carbon\carbon::parse($customer->created_at)->format('M d Y')  }}</td>
                             <!-- <td>
                               <button class="btn btn-danger btn-sm delete-customer" data-cust-id="{{ $customer->cust_id }}"
@@ -81,7 +94,6 @@
       </div>
     </div>
   </div>
-
         <!-- </div>
     </section> -->
 
@@ -334,7 +346,7 @@
         </div>
       <!-- /. customer-profile -->
 
-    <div class="modal fade" id="modal-excel">
+    <div class="modal fade" id="modal-customer-excel">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -346,14 +358,14 @@
                     <ul id="msg_area" style="display:none">
                     </ul>
                     <div class="register-box-body">
-                        <form action="{{ route('item.import') }}" method="post" class="form-horizontal" id="form-import-excel">
+                        <form action="{{ route('customer.import') }}" method="post"  enctype="multipart/form-data"  class="form-horizontal">
                             @csrf
                             <div class="input-group input-group-md">
-                                <input type="text" class="form-control" disabled="disabled">
+                                <input type="text" class="form-control" id="excel_name" disabled="disabled">
                                 <div class="input-group-addon">
                                     <label class="excel_upload">
                                         <span>Choose</span>
-                                        <input type="file" id="excel_file" class="upload logo-file-input form-control" name="excel_file">
+                                        <input type="file" id="excel_import_file" class="upload logo-file-input form-control" name="excel">
                                     </label>
                                 </div>
                             </div>

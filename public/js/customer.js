@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#modal-customer').on('click', '#btn_add_customer', function () { 
+    $('#modal-customer').on('click', '#btn_add_customer', function () {
 
             var businessName = $('input[name=business_name]').val();
             var custName = $('input[name=cust_name]').val();
@@ -9,14 +9,14 @@ $(document).ready(function () {
             var custState = $('input[name=cust_state]').val();
             var custَAddress = $('input[name=cust_addr]').val();
             var token = $('input[name=_token]').val();
-           
+
            $.ajax({
                type: "POST",
                url: "customer",
                dataType: 'json',
                data: {
-                   'cBName':businessName, 
-                   'cName':custName, 
+                   'cBName':businessName,
+                   'cName':custName,
                    'cLastName':custLastName,
                    'cPhone':custPhone,
                    'cEmail':custEmail,
@@ -24,7 +24,7 @@ $(document).ready(function () {
                    'cAddr':custَAddress,
                    '_token':token
                     },
-            
+
                success: function (response) {
                    if (response.result === 'success') {
                        $('#modal-customer').modal('hide');
@@ -42,16 +42,16 @@ $(document).ready(function () {
                    $('#cust_message').attr('style', response.style);
                    $('#data_tbl5').load(' #data_tbl5');
                    // location.reload();
-                
+
                },
-               error: function (error) { 
+               error: function (error) {
                    console.log(error);
                 }
-           });  
+           });
      });
 
-     // ============================ EDIT CUSTOMER ======================== 
-    $('#btn_enable_cust_edit').click(function () { 
+     // ============================ EDIT CUSTOMER ========================
+    $('#btn_enable_cust_edit').click(function () {
         $('#profile input').prop('readonly', false);
         $('#profile button').prop('disabled', false);
         // for links attr used instead of prop
@@ -60,9 +60,9 @@ $(document).ready(function () {
         $(this).addClass('btn btn-default');
         $(this).prop('disabled', true);
      });
-    $('#cust-edit-profile-form').on('submit', function (e) { 
+    $('#cust-edit-profile-form').on('submit', function (e) {
         e.preventDefault();
-        
+
             var custData = new FormData(this);
             $.ajax({
                 type: "POST",
@@ -76,34 +76,34 @@ $(document).ready(function () {
                     $('#profile_msg').css('display', 'block');
                     $('#profile_msg').html('<li>' + response.cust_msg + '</li>');
                     // $('#cust-edit-profile-form').load(' #cust-edit-profile-form');
-                    setTimeout(function () { 
+                    setTimeout(function () {
                         location.reload();
                      }, 2000);
                 },
-                error: function (error) {  
+                error: function (error) {
                     console.log(error);
                 }
             });
      });
-     // ============================ /. EDIT CUSTOMER ======================== 
+     // ============================ /. EDIT CUSTOMER ========================
 
      // when customer delete-icon clicked...
-     $('#data_tbl5').on('click', '.delete-customer', function () { 
+     $('#data_tbl5').on('click', '.delete-customer', function () {
             var custId = $(this).data('cust-id');
             $('#modal-delete-customer input[name=cust_id]').val(custId);
-            
+
       });
  // Customer profile & balance
-    $('#data_tbl5').on('click', '.customer-detail', function () { 
+    $('#data_tbl5').on('click', '.customer-detail', function () {
             var custId = $(this).data('cust-id');
             href = "customer/custDetail/" + custId;
             $(this).attr('data-href', href);
             window.location = $(this).data('href');
-     });  
- 
+     });
+
 
      // When purchase-history link clicked
-     $('#purchase_history').click(function () { 
+     $('#purchase_history').click(function () {
             var custId = $(this).data('pur-cust-id');
             alert(customerId);
             var href = "customer/purHistory/"+custId;
@@ -112,7 +112,7 @@ $(document).ready(function () {
       });
 
       /** ================================ INVOICE DETAIL ============================= */
-    $('.invoice_detail').click(function () { 
+    $('.invoice_detail').click(function () {
         var invoiceId = $(this).data('inv-id');
         href = "invoice/detail/" + invoiceId;
         $(this).attr('data-href', href);
@@ -120,8 +120,8 @@ $(document).ready(function () {
      });
       /** ================================/. INVOICE DETAIL ============================= */
 
-    /** ================================================== Make-payment ======================================================== */  
-    $('#form-make-payment').on('submit', function (e) { 
+    /** ================================================== Make-payment ======================================================== */
+    $('#form-make-payment').on('submit', function (e) {
         e.preventDefault();
         var fData = new FormData(this);
         $.ajax({
@@ -134,8 +134,9 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.result === 'success') {
-                    $('#modal-make-payment').modal('hide');
-                    $('#transaction').load(' #transaction');
+                    /*$('#modal-make-payment').modal('hide');
+                    $('#transaction').load(' #transaction');*/
+                    location.reload();
                 } else {
                     $('#modal-make-payment').modal('show');
                     $('#msg_area').html('<li>' + response.message + '</li>')
@@ -143,14 +144,22 @@ $(document).ready(function () {
                 $('#msg_area').css('display', 'block');
                 $('#msg_area').attr('style', response.style);
             },
-            error:function (err) { 
+            error:function (err) {
                 console.log(err);
              }
         });
-        
+
      });
-    
-    /** ==================================================/. Make-payment ======================================================== */  
+
+    /** ==================================================/. Make-payment ======================================================== */
+
+
+    /* ============================================= Import Excel-file =====================================*/
+    $('#excel_import_file').change(function () {
+        // readExelURL(this);
+        $('#excel_name').val($(this)[0].files[0].name);
+    });
+    /* =============================================/. Import Excel-file =====================================*/
 });
 
 
@@ -167,7 +176,7 @@ function deleteCustomer() {
                $('#modal-delete-customer').modal('hide');
                $('#data_tbl5').load(' #data_tbl5');
            },
-           error: function (error) { 
+           error: function (error) {
                console.log(error);
             }
        });

@@ -1,14 +1,13 @@
 $(document).ready(function () {
-
 /** =================================== click btn ADD to insert items in the CART ============================= */
   var tax = $('input#tax').val();
   // $(this).prop('disabled', true);
-  
+
 
   // when button add clicked...
   $('.link_add_item').click(function () {
     // printJS('#sale_section', 'html');
-    
+
     var itemID = $(this).data('item-id');
     var itemName = $(this).data('item-name');
     var itemPrice = $(this).data('item-price');
@@ -22,10 +21,11 @@ $(document).ready(function () {
          console.log(response);
          $('#stock_message').css({ 'display': 'block', 'text-align': 'center', 'color': 'darkred' });
          $('#stock_message').html(response.stock_msg);
-         $('#test').load(' #test');
-         /*$('#total_area').load(' #total_area');
-         $('#box-items-for-sale').load(' #total_area');*/
-         location.reload();
+         /*$('#sale_section').load(' #sale_section');
+         $('#box_cart').load(' #box_cart');*/
+         setTimeout(function () {
+             window.location.reload();
+         }, 5);
          // $('#payment_area').load(' #payment_area');
          // $('.tax_value').attr('readonly', response.readonly);
 
@@ -64,7 +64,9 @@ $(document).ready(function () {
       success: function (response) {
         console.log(response);
         // $('#sale_section').load(' #sale_section');
-        location.reload();
+       setTimeout(function () {
+           location.reload();
+       }, 5);
       },
       error: function (error) {
         console.log(error);
@@ -72,7 +74,7 @@ $(document).ready(function () {
     });
   });
 
-  // when btn-delete-invoice clicked invoice_id should be sent to its modal 
+  // when btn-delete-invoice clicked invoice_id should be sent to its modal
   $('#data_tbl_purchase_history').on('click', '.btn_delete_invoice', function () {
     var invoiceId = $(this).data('inv-id');
     $('input[name=cust_inv_id]').val(invoiceId);
@@ -195,15 +197,22 @@ function onSaveSale() {
          $('#inv_message').fadeOut(4000);
          _invoiceID = response.invoice_id;
          // $('#sale_section').load(' #sale_section');
-         setTimeout(function () { location.reload(); }, 5000);
+         // setTimeout(function () { location.reload(); }, 5000);
 
        },
-       error: function (error) { 
+       error: function (error) {
            console.log(error);
         }
      });
 
 }
+// ======================= while btn CANCEL or PRINT of print-modal clicked, the page should be refreshed =================================
+$('#btn_modal_print button').click(function () {
+    location.reload();
+});
+
+// ======================= /.while btn CANCEL or PRINT of print-modal clicked, the page should be refreshed =================================
+
 // To generate bill/invoice
 function onCreateInvoice(customer) {
   var custID = customer;
@@ -255,21 +264,21 @@ function onPrintInvoice(custID, invcID) {
       $('#spn_cust_name').html(data[0].cust_name + " " + data[0].cust_lastname);
       // Company details on bill
       $('#company_name').html(data[0].comp_name);
-      $('#company_address').html(data[0].comp_name + "<br>" + data[0].comp_state + ", " + data[0].comp_address + "<br>" + data[0].contact_no + "<br>" + data[0].email + "<br>" + data[0].website);
+      $('#company_address').html(data[0].comp_name + "<br>" + data[0].comp_state + ", " + data[0].comp_address + "<br>" + data[0].contact_no + "<br>" + data[0].email + "<br>");
       $('#customer_address #customer_detail').html(data[0].cust_state + ", " + data[0].cust_addr + "<br>" + data[0].cust_phone);
       // Sold-date
-      var d = new Date(Date.parse(data[0].created_at));
+     /* var d = new Date(Date.parse(data[0].created_at));
       var date = d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear();
-      $('#sold_date').html('Sold Date: ' + date);
+      $('#sold_date').html('Sold Date: ' + date);*/
       $('#print_table > #invoice_body').empty();
       $.each(data, function (i, elem) {
-        $('#print_table > #invoice_body').append('<tr><td style="margin-right:30px;">'
-          + elem.qty_sold + '</td><td style="margin-right:30px;">'
-          + elem.item_name + '</td><td style="margin-right:30px;">$'
+        $('#print_table > #invoice_body').append('<tr style="border-bottom: 1px darkgray dashed"><td style="text-align: center">'
+          + elem.qty_sold + '</td><td style="text-align: center">'
+          + elem.item_name + '</td><td style="text-align: center">$'
           + elem.subtotal + '</td></tr>')
         total = parseFloat(total) + parseFloat(elem.subtotal);
       });
-      $('#inv_total').html('$' + total);
+      $('#inv_total').html('&nbsp; $' + total);
       doPrint(invoice);
     }
   });
@@ -280,20 +289,31 @@ $('button.btn_print_sale').click(function () {
   // cid (customer-id) is globally declared.
   var invoiceId = $('input[name=invoice_id_for_print]').val();
   onPrintInvoice(cid, _invoiceID);
-
-
 });
 function doPrint(i) {
-  w = window.open("");
+  w = window.open('');
+  w.document.write('<html><head><title>' + document.title  + '</title>');
+  w.document.write('</head><body >');
+  w.document.write("<link rel=\"stylesheet\" href=\"css/bootstrap.css\" type=\"text/css\"/>");
+  w.document.write("<link rel=\"stylesheet\" href=\"css/bootstrap-theme.css\" type=\"text/css\"/>");
+  w.document.write("<link rel=\"stylesheet\" href=\"css/styles.css\" type=\"text/css\"/>");
+  w.document.write('</head><body onload="window.print();window.close()">');
   w.document.write(i.innerHTML);
   w.setTimeout(function () {
     w.print();
     w.close();
-  }, 10);
+  }, 500);
   w.document.close(); // necessary for IE >= 10
-  w.focus(); // necessary for IE >= 10 
+  w.focus(); // necessary for IE >= 10
   return true;
 
+  w.document.write('</body></html>');
+    w.document.close(); // necessary for IE >= 10
+    w.focus(); // necessary for IE >= 10
+    setTimeout(function () {
+        w.print();
+    }, 200);
+    return false;
 }
 // End
 // Print Invoice

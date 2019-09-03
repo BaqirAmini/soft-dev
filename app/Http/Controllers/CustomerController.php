@@ -20,6 +20,7 @@ class CustomerController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -50,13 +51,13 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     # Create new customer
     public function store(Request $request)
     {
-       $validation = Validator::make($request->all(), [
+        $validation = Validator::make($request->all(), [
             'cBName' => 'required|string|max:128|min:5',
             'cName' => 'required|string|max:64',
             'cLastName' => 'nullable|string|max:64',
@@ -93,22 +94,23 @@ class CustomerController extends Controller
 
 
     }
+
     # Show balance of a specific customer
     public function onPurchaseHistory($id = null)
     {
         $purchases = DB::table('customers')
-        ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
-        ->join('payments', 'invoices.inv_id', '=', 'payments.inv_id')
-        ->select('customers.*', 'invoices.*', 'payments.*')
-        // ->where('customers.cust_id', $custId)
-        ->where('customers.comp_id', Auth::user()->comp_id)
-        ->where('customers.cust_id', $id)
-        ->get();
+            ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
+            ->join('payments', 'invoices.inv_id', '=', 'payments.inv_id')
+            ->select('customers.*', 'invoices.*', 'payments.*')
+            // ->where('customers.cust_id', $custId)
+            ->where('customers.comp_id', Auth::user()->comp_id)
+            ->where('customers.cust_id', $id)
+            ->get();
         // return view('customer_purchase_history', compact('purchases'));
         $recieved = $purchases->sum('recieved_amount');
         $recievable = $purchases->sum('recievable_amount');
         $totalTransaction = $recievable + $recieved;
-        if (count($purchases) > 0 ) {
+        if (count($purchases) > 0) {
             return view('customer_detail', compact(['purchases', 'recieved', 'recievable', 'totalTransaction']));
         } else {
             abort(403, 'Sorry, this customer has not purchased anything yet.');
@@ -144,14 +146,13 @@ class CustomerController extends Controller
         }
 
 
-
-
     }
     # ================================/. Make a payment ===================================
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -162,7 +163,7 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     # Edit a customer
@@ -192,14 +193,12 @@ class CustomerController extends Controller
                 'cust_msg' => 'Customer edited successfully!',
                 'style' => 'color:grey'
             ]);
-        }
-        else  {
+        } else {
             return response()->json([
                 'cust_msg' => $v->errors()->all(),
                 'style' => 'color:red'
             ]);
-      }
-
+        }
 
 
     }
@@ -207,8 +206,8 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -219,7 +218,7 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     # Delete a customer from database
@@ -240,57 +239,156 @@ class CustomerController extends Controller
     }
 
     /*======================= Import/Export Excel =====================*/
-    public function importExcel(Request $request) {
-        /*$request->validate([
-           'excel_file' => 'required|mimes:xlsx, xls'
-        ]);*/
-        if ($request->hasFile('excel_file')) {
-            $path = $request->file('excel_file')->getRealPath();
-            $data = Excel::load($path)->get();
-            foreach ($data->toArray() as $key => $value) {
-                foreach ($value as $row) {
-                    $insert_data[] = array(
-                        'comp_id' => $row[Auth::user()->comp_id],
-                        'ctg_id' => $row['ctg'],
-                        'sup_id' => $row['supplier'],
-                        'item_name' => $row['item_name'],
-                        'item_desc' => $row['item_desc'],
-                        'item_image' => $row['item_image'],
-                        'puchase_price' => $row['puchase_price'],
-                        'sell_price' => $row['sell_price'],
-                        'quantity' => $row['qty'],
-                        'barcode_number' => $row['barcode'],
-                        'discount' => $row['discount'],
-                        'taxable' => $row['taxable'],
-                    );
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'excel' => 'required'
+        ]);
+        if ($request->hasFile('excel')) {
+            $filePath = $request->file('excel')->getRealPath();
+            $data = Excel::load($filePath)->get();
+            $value = $data->toArray();
+            if (!empty($data) && $data->count()) {
+                if ($data->count() > 0) {
+                    foreach ($value as $row) {
+                        $insert_customer[] = array(
+                            'AccountNumber' => $row['account_number'],
+                            'AccountTypeID' => $row['account_type_id'],
+                            'created_at' => carbon::now(),
+                            'updated_at' => carbon::now(),
+                            'LimitPurchase' => $row['limit_purchase'],
+                            'AccountBalance' => $row['account_balance'],
+                            'CreditLimit' => $row['credit_limit'],
+                            'TotalSales' => $row['total_sales'],
+                            'last_visit' => $row['last_visit'],
+                            'total_visit' => $row['total_visits'],
+                            'CurrentDiscount' => $row['current_discount'],
+                            'business_name' => $row['business_name'],
+                            'comp_id' => Auth::user()->comp_id,
+                            'HQID' => $row['hq_id'],
+                            'Country' => $row['country'],
+                            'cust_state' => $row['province'],
+                            'cust_addr' => $row['address1'],
+                            'Address2' => $row['address2'],
+                            'City' => $row['city'],
+                            'zip_code' => $row['zip_code'],
+                            'StoreID' => $row['store_id'],
+                            'Title' => $row['title'],
+                            'Employee' => $row['employee'],
+                            'cust_name' => $row['first_name'],
+                            'cust_lastname' => $row['last_name'],
+                            'cust_phone' => $row['phone'],
+                            'cust_status' => $row['status'],
+                            'FaxNumber' => $row['fax_number'],
+                            'TaxExempt' => $row['tax_exempt'],
+                            'Notes' => $row['notes'],
+                            'cust_email' => $row['email'],
+                            'DBTimeStamp' => $row['db_time_stamp'],
+                            'TaxNumber' => $row['tax_number'],
+                            'UserID' => Auth::user()->id,
+                            'SalesRepID' => $row['sales_rep_id'],
+                            'PriceLevel' => $row['price_level'],
+                            'TotalSavings' => $row['total_savings'],
+                            'AssessFinanceCharges' => $row['assess_finance_charges'],
+                        );
+                    }
+                    if (!empty($insert_customer)) {
+//                        DB::table('categories')->select('ctg_id')->where()->get();
+                        DB::table('customers')->insert($insert_customer);
+                    }
+                    return back()->with('success', 'Excel data imported successfully!');
                 }
             }
-            if (!empty($insert_data)) {
-                DB::table('items')->insert($insert_data);
-                return back()->with('success', 'Excel data imported successfully!');
-            }
-
         }
+
     }
 
 //    Export excel
-    public function exportExcel() {
+    public function exportExcel()
+    {
         $c = '';
         if (Gate::allows('isSystemAdmin') || Gate::allows('isCashier')) {
             $compId = Auth::user()->comp_id;
             $c = Company::where('company_id', $compId)->get(['comp_name']);
             $customers = Customer::where('comp_id', $compId)->get();
-            $customers_array[] = array('Business Name', 'First Name', 'Last Name', 'Phone', 'Email', 'State/Province', 'Address', 'Reg. Date');
+            $customers_array[] = array(
+                'account_number',
+                'account_type_id',
+                'account_opened',
+                'limit_purchase',
+                'account_balance',
+                'credit_limit',
+                'total_sales',
+                'last_visit',
+                'total_visits',
+                'current_discount',
+                'business_name',
+                'hq_id',
+                'country',
+                'province',
+                'address1',
+                'address2',
+                'city',
+                'zip_code',
+                'store_id',
+                'id',
+                'title',
+                'employee',
+                'first_name',
+                'last_name',
+                'phone',
+                'status',
+                'fax_number',
+                'tax_exempt',
+                'notes',
+                'email',
+                'db_time_stamp',
+                'tax_number',
+                'user_id',
+                'sales_rep_id',
+                'price_level',
+                'total_savings',
+                'assess_finance_charges',
+            );
             foreach ($customers as $customer) {
                 $customers_array[] = array(
-                    'Business Name' => $customer->business_name,
-                    'First Name' => $customer->cust_name,
-                    'Last Name' => $customer->cust_lastname,
-                    'Phone' => $customer->cust_phone,
-                    'Email' => $customer->cust_email,
-                    'State/Province' => $customer->cust_state,
-                    'Address' => $customer->cust_addr,
-                    'Reg. Date' => carbon::parse($customer->created_at)->format('d-M-Y')
+                    'account_number' => $customer->AccountNumber,
+                    'account_type_id' => $customer->AccountTypeID,
+                    'account_opened' => carbon::parse($customer->created_at)->format('m-D-Y'),
+                    'limit_purchase' => $customer->LimitPurchase,
+                    'account_balance' => $customer->AccountBalance,
+                    'credit_limit' => $customer->CreditLimit,
+                    'total_sales' => $customer->TotalSales,
+                    'last_visit' => $customer->last_visit,
+                    'total_visits' => $customer->total_visit,
+                    'current_discount' => $customer->CurrentDiscount,
+                    'business_name' => $customer->business_name,
+                    'hq_id' => $customer->HQID,
+                    'country' => $customer->Country,
+                    'province' => $customer->cust_state,
+                    'address1' => $customer->cust_addr,
+                    'address2' => $customer->Address2,
+                    'city' => $customer->City,
+                    'zip_code' => $customer->zip_code,
+                    'store_id' => $customer->StoreID,
+                    'id' => $customer->cust_id,
+                    'title' => $customer->Title,
+                    'employee' => $customer->Employee,
+                    'first_name' => $customer->cust_name,
+                    'last_name' => $customer->cust_lastname,
+                    'phone' => $customer->cust_phone,
+                    'status' => $customer->cust_status,
+                    'fax_number' => $customer->FaxNumber,
+                    'tax_exempt' => $customer->TaxExempt,
+                    'notes' => $customer->Notes,
+                    'email' => $customer->cust_email,
+                    'db_time_stamp' => $customer->DBTimeStamp,
+                    'tax_number' => $customer->TaxNumber,
+                    'user_id' => $customer->UserID,
+                    'sales_rep_id' => $customer->SalesRepID,
+                    'price_level' => $customer->PriceLevel,
+                    'total_savings' => $customer->TotalSavings,
+                    'assess_finance_charges' => $customer->AssessFinanceCharges,
                 );
             }
             Excel::create('Customer', function ($excel) use ($customers_array) {
