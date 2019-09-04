@@ -63,7 +63,7 @@
                           <input id="cust_addr" type="text" class="form-control" name="cust_addr" placeholder="Address">
                         </div>
                     </div>
-                    
+
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                       <button type="button" id="btn_add_customer" class="btn btn-primary pull-left">Register</button>
@@ -99,7 +99,7 @@
                           @foreach($customers as $c)
                               <option value="{{ $c->cust_id }}">{{ $c->cust_name }} {{ $c->cust_lastname }}</option>
                           @endforeach
-                        </select>            
+                        </select>
                         <span class="input-group-btn" style="padding-left: 20px;">
                           <button class="btn btn-primary" id="btn_new_customer" type="button" data-toggle="modal" data-target="#modal-customer"><i class="fa fa-user-plus" style="padding:3px;"></i></button>
                         </span>
@@ -135,10 +135,10 @@
                             <a href="#"> <span>{{ $cart->name }}</span></a>
                          </div>
                           <div class="col-xs-12 col-md-3">
-                            <a href="#" id="link_qty" data-html="true" data-toggle="popover" > <span>{{ $cart->qty }}</span></a>
+                            <a href="#" class="link_qty" id="test_n"> <span>{{ $cart->qty }}</span></a>
                           </div>
                           <div class="col-xs-12 col-md-3">
-                            <a href="#"><span>${{ $cart->price }}</span></a>
+                            <a href="#" class="link_price"><span>${{ $cart->price }}</span></a>
                           </div>
                         <div class="input-group">
                          <a href="#">${{ $cart->qty * $cart->price }}</a>
@@ -147,7 +147,7 @@
                        </div>
                     @endforeach
                       </div>
-              
+
                      <!-- Total & Tax input -->
                 <div class="row col-md-12 col-sm-10" style="margin-bottom:50px;margin-top:20px;" id="total_area">
                       <div class="input-group col-sm-5 col-xs-11">
@@ -193,8 +193,8 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                  <button id="btn_print" 
-                      class="btn btn-default pull-right btn_save_sale" 
+                  <button id="btn_print"
+                      class="btn btn-default pull-right btn_save_sale"
                       data-toggle="modal"
                       data-target="#modal-print"
                       onclick="onSaveSale();"
@@ -206,9 +206,9 @@
           </div>
           <!--/.col (left) -->
           <!-- right column -->
-          <div class="col-md-8">
+          <div class="col-md-8" style="padding: 0px;">
             <!-- Horizontal Form -->
-            <div class="box box-info" id="box-items-for-sale">
+            <div class="box box-primary" id="box-items-for-sale">
               <div class="box-header with-border">
                 <div class="content-header">
                     <div class="box-title">
@@ -220,7 +220,7 @@
                       {{ csrf_field() }}
                       <div class="input-group  col-lg-offset-2">
                           <input type="text" name="search" placeholder="Search items to sell"
-                                 class="form-control">
+                                 class="form-control" required>
                           <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                                 <span class=" glyphicon glyphicon-search"></span>
@@ -232,21 +232,21 @@
               </div>
               <p id="stock_message" style="text-align:center;display:none"></p>
                 <div class="box-body">
-                     <ul style="padding-left:-20px !important;">
+                     <ul style="width:100%;margin-left: -15px;">
                        @foreach($items as $item)
                        <li style="list-style: none">
                         <a href="#" data-item-id="{{ $item->item_id }}"
                                     data-item-name="{{ $item->item_name }}"
                                     data-item-price="{{ $item->sell_price }}"
                                     class="link_add_item">
-                          <div class="col-md-3 col-sm-6 col-xs-12" style="margin:-1px -5px;">
-                            <div class="info-box" style="background: rgb(243, 247, 248);color: black;">
+                          <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                            <div class="info-box" style="background: rgb(243, 247, 248);color: black;"  style="min-width: 250px;">
                               <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
                               <span class="info-box-icon" style="background: rgb(243, 247, 248)">
                                 <img src="{{ url('/uploads/product_images/'.$item->item_image) }}" alt="Item Image"
                                   height="60" width="60" style="margin-top:-10px">
                               </span>
-                              <div class="info-box-content" style="margin-left:-10px;">
+                              <div class="info-box-content">
                                 <span class="info-box-text" style="font-size:12px;">{{ $item->item_name }}</span>
                                 <span class="info-box-text">${{ $item->sell_price }}</span>
                                 <span class="info-box-number">{{ $item->quantity }}</span>
@@ -268,7 +268,7 @@
                                 <img src="uploads/product_images/{{ $item->item_image }}" alt="Item Image"
                                   height="90" width="90" style="margin-top:-10px">
                               </span>
-                          
+
                               <div class="info-box-content">
                                 <span class="info-box-text">{{ $item->item_name }}</span>
                                 <span class="info-box-text">${{ $item->sell_price }}</span>
@@ -280,7 +280,7 @@
                           </div>
                         </a>
                         @else
-                        
+
                         @endif
                        </li>
                        @endforeach
@@ -295,57 +295,60 @@
         <!-- /.row -->
 
     <!-- Invoice -->
-    <section class="invoice" style="display:none" id="invoice">
+    <section class="invoice" style="display:none;margin: 10px;" id="invoice">
+
+
       <!-- title row -->
       <div class="row">
-        <div class="col-xs-12">
-          <h2 class="page-header">
-            <i class="fa fa-globe" id="company_name" ></i>, Inc.
-            <small class="pull-right" id="sold_date"></small>
-          </h2>
+        <div class="col-md-6 col-lg-6 col-xs-12">
+          <h3 class="page-header">
+            <i class="fa fa-globe" id="company_name" ></i>
+              <b class="pull-right">Invoice # <span id="inv_no"></span></b><br>
+          </h3>
         </div>
         <!-- /.col -->
       </div>
       <!-- info row -->
-      <div class="row invoice-info">
-        <h1></h1>
-        <div class="col-sm-4 invoice-col">
-          From
-          <address id="company_address">
-            <strong>Admin, Inc.</strong><br>
-          </address>
-        </div><hr>
-        <!-- /.col -->
-        <div class="col-sm-4 invoice-col">
-          To
-          <address id="customer_address">
-            <!-- <strong>{{ $invoiceDetails[0]->cust_name }} {{ $invoiceDetails[0]->cust_lastname }}</strong><br> -->
-            <strong><span id="spn_cust_name"></span></strong><br>
-            <span id="customer_detail"></span>
-          </address>
+      <div class="invoice-info">
+        <div class="invoice-col" style="border-bottom: 1px darkgray dashed">
+
+            <table width="100%">
+                <tr>
+                    <td>
+                       <strong>From</strong>
+                        <address id="company_address">
+                            <strong>Admin, Inc.</strong><br>
+                        </address>
+                    </td>
+                    <td>
+                       <strong>To</strong>
+                        <address id="customer_address">
+                        <!-- <strong>{{ $invoiceDetails[0]->cust_name }} {{ $invoiceDetails[0]->cust_lastname }}</strong><br> -->
+                            <span id="spn_cust_name"></span><br>
+                            <span id="customer_detail"></span>
+                        </address>
+                    </td>
+                </tr>
+            </table>
         </div>
-        <!-- /.col -->
-        <div class="col-sm-4 invoice-col">
-          <b>Invoice # <span id="inv_no"></span></b><br>
           <br>
-        </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->
 
       <!-- Table row -->
       <div class="row">
-        <div class="col-xs-12 table-responsive">
-          <table class="table table-striped" id="print_table">
+        <div class="col-md-offset-1 col-lg-offset-1 col-md-12 col-lg-12 col-sm-12 col-xs-12" style="text-align: center;">
+          <table class="table table-responsive table-striped" id="print_table">
             <thead>
-            <tr>
-              <th style="margin-right:30px;">Qty</th>
-              <th style="margin-right:30px;">Product</th>
-              <th style="margin-right:30px;">Sub Total</th>
+            <tr style="border-bottom: 1px darkgray dashed">
+              <th style="text-align: center;border-bottom: 1px darkgray dashed">Qty</th>
+              <th style="text-align: center;border-bottom: 1px darkgray dashed">Product</th>
+              <th style="text-align: center;border-bottom: 1px darkgray dashed">Sub Total</th>
             </tr>
             </thead>
             <tbody id="invoice_body">
-              
+
             </tbody>
           </table>
         </div>
@@ -354,20 +357,23 @@
       <!-- /.row -->
 
       <div class="row">
-        <div class="col-xs-6">
-          <div class="table-responsive">
-            <table class="table">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-6">
+          <div>
+            <table class="pull-right" style="margin-right: -280px !important;">
+                <tr>
+                    <br>
+                    <th>Tax:</th>
+                    <td></td>
+                </tr>
               <tr>
                 <th>Total:</th>
                 <td id="inv_total"></td>
               </tr>
-              <tr>
-                <th>Tax:</th>
-                <td id="inv_total"></td>
-              </tr>
             </table>
           </div>
-          <h4 >Thank you for your purchase</h4>
+          <div style="text-align: center">
+              <h4  style="margin-top: 400px;margin-left:150px;margin-right: -180px;" class="col-md-offset-4 col-lg-offset-4 col-sm-offset-4">Thank you for your purchase</h4>
+          </div>
         </div>
         <!-- /.col -->
       </div>
@@ -391,7 +397,7 @@
           <input type="hidden" name="invoice_id_for_print">
         <p>Do you want to print an invoice?</p>
       </div>
-      <div class="modal-footer col-md-offset-3">
+      <div class="modal-footer col-md-offset-3" id="btn_modal_print">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary btn_print_sale pull-left"><i class="fa fa-print"></i> Print</button>
       </div>
@@ -428,7 +434,7 @@
 <!-- /. MODAL -->
 
 <!-- ========================= Content of POPOVER ======================= -->
-  <div class="hide">
+  <div class="hidden">
     <div class="form-group ">
       <form id="popover_form">
         <input type="text" name="value" id="value" class="form-control" placeholder="Some value here..."><br>

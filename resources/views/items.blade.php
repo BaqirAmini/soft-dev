@@ -260,6 +260,16 @@
                 <form class="form-horizontal"  enctype="multipart/form-data" id="edit_item_form_data">
                     <input type="hidden" name="item_id">
                   @csrf
+                    <div class="form-group">
+                        <label for="product" class="col-sm-2 control-label">Category <span class="asterisk">*</span></label>
+                        <div class="col-sm-9">
+                            <select name="item_category" id="item_category" class="form-control" required autofocus>
+                                @foreach($ctgs as $ctg)
+                                    <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group has-feedback">
                             <label for="product" class="col-sm-2 control-label">Item <span class="asterisk">*</span></label>
                             <div class="col-sm-9">

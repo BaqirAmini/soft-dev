@@ -232,6 +232,7 @@ class ItemController extends Controller
         ]);
         if ($validation->passes()) {
             $editItem = Item::findOrfail($request->item_id);
+            $editItem->ctg_id = $request->item_category;
             $editItem->item_name = $request->item_name;
             $editItem->item_desc = $request->item_desc;
             $editItem->quantity = $request->quantity;

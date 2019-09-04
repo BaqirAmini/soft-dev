@@ -4,9 +4,10 @@
     <list default="true" id="292a0f8b-3f3b-4abd-822d-cd1bc221e884" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/customer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ItemController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ItemController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/create_sale.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/create_sale.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/customer_detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer_detail.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/items.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/items.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -220,7 +221,8 @@
       <workItem from="1566703749164" duration="12378000" />
       <workItem from="1567481560158" duration="139000" />
       <workItem from="1567481719980" duration="1184000" />
-      <workItem from="1567482928186" duration="10003000" />
+      <workItem from="1567482928186" duration="16003000" />
+      <workItem from="1567508042289" duration="1113000" />
     </task>
     <servers />
   </component>
@@ -244,5 +246,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/resources/views/items.blade.php</url>
+          <line>171</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -94,12 +94,68 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="address" class="col-sm-2 control-label">Address <span
+                                            <label for="credit_limit" class="col-sm-2 control-label">Credit Limit</label>
+                                            <div class="col-sm-10">
+                                                <input id="credit_limit" type="text" class="form-control"
+                                                       value="{{ $customers[0]->CreditLimit }}" name="credit_limit"
+                                                       placeholder="Address" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="country" class="col-sm-2 control-label">Country <span
                                                     class="asterisk">*</span></label>
                                             <div class="col-sm-10">
-                                                <input id="cust_address" type="text" class="form-control"
-                                                       value="{{ $customers[0]->cust_addr }}" name="cust_address"
-                                                       placeholder="Address" readonly>
+                                                <input id="credit_limit" type="text" class="form-control"
+                                                       value="{{ $customers[0]->Country }}" name="country"
+                                                       placeholder="Country" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address1" class="col-sm-2 control-label">Address 1 <span
+                                                    class="asterisk">*</span></label>
+                                            <div class="col-sm-10">
+                                                <input id="address1" type="text" class="form-control"
+                                                       value="{{ $customers[0]->cust_addr }}" name="address1"
+                                                       placeholder="Address 1" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address2" class="col-sm-2 control-label">Address 2 </label>
+                                            <div class="col-sm-10">
+                                                <input id="cust_address2" type="text" class="form-control"
+                                                       value="{{ $customers[0]->Address2 }}" name="address2"
+                                                       placeholder="Address2 (Optional)" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="city" class="col-sm-2 control-label">City <span
+                                                    class="asterisk">*</span></label>
+                                            <div class="col-sm-10">
+                                                <input id="city" type="text" class="form-control"
+                                                       value="{{ $customers[0]->City }}" name="city"
+                                                       placeholder="City" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="zip_code" class="col-sm-2 control-label">Zip Code</label>
+                                            <div class="col-sm-10">
+                                                <input id="zip_code" type="text" class="form-control"
+                                                       value="{{ $customers[0]->zip_code }}" name="zip_code"
+                                                       placeholder="Zip Code" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <label for="credit_limit" class="col-sm-2 control-label">Limit Purchase</label>
+                                            <div class="col-sm-9">
+                                                <!-- radio -->
+                                                <label class="limit_purchase" style="margin-right: 50px;">
+                                                    <input type="radio" name="limit_purchase" value="1" class="status"
+                                                    class="form-control">&nbsp; Yes
+                                                </label>
+                                                <label class="credit_limit">
+                                                    <input type="radio" name="limit_purchase" value="0" class="status"
+                                                    class="form-control" checked>&nbsp; No
+                                                </label>
                                             </div>
                                         </div>
                                         <br>
@@ -112,6 +168,7 @@
                                                 </button>
                                             </div>
                                         </div>
+
                                     </form>
                                 </div>
                                 <!-- /.tab-pane -->
@@ -125,6 +182,48 @@
                                         </div>
                                         <div class="box-body">
                                             <table class="table">
+                                                <tr>
+                                                    <td>Account Opened At</td>
+                                                    @if(!empty($customers) || count($customers)>0)
+                                                        <td>
+                                                          {{  Carbon\carbon::parse($customers[0]->created_at)->format('m-d-Y') }}
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                                <tr>
+                                                    <td>Account Number</td>
+                                                    @if(!empty($customers) || count($customers)>0)
+                                                        <td>
+                                                           {{ $customers[0]->AccountNumber }}
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                                <tr>
+                                                    <td>Account Type ID</td>
+                                                    @if(!empty($customers) || count($customers)>0)
+                                                        <td>
+                                                            {{ $customers[0]->AccountTypeID }}
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                                <tr>
+                                                    <td>Account Balance</td>
+                                                    @if(!empty($customers) || count($customers)>0)
+                                                        <td>
+                                                            {{ $customers[0]->AccountBalance }}
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                                <tr>
+                                                    <th>Fax Number</th>
+                                                    @if(!empty($customers) || count($customers)>0)
+                                                        <td style="border-bottom: 1px dashed grey !important">
+                                                            {{ $customers[0]->FaxNumber }}
+                                                        </td>
+                                                    @endif
+                                                </tr>
+
+                    {{-- ==========================   Balance related ===================--}}
                                                 <tr>
                                                     <th>Total Transaction Amount</th>
                                                     @if(!empty($purchases) || count($purchases)>0)

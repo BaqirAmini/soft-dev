@@ -70,6 +70,7 @@ class CustomerController extends Controller
 
             $customer = new Customer();
             $customer->comp_id = Auth::user()->comp_id;
+            $customer->UserID = Auth::user()->id;
             $customer->business_name = $request->cBName;
             $customer->cust_name = $request->cName;
             $customer->cust_lastname = $request->cLastName;
@@ -182,7 +183,11 @@ class CustomerController extends Controller
             'cust_phone' => 'required|string|min:10|max:64',
             'cust_email' => 'nullable|email|min:6|max:64',
             'cust_state' => 'required|string|min:4|max:64',
-            'cust_address' => 'required|string|min:4|max:64'
+            'address1' => 'required|string|min:4|max:64',
+            'address2' => 'nullable|string|min:4|max:64',
+            'country' => 'required|string|min:5',
+            'city' => 'required|string|min:3',
+            'zip_code' => 'nullable|numeric|min:4'
         ]);
 
         if ($v->passes()) {
@@ -193,7 +198,13 @@ class CustomerController extends Controller
             $editCustomer->cust_phone = $request->cust_phone;
             $editCustomer->cust_email = $request->cust_email;
             $editCustomer->cust_state = $request->cust_state;
-            $editCustomer->cust_addr = $request->cust_address;
+            $editCustomer->cust_addr = $request->address1;
+            $editCustomer->Address2 = $request->address2;
+            $editCustomer->Country = $request->country;
+            $editCustomer->City = $request->city;
+            $editCustomer->zip_code = $request->zip_code;
+            $editCustomer->LimitPurchase = $request->limit_puchase;
+            $editCustomer->CreditLimit = $request->credit_limit;
             $editCustomer->save();
             return response()->json([
                 'cust_msg' => 'Customer edited successfully!',
