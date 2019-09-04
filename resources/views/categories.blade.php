@@ -37,7 +37,7 @@
                             <tr>
                               <td>{{ $ctg->ctg_name }}</td>
                               <td>{{ $ctg->ctg_desc }}</td>
-                              <td>{{ $ctg->created_at }}</td>
+                              <td>{{ Carbon\carbon::parse($ctg->created_at)->format('m-d-Y') }}</td>
                               <td>
                                 <button class="btn btn-danger btn-sm btn-delete-ctg" data-ctg-id="{{ $ctg->ctg_id }}" data-toggle="modal"
                                   data-target="#modal-delete-category">
@@ -54,9 +54,9 @@
                           </tbody>
                         </table>
                    </div>
-                 
+
               </div>
-      
+
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@
                 </ul>
                 <form class="form-horizontal" id="new_ctg_form">
                   @csrf
-               
+
                     <div class="form-group">
                             <label for="ctg-name" class="col-sm-2 control-label">Category Name <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
@@ -121,7 +121,7 @@
                               <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description">
                             </div>
                     </div>
-            
+
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                       <button type="submit" id="btn_add_ctg" class="btn btn-primary pull-left">Add Now</button>
@@ -171,7 +171,7 @@
                               <input id="ctg_desc" type="text" class="form-control" name="ctg_desc" placeholder="Description">
                             </div>
                     </div>
-            
+
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                       <button type="submit" id="btn_edit_ctg" class="btn btn-primary pull-left">Edit</button>

@@ -1,5 +1,19 @@
 @extends('layouts.master')
 @section('content')
+    {{-- STYLES --}}
+    <head>
+        <style>
+            #tlb_cust_detail th {
+                text-align: center;
+            }
+            #tlb_cust_detail td {
+                text-align: center;
+            }
+        </style>
+    </head>
+    {{-- /.STYLES --}}
+
+
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         {{ Breadcrumbs::render('customer_detail') }}
     </div>
@@ -25,8 +39,8 @@
                         <!-- Tabs -->
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                                <li><a href="#transaction" data-toggle="tab">Transaction</a></li>
+                                <li class="active"><a href="#profile" data-toggle="tab" id="tab_comp_profile">Company Profile</a></li>
+                                <li><a href="#transaction" data-toggle="tab" id="tab_transaction">Transactions</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="active tab-pane" id="profile">
@@ -35,6 +49,16 @@
                                           enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="cust_id" value="{{ $customers[0]->cust_id }}">
+                                        <!-- Seller Permit Number -->
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label" for="seller_permit_number">Seller Permit Number <span
+                                                    class="asterisk">*</span></label>
+                                            <div class="col-sm-10">
+                                                <input id="seller_permit_number" type="number" class="form-control"
+                                                       value="{{ $customers[0]->SellerPermitNumber }}" name="seller_permit_number"
+                                                       placeholder="Seller Permit Number" readonly min="0">
+                                            </div>
+                                        </div>
                                         <!-- Username -->
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label" for="business">Business Name <span
@@ -43,25 +67,6 @@
                                                 <input id="user_name" type="text" class="form-control"
                                                        value="{{ $customers[0]->business_name }}" name="business_name"
                                                        placeholder="Business Name" readonly>
-                                            </div>
-                                        </div>
-                                        <!-- First Name -->
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label" for="inputName">First Name <span
-                                                    class="asterisk">*</span></label>
-                                            <div class="col-sm-10">
-                                                <input id="cust_firstname" type="text" class="form-control"
-                                                       value="{{ $customers[0]->cust_name }}" name="cust_firstname"
-                                                       placeholder="First Name" readonly>
-                                            </div>
-                                        </div>
-                                        <!-- Last Name -->
-                                        <div class="form-group">
-                                            <label for="inputLastname" class="col-sm-2 control-label">Last Name</label>
-                                            <div class="col-sm-10">
-                                                <input id="cust_lastname" type="text" class="form-control"
-                                                       value="{{ $customers[0]->cust_lastname }}" name="cust_lastname"
-                                                       placeholder="Last Name" readonly>
                                             </div>
                                         </div>
                                         <!-- Customer Phone -->
@@ -94,11 +99,12 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="credit_limit" class="col-sm-2 control-label">Credit Limit</label>
+                                            <label for="credit_limit" class="col-sm-2 control-label">Credit
+                                                Limit</label>
                                             <div class="col-sm-10">
                                                 <input id="credit_limit" type="text" class="form-control"
                                                        value="{{ $customers[0]->CreditLimit }}" name="credit_limit"
-                                                       placeholder="Address" readonly>
+                                                       placeholder="Credit Limit" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -145,16 +151,21 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                                            <label for="credit_limit" class="col-sm-2 control-label">Limit Purchase</label>
+                                            <label for="credit_limit" class="col-sm-2 control-label">Limit
+                                                Purchase</label>
                                             <div class="col-sm-9">
                                                 <!-- radio -->
                                                 <label class="limit_purchase" style="margin-right: 50px;">
                                                     <input type="radio" name="limit_purchase" value="1" class="status"
-                                                    class="form-control">&nbsp; Yes
+                                                           class="form-control"
+                                                           @if($customers[0]->LimitPurchase === 1) checked @endif>&nbsp;
+                                                    Yes
                                                 </label>
                                                 <label class="credit_limit">
                                                     <input type="radio" name="limit_purchase" value="0" class="status"
-                                                    class="form-control" checked>&nbsp; No
+                                                           class="form-control"
+                                                           @if($customers[0]->LimitPurchase === 0) checked
+                                                           @endif checked>&nbsp; No
                                                 </label>
                                             </div>
                                         </div>
@@ -186,7 +197,7 @@
                                                     <td>Account Opened At</td>
                                                     @if(!empty($customers) || count($customers)>0)
                                                         <td>
-                                                          {{  Carbon\carbon::parse($customers[0]->created_at)->format('m-d-Y') }}
+                                                            {{  Carbon\carbon::parse($customers[0]->created_at)->format('m-d-Y') }}
                                                         </td>
                                                     @endif
                                                 </tr>
@@ -194,7 +205,7 @@
                                                     <td>Account Number</td>
                                                     @if(!empty($customers) || count($customers)>0)
                                                         <td>
-                                                           {{ $customers[0]->AccountNumber }}
+                                                            {{ $customers[0]->AccountNumber }}
                                                         </td>
                                                     @endif
                                                 </tr>
@@ -215,7 +226,7 @@
                                                     @endif
                                                 </tr>
                                                 <tr>
-                                                    <th>Fax Number</th>
+                                                    <td>Fax Number</td>
                                                     @if(!empty($customers) || count($customers)>0)
                                                         <td style="border-bottom: 1px dashed grey !important">
                                                             {{ $customers[0]->FaxNumber }}
@@ -223,9 +234,9 @@
                                                     @endif
                                                 </tr>
 
-                    {{-- ==========================   Balance related ===================--}}
+                                                {{-- ==========================   Balance related ===================--}}
                                                 <tr>
-                                                    <th>Total Transaction Amount</th>
+                                                    <th>Total Sales</th>
                                                     @if(!empty($purchases) || count($purchases)>0)
                                                         <th>${{  $totalTransaction }}</th>
                                                     @endif
@@ -293,24 +304,58 @@
                                         </div>
                                     </div>
                                     <a href="{{ route('customer') }}" type="button" class="btn btn-primary">&lt Back</a>
-                                        @if($totalTransaction ==! 0)
+                                    @if($totalTransaction ==! 0)
                                         <button class="btn btn-primary pull-right btn_make_payment" data-toggle="modal"
                                                 data-target="#modal-make-payment">Make a payment
                                         </button>
-                                        @endif
+                                    @endif
                                 </div>
-{{--                            @endif--}}
+                            {{--                            @endif--}}
                             <!-- /.tab-pane -->
                             </div>
                             <!-- /.tab-content -->
                         </div>
                         <!-- /. Tabs -->
+
+                {{-- =========================================== More Details for Customer ======================================================================--}}
+                        {{--<div class="box">
+                            <div class="box-header">
+                                <div class="content-header" style="text-align: center;font-size: 8px">
+                                    <label class="box-title">More Details</label>
+                                </div>
+                            </div>
+                            <div class="box-body col-md-offset-1">
+                                <table
+                                    class="table table-responsive col-md-12 col-lg-12 col-sm-2 col-xs-2" id="tlb_cust_detail">
+                                    <thead>
+                                    <tr style="text-align: center">
+                                        <th>HQID</th>
+                                        <th>Store ID</th>
+                                        <th>Price Level</th>
+                                        <th>Total Sales</th>
+                                        <th>Assess Finance Charges</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{ $customers[0]->HQID }}</td>
+                                        <td>{{ $customers[0]->StoreID }}</td>
+                                        <td>{{ $customers[0]->PriceLevel }}</td>
+                                        <td>{{ $customers[0]->TotalSales }}</td>
+                                        <td>{{ $customers[0]->AssessFinanceCharges }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>--}}
+                {{-- ===========================================/. More Details for Customer ======================================================================--}}
                     </div>
                     <!-- /box-body -->
                 </div>
                 <!-- /. Box -->
             </div>
             <!-- /.col -->
+
         </div>
         <!-- /.row -->
     </section>

@@ -176,9 +176,9 @@ class CustomerController extends Controller
     # Edit a customer
     public function edit(Request $request)
     {
+        $editCustomer = Customer::findOrfail($request->cust_id);
         $v = Validator::make($request->all(), [
-            'cust_firstname' => 'required|string|min:5|max:64',
-            'cust_lastname' => 'nullable|string|min:5|max:64',
+            'seller_permit_number' => 'required|numeric|unique:customers,SellerPermitNumber,'.$request->cust_id.',cust_id',
             'business_name' => 'nullable|string|min:5|max:64',
             'cust_phone' => 'required|string|min:10|max:64',
             'cust_email' => 'nullable|email|min:6|max:64',
@@ -191,10 +191,9 @@ class CustomerController extends Controller
         ]);
 
         if ($v->passes()) {
-            $editCustomer = Customer::findOrfail($request->cust_id);
+
             $editCustomer->business_name = $request->business_name;
-            $editCustomer->cust_name = $request->cust_firstname;
-            $editCustomer->cust_lastname = $request->cust_lastname;
+            $editCustomer->SellerPermitNumber = $request->seller_permit_number;
             $editCustomer->cust_phone = $request->cust_phone;
             $editCustomer->cust_email = $request->cust_email;
             $editCustomer->cust_state = $request->cust_state;

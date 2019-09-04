@@ -265,7 +265,7 @@
                         <div class="col-sm-9">
                             <select name="item_category" id="item_category" class="form-control" required autofocus>
                                 @foreach($ctgs as $ctg)
-                                    <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
+                                    <option value="{{ $ctg->ctg_id }}" id="ctg_option" {{ ( $ctg->ctg_id == $items[1]->ctg_id) ? 'selected' : '' }}>{{ $ctg->ctg_name }}</option>
                                 @endforeach
                             </select>
                         </div>

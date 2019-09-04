@@ -226,8 +226,6 @@ class ItemController extends Controller
             'item_desc' => 'nullable|string|max:128',
             'quantity' => 'required|integer|max:64',
             'purchase_price' => 'required|between: 0, 99.99|max:64',
-            'purchase_price' => 'required|between: 0, 99.99|max:64',
-            'quantity'=>'required|integer|not_in:0|regex:/[1-9][0-9]+/',
             'barcode_number' => 'nullable|integer|min:10',
         ]);
         if ($validation->passes()) {
