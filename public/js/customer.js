@@ -160,13 +160,28 @@ $(document).ready(function () {
         $('#excel_name').val($(this)[0].files[0].name);
     });
     /* =============================================/. Import Excel-file =====================================*/
+<<<<<<< HEAD
+=======
+
+
+    /* ================================================ While tab button clicked the edit button on the top whould hide ============================== */
+    // To hide edit-button
+    $('#tab_transaction').click(function () {
+        $('#btn_enable_cust_edit').hide();
+    });
+    // To show
+    $('#tab_comp_profile').click(function () {
+        $('#btn_enable_cust_edit').show();
+    });
+    /* ================================================ /. While tab button clicked the edit button on the top whould hide ============================== */
+>>>>>>> bch-mod
 });
 
 
 // to delete cusotmer
 function deleteCustomer() {
 
-    var custId = $('input[name=cust_id').val();
+    var custId = $('input[name=cust_id]').val();
        $.ajax({
            type: "GET",
            url: "customer/delete",

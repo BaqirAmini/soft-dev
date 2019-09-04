@@ -83,7 +83,7 @@
  <section class="content" id="sale_section">
         <div class="row">
           <!-- left column -->
-          <div class="col-md-4">
+          <div class="col-md-5">
             <!-- general form elements -->
             <div class="box box-primary" id="box_cart">
               <div class="box-header with-border">
@@ -118,6 +118,7 @@
                                 <th>Qty</th>
                                 <th>Price</th>
                                 <th>Total</th>
+                                <th>Discount (%)</th>
                               </tr>
                             </thead>
                           </table>
@@ -206,7 +207,11 @@
           </div>
           <!--/.col (left) -->
           <!-- right column -->
+<<<<<<< HEAD
           <div class="col-md-8" style="padding: 0px;">
+=======
+          <div class="col-md-7" style="padding: 0px;">
+>>>>>>> bch-mod
             <!-- Horizontal Form -->
             <div class="box box-primary" id="box-items-for-sale">
               <div class="box-header with-border">

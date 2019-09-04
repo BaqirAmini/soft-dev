@@ -149,7 +149,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'item_name' => 'required|unique:items|string|max:64',
+            'item_name' => 'required|string|max:64',
             'item_desc' => 'nullable|string|max:128',
             'quantity' => 'required|integer|max:64',
             'purchase_price' => 'required|between: 0, 99.99|max:64',
@@ -245,12 +245,11 @@ class ItemController extends Controller
             'item_desc' => 'nullable|string|max:128',
             'quantity' => 'required|integer|max:64',
             'purchase_price' => 'required|between: 0, 99.99|max:64',
-            'purchase_price' => 'required|between: 0, 99.99|max:64',
-            'quantity'=>'required|integer|not_in:0|regex:/[1-9][0-9]+/',
             'barcode_number' => 'nullable|integer|min:10',
         ]);
         if ($validation->passes()) {
             $editItem = Item::findOrfail($request->item_id);
+            $editItem->ctg_id = $request->item_category;
             $editItem->item_name = $request->item_name;
             $editItem->item_desc = $request->item_desc;
             $editItem->quantity = $request->quantity;
