@@ -160,9 +160,6 @@ $(document).ready(function () {
         $('#excel_name').val($(this)[0].files[0].name);
     });
     /* =============================================/. Import Excel-file =====================================*/
-<<<<<<< HEAD
-=======
-
 
     /* ================================================ While tab button clicked the edit button on the top whould hide ============================== */
     // To hide edit-button
@@ -174,7 +171,6 @@ $(document).ready(function () {
         $('#btn_enable_cust_edit').show();
     });
     /* ================================================ /. While tab button clicked the edit button on the top whould hide ============================== */
->>>>>>> bch-mod
 });
 
 

@@ -94,6 +94,9 @@ $('#Item_data_table').on('click', '.btn_delete_product', function () {
          type: "GET",
          url: "item/delete",
          data: {'itemId': itemId},
+         processData: false,
+         contentType: false,
+         cache: false,
          dataType: "json",
          success: function (response) {
              console.log(response.msg);

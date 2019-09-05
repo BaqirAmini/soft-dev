@@ -12,7 +12,7 @@ use Excel;
 use Illuminate\Support\Facades\Gate;
 use Validator;
 use function GuzzleHttp\json_encode;
-use Illuminate\Support\Facades\DB;
+use DB;
 
 class CustomerController extends Controller
 {
@@ -43,9 +43,28 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    # Search customers by name or phone to sell something on
+    public function searchCustomer(Request $request)
     {
-        //
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $data = DB::table('customers')
+                ->where('comp_id', Auth::user()->comp_id)
+                ->where('cust_name', 'LIKE', "%$query%")
+                ->orWhere('cust_phone', 'LIKE', "%$query%")
+                ->get();
+
+            $output = '<ul class="dropdown-menu col-md-12"
+                            style="display:block;position: relative;box-shadow:1px 2px 3px lightgrey">';
+            foreach ($data as $row) {
+                $output .= '<li><a href="#" data-li-id="'.$row->cust_id.'"  class="cust_search_li">'.$row->cust_name.'</a></li>';
+            }
+            $output .= '</ul>';
+             /*return response()->json([
+               'result' => $output
+            ]); */
+             echo $output;
+        }
     }
 
     /**
@@ -176,9 +195,9 @@ class CustomerController extends Controller
     # Edit a customer
     public function edit(Request $request)
     {
-        $editCustomer = Customer::findOrfail($request->cust_id);
         $v = Validator::make($request->all(), [
-            'seller_permit_number' => 'required|numeric|unique:customers,SellerPermitNumber,'.$request->cust_id.',cust_id',
+            'cust_firstname' => 'required|string|min:5|max:64',
+            'cust_lastname' => 'nullable|string|min:5|max:64',
             'business_name' => 'nullable|string|min:5|max:64',
             'cust_phone' => 'required|string|min:10|max:64',
             'cust_email' => 'nullable|email|min:6|max:64',
@@ -191,9 +210,10 @@ class CustomerController extends Controller
         ]);
 
         if ($v->passes()) {
-
+            $editCustomer = Customer::findOrfail($request->cust_id);
             $editCustomer->business_name = $request->business_name;
-            $editCustomer->SellerPermitNumber = $request->seller_permit_number;
+            $editCustomer->cust_name = $request->cust_firstname;
+            $editCustomer->cust_lastname = $request->cust_lastname;
             $editCustomer->cust_phone = $request->cust_phone;
             $editCustomer->cust_email = $request->cust_email;
             $editCustomer->cust_state = $request->cust_state;
@@ -255,67 +275,6 @@ class CustomerController extends Controller
     }
 
     /*======================= Import/Export Excel =====================*/
-<<<<<<< HEAD
-    public function importExcel(Request $request) {
-        $request->validate([
-            'excel' => 'required'
-        ]);
-            if ($request->hasFile('excel')) {
-                $filePath = $request->file('excel')->getRealPath();
-                $data = Excel::load($filePath)->get();
-                $value = $data->toArray();
-                if (!empty($data) && $data->count()) {
-                    if ($data->count() > 0) {
-                        foreach ($value as $row) {
-                            $insert_customer[] = array(
-                                'AccountTypeID' => $row['account_type_id'],
-                                'created_at' => carbon::now(),
-                                'updated_at' => carbon::now(),
-                                'LimitPurchase' => $row['limit_purchase'],
-                                'AccountBalance' => $row['account_balance'],
-                                'CreditLimit' => $row['credit_limit'],
-                                'TotalSales' => $row['total_sales'],
-                                'last_visit' => $row['last_visit'],
-                                'total_visit' => $row['total_visits'],
-                                'TotalSavings' => $row['total_savings'],
-                                'CurrentDiscount' => $row['current_discount'],
-                                'business_name' => $row['business_name'],
-                                'HQID' => $row['hq_id'],
-                                'Country' => $row['country'],
-                                'cust_state' => $row['province'],
-                                'cust_addr' => $row['address1'],
-                                'Address2' => $row['address2'],
-                                'City' => $row['city'],
-                                'zip_code' => $row['zip_code'],
-                                'Title' => $row['title'],
-                                'Employee' => $row['employee'],
-                                'cust_name' => $row['first_name'],
-                                'cust_lastname' => $row['last_name'],
-                                'cust_phone' => $row['phone'],
-                                'FaxNumber' => $row['fax_number'],
-                                'TaxExempt' => $row['tax_exempt'],
-                                'Notes' => $row['notes'],
-                                'cust_email' => $row['email'],
-                                'DBTimeStamp' => $row['db_time_stamp'],
-                                'TaxNumber' => $row['tax_number'],
-                                'AccountNumber' => $row['account_number'],
-                                'AssessFinanceCharges' => $row['assess_finance_charges'],
-                                'UserID' => Auth::user()->id,
-                                'SalesRepID' => $row['sales_rep_id'],
-                                'comp_id' => Auth::user()->comp_id,
-                                'PriceLevel' => $row['price_level'],
-                                'cust_status' => $row['status'],
-                            );
-                        }
-                        if (!empty($insert_customer)) {
-//                        DB::table('categories')->select('ctg_id')->where()->get();
-                            DB::table('customers')->insert($insert_customer);
-                        }
-                        return back()->with('success', 'Excel data imported successfully!');
-                    }
-                }
-            }
-=======
     public function importExcel(Request $request)
     {
         $request->validate([
@@ -377,7 +336,6 @@ class CustomerController extends Controller
                 }
             }
         }
->>>>>>> bch-mod
 
     }
 
@@ -390,10 +348,7 @@ class CustomerController extends Controller
             $c = Company::where('company_id', $compId)->get(['comp_name']);
             $customers = Customer::where('comp_id', $compId)->get();
             $customers_array[] = array(
-<<<<<<< HEAD
-=======
                 'account_number',
->>>>>>> bch-mod
                 'account_type_id',
                 'account_opened',
                 'limit_purchase',
@@ -402,10 +357,6 @@ class CustomerController extends Controller
                 'total_sales',
                 'last_visit',
                 'total_visits',
-<<<<<<< HEAD
-                'total_savings',
-=======
->>>>>>> bch-mod
                 'current_discount',
                 'business_name',
                 'hq_id',
@@ -422,29 +373,13 @@ class CustomerController extends Controller
                 'first_name',
                 'last_name',
                 'phone',
-<<<<<<< HEAD
-=======
                 'status',
->>>>>>> bch-mod
                 'fax_number',
                 'tax_exempt',
                 'notes',
                 'email',
                 'db_time_stamp',
                 'tax_number',
-<<<<<<< HEAD
-                'account_number',
-                'assess_finance_charges',
-                'user_id',
-                'sales_rep_id',
-                'price_level',
-                'status',
-                );
-            foreach ($customers as $customer) {
-                $customers_array[] = array(
-                    'account_type_id' => $customer->AccountTypeID,
-                    'account_opened' => carbon::parse($customer->created_at)->format('d-M-Y'),
-=======
                 'user_id',
                 'sales_rep_id',
                 'price_level',
@@ -456,25 +391,15 @@ class CustomerController extends Controller
                     'account_number' => $customer->AccountNumber,
                     'account_type_id' => $customer->AccountTypeID,
                     'account_opened' => carbon::parse($customer->created_at)->format('m-D-Y'),
->>>>>>> bch-mod
                     'limit_purchase' => $customer->LimitPurchase,
                     'account_balance' => $customer->AccountBalance,
                     'credit_limit' => $customer->CreditLimit,
                     'total_sales' => $customer->TotalSales,
-<<<<<<< HEAD
-                     'last_visit' => $customer->last_visit,
-                     'total_visits' => $customer->total_visit,
-                     'total_savings' => $customer->TotalSavings,
-                    'current_discount' => $customer->CurrentDiscount,
-                     'business_name' => $customer->business_name,
-                     'hq_id' => $customer->HQID,
-=======
                     'last_visit' => $customer->last_visit,
                     'total_visits' => $customer->total_visit,
                     'current_discount' => $customer->CurrentDiscount,
                     'business_name' => $customer->business_name,
                     'hq_id' => $customer->HQID,
->>>>>>> bch-mod
                     'country' => $customer->Country,
                     'province' => $customer->cust_state,
                     'address1' => $customer->cust_addr,
@@ -488,30 +413,18 @@ class CustomerController extends Controller
                     'first_name' => $customer->cust_name,
                     'last_name' => $customer->cust_lastname,
                     'phone' => $customer->cust_phone,
-<<<<<<< HEAD
-=======
                     'status' => $customer->cust_status,
->>>>>>> bch-mod
                     'fax_number' => $customer->FaxNumber,
                     'tax_exempt' => $customer->TaxExempt,
                     'notes' => $customer->Notes,
                     'email' => $customer->cust_email,
                     'db_time_stamp' => $customer->DBTimeStamp,
                     'tax_number' => $customer->TaxNumber,
-<<<<<<< HEAD
-                    'account_number' => $customer->AccountNumber,
-                    'assess_finance_charges' => $customer->AssessFinanceCharges,
-                    'user_id' => $customer->UserID,
-                    'sales_rep_id' => $customer->SalesRepID,
-                    'price_level' => $customer->PriceLevel,
-                    'status' => $customer->cust_status,
-=======
                     'user_id' => $customer->UserID,
                     'sales_rep_id' => $customer->SalesRepID,
                     'price_level' => $customer->PriceLevel,
                     'total_savings' => $customer->TotalSavings,
                     'assess_finance_charges' => $customer->AssessFinanceCharges,
->>>>>>> bch-mod
                 );
             }
             Excel::create('Customer', function ($excel) use ($customers_array) {

@@ -83,6 +83,7 @@ Route::get('customer/delete', 'CustomerController@destroy');
 Route::post('customer/edit', 'CustomerController@edit');
 Route::get('customer/export', 'CustomerController@exportExcel')->name('customer.export');
 Route::post('customer/import', 'CustomerController@importExcel')->name('customer.import');
+Route::post('/customer/search', 'CustomerController@searchCustomer');
 #Purchase-history
 Route::get('customer/custDetail/{id?}', 'CustomerController@onPurchaseHistory');
 Route::post('customer/custDetail/payment', 'CustomerController@onPayment');

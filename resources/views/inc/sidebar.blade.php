@@ -36,7 +36,7 @@
          <div class="user-panel">
 
            <div class="pull-left image">
-               @if(isset($logo[0])) <a href="{{ route('myCompany.specific') }}"><img src="/uploads/logos/{{ $logo[0]->comp_logo }}" width="50" height="50" class="img-circle img-bordered"
+               @if(isset($logo[0])) <a href="{{ route('myCompany.specific') }}"><img src="/uploads/logos/{{ $logo[0]->comp_logo }}" class="img-circle img-bordered img-sm"
                   alt="Logo"></a>
                 @endif
            </div>
