@@ -94,21 +94,21 @@
     <!-- Main content -->
     <section class="content" id="sale_section">
         <div class="row">
-            <!-- left column -->
-            <div class="col-md-4">
-                <!-- general form elements -->
-                <div class="box box-primary" id="box_cart">
+            {{-- ================================== Container of two-boxes ================== --}}
+            <div class="col-md-4 container-fluid">
+                {{-- ====================== for search ========================= --}}
+                <div class="box box-primary" style="margin-bottom: 0">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Customer & Payment</h3>
+                        <div class="content-header">
+                            <h3 class="box-title">Find Customer</h3>
+                        </div>
                     </div>
-                    <!-- /.box-header -->
+                    {{-- body--}}
                     <div class="box-body">
-                        <p id="inv_message" style="display:none;"></p>
-                        <!-- customer-selection -->
                         <div class="input-group col-md-12" id="choose-customer">
                             <input type="text" class="form-control" id="search_customer"
                                    placeholder="Type Customer's Name or Phone" required>
-                            <div id="customer_search_result" ></div>
+                            <div id="customer_search_result"></div>
                             {{--<select class="form-control" id="select_customer" required
                                     style="border: 2px solid rgb(211, 75, 75);">
                                 <option value="">Select customer..</option>
@@ -124,118 +124,150 @@
                         </span>
                             {{ csrf_field() }}
                         </div>
-                        <br>
-                        <!-- /. customer-selection -->
-
-                        <!-- sale-list -->
-                        <div id="test">
-                            <div class="row">
-                                <div class="col-md-12 col-xs-12">
-                                    <table class="col-md-12 table-responsive tbl-sales-label">
-                                        <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Item</th>
-                                            <th>Qty</th>
-                                            <th>Price</th>
-                                            <th>Total</th>
-                                            <th>Discount (%)</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                            <hr>
-                            @foreach($carts as $cart)
-                                <div class="sale-list col-md-12 col-sm-12 col-xs-12"
-                                     style="display:block;text-align: center">
-                                    <input type="hidden" class="item_id" value="{{ $cart->id }}">
-                                    <div class="col-xs-1 col-md-1">
-                                        <a href="" class="btn_remove_sale" data-item-id="{{ $cart->rowId }}"
-                                           style="padding:5px 8px;"><i class="fa fa-remove"
-                                                                       style="color:rgb(165, 22, 22)"></i></a>
-                                    </div>
-
-                                    <div class="col-xs-12 col-md-3">
-                                        <a href="#"> <span>{{ $cart->name }}</span></a>
-                                    </div>
-                                    <div class="col-xs-12 col-md-3">
-                                        <a href="#" class="link_qty" id="test_n"> <span>{{ $cart->qty }}</span></a>
-                                    </div>
-                                    <div class="col-xs-12 col-md-3">
-                                        <a href="#" class="link_price"><span>${{ $cart->price }}</span></a>
-                                    </div>
-                                    <div class="input-group">
-                                        <a href="#">${{ $cart->qty * $cart->price }}</a>
-                                    </div>
-
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <!-- Total & Tax input -->
-                        <div class="row col-md-12 col-sm-10" style="margin-bottom:50px;margin-top:20px;"
-                             id="total_area">
-                            <div class="input-group col-sm-5 col-xs-11">
-                                <strong>Sub Total: </strong>
-                                <span id="sub_total" data-sub-total="{{ $subTotal }}">${{$subTotal}}</span>
-                            </div>
-                        </div>
-                        <!-- /. Total & Tax input -->
-                        <!-- Payment -->
-                        <div class="row col-sm-12" id="payment_area">
-                            <div class="col-xs-6 col-sm-6" id="select_payment" style="display: none;">
-                                <label for="payment_type" class="lbl_payment">Payment Type</label>
-                                <select name="payment_type" id="payment_type" class="form-control pull-left"
-                                        onchange="selectPayment();" required style="margin-left:-12px;">
-                                    <option value="">Select Payment...</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Master Card">Master Card</option>
-                                    <option value="Debit Card">Debit Card</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-4 col-sm-4 col-xs-offset-2">
-                                <div class="checkbox pull-right" style="margin-top:20px;display: none" id="chk_area">
-                                    <label>
-                                        <input type="checkbox" id="paid_all"> Paid All
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- Amount Area -->
-                            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-left:-25px;margin-top:15px;">
-                                <div class="col-md-4" id="trans_area" style="display: none;">
-                                    <label for="transCode" id="lbl_trans_code">Trans #</label>
-                                    <input type="number" class="form-control t-card" placeholder="Transaction Code"
-                                           id="transCode">
-                                </div>
-                                <div class="col-md-4" id="rvable" style="display: none;">
-                                    <label for="payable" class="lbl_payment">Recievable</label>
-                                    <input type="text" min="0" max="9999" class="form-control" placeholder="payable"
-                                           id="payable" value="{{$subTotal}}">
-                                </div>
-                                <div class="col-md-4" id="rvd" style="display: none;">
-                                    <label for="recieved" class="lbl_payment">Recieved</label>
-                                    <input type="text" min="0" max="999" step="0.01" class="form-control"
-                                           placeholder="recieved" id="recieved" style="padding:0;text-align:center">
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <!-- /.box-body -->
                     <div class="box-footer">
-                        <button id="btn_print"
-                                class="btn btn-default pull-right btn_save_sale"
-                                data-toggle="modal"
-                                data-target="#modal-print"
-                                onclick="onSaveSale();"
-                                disabled>Save Sale
-                        </button>
+                        {{--================== customer should shown here=======================--}}
+                        <div class="user-block customer_chosen_info" style="display: none">
+                            <img class="img-circle img-bordered-sm" src="/uploads/user_photos/user.png"
+                                     alt="user image">
+                            <span class="username" id="customer_chosen">
+                              <a href="#" id="link1">Jonathan Burke Jr.</a>
+                              <a href="#" class="pull-right btn-box-tool" id="link_remove_customer_chosen"><i class="fa fa-times"></i></a>
+                            </span>
+                        <span class="description" id="customer_chosen_detail">Shared publicly - 7:30 PM today</span>
+                        </div>
+                        <!-- /.user-block -->
+                        {{--==================/. customer should shown here=======================--}}
                     </div>
                 </div>
-                <!-- /.box -->
 
+            {{-- ====================== /for search ========================= --}}
+            <!-- left column -->
+                <div>
+                    <!-- general form elements -->
+                    <div class="box box-solid" id="box_cart">
+                        <div class="box-header with-border">
+                            <div class="content-header">
+                                <h6 class="box-title" style="font-size: 12px">Customer & Payment</h6>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <p id="inv_message" style="display:none;"></p>
+                            <!-- /. customer-selection -->
+
+                            <!-- sale-list -->
+                            <div id="test">
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12">
+                                        <table class="col-md-12 table-responsive tbl-sales-label">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Item</th>
+                                                <th>Qty</th>
+                                                <th>Price</th>
+                                                <th>Total</th>
+                                                <th>Discount (%)</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                                <hr>
+                                @foreach($carts as $cart)
+                                    <div class="sale-list col-md-12 col-sm-12 col-xs-12"
+                                         style="display:block;text-align: center">
+                                        <input type="hidden" class="item_id" value="{{ $cart->id }}">
+                                        <div class="col-xs-1 col-md-1">
+                                            <a href="" class="btn_remove_sale" data-item-id="{{ $cart->rowId }}"
+                                               style="padding:5px 8px;"><i class="fa fa-remove"
+                                                                           style="color:rgb(165, 22, 22)"></i></a>
+                                        </div>
+
+                                        <div class="col-xs-12 col-md-3">
+                                            <a href="#"> <span>{{ $cart->name }}</span></a>
+                                        </div>
+                                        <div class="col-xs-12 col-md-3">
+                                            <a href="#" class="link_qty" id="test_n"> <span>{{ $cart->qty }}</span></a>
+                                        </div>
+                                        <div class="col-xs-12 col-md-3">
+                                            <a href="#" class="link_price"><span>${{ $cart->price }}</span></a>
+                                        </div>
+                                        <div class="input-group">
+                                            <a href="#">${{ $cart->qty * $cart->price }}</a>
+                                        </div>
+
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Total & Tax input -->
+                            <div class="row col-md-12 col-sm-10" style="margin-bottom:50px;margin-top:20px;"
+                                 id="total_area">
+                                <div class="input-group col-sm-5 col-xs-11">
+                                    <strong>Sub Total: </strong>
+                                    <span id="sub_total" data-sub-total="{{ $subTotal }}">${{$subTotal}}</span>
+                                </div>
+                            </div>
+                            <!-- /. Total & Tax input -->
+                            <!-- Payment -->
+                            <div class="row col-sm-12" id="payment_area">
+                                <div class="col-xs-6 col-sm-6" id="select_payment">
+                                    <label for="payment_type" class="lbl_payment">Payment Type</label>
+                                    <select name="payment_type" id="payment_type" class="form-control pull-left"
+                                            onchange="selectPayment();" required style="margin-left:-12px;">
+                                        <option value="">Select Payment...</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Master Card">Master Card</option>
+                                        <option value="Debit Card">Debit Card</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-xs-offset-2">
+                                    <div class="checkbox pull-right" style="margin-top:20px;display: none"
+                                         id="chk_area">
+                                        <label>
+                                            <input type="checkbox" id="paid_all"> Paid All
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- Amount Area -->
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-left:-25px;margin-top:15px;">
+                                    <div class="col-md-4" id="trans_area" style="display: none;">
+                                        <label for="transCode" id="lbl_trans_code">Trans #</label>
+                                        <input type="number" class="form-control t-card" placeholder="Transaction Code"
+                                               id="transCode">
+                                    </div>
+                                    <div class="col-md-4" id="rvable" style="display: none;">
+                                        <label for="payable" class="lbl_payment">Recievable</label>
+                                        <input type="text" min="0" max="9999" class="form-control" placeholder="payable"
+                                               id="payable" value="{{$subTotal}}">
+                                    </div>
+                                    <div class="col-md-4" id="rvd" style="display: none;">
+                                        <label for="recieved" class="lbl_payment">Recieved</label>
+                                        <input type="text" min="0" max="999" step="0.01" class="form-control"
+                                               placeholder="recieved" id="recieved" style="padding:0;text-align:center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button id="btn_print"
+                                    class="btn btn-default pull-right btn_save_sale"
+                                    data-toggle="modal"
+                                    data-target="#modal-print"
+                                    onclick="onSaveSale();"
+                                    disabled>Save Sale
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.box -->
+
+                </div>
             </div>
-            <!--/.col (left) -->
+        {{-- ==================================/. Container of two-boxes ================== --}}
+        <!--/.col (left) -->
             <!-- right column -->
             <div class="col-md-8" style="padding: 0px;">
                 <div class="col-md-12" style="padding: 0px;">
@@ -421,6 +453,7 @@
             </section>
             <!-- /.content -->
     </section>
+
     <!-- /.Invoice -->
 
     <!-- MODAL -->

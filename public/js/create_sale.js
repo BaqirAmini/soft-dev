@@ -29,11 +29,11 @@ $(document).ready(function () {
                 console.log(response);
                 $('#stock_message').css({'display': 'block', 'text-align': 'center', 'color': 'darkred'});
                 $('#stock_message').html(response.stock_msg);
-                /*$('#sale_section').load(' #sale_section');
-                $('#box_cart').load(' #box_cart');*/
-                setTimeout(function () {
+                /*$('#sale_section').load(' #sale_section'); */
+                $('#box_cart').load(' #box_cart');
+              /*  setTimeout(function () {
                     window.location.reload();
-                }, 5);
+                }, 5);*/
                 // $('#payment_area').load(' #payment_area');
                 // $('.tax_value').attr('readonly', response.readonly);
 
@@ -71,16 +71,28 @@ $(document).ready(function () {
     });
 
     $(document).on('click','.cust_search_li', function () {
-       var cid = $(this).data('li-id');
+       cid = $(this).data('li-id');
         onCreateInvoice(cid);
-        $('#select_payment').css('display', 'block');
+        // $('#select_payment').css('display', 'block');
         $('#btn_new_customer').prop('disabled', true);
         $('#btn_new_customer').removeClass('btn-primary');
         $('#btn_new_customer').addClass('btn-default');
         $('.btn_print_sale').attr('data-print', cid);
-        $('#customer_search_result').fadeOut();
+        $('#search_customer').val($('input[name=spn_cust_name]').val());
+        // Customer info should be set under search box
+        $('.customer_chosen_info').show();
+        $('#customer_chosen #link1').text($('input[name=spn_cust_name]').val()+" "+$('input[name=spn_cust_lastname]').val());
+        $('#customer_chosen_detail').text($('input[name=spn_seller_permit]').val());
+        $('#customer_search_result').fadeOut()
+    });
 
+    $('#customer_search_result').mouseleave(function () {
+       $(this).fadeOut();
+    });
 
+    // when link-remove-customer clicked
+    $('#link_remove_customer_chosen').click(function () {
+        $('.customer_chosen_info').fadeOut();
     });
     /* ===================================== .SEARCH customer by name or phone ==================================*/
 
@@ -133,9 +145,7 @@ $(document).ready(function () {
 
     // when BTN-SAVE-SALE clicked
     $('.btn_save_sale').click(function () {
-        alert(cid);
         var invoiceID = $(this).data('invoice-id');
-
         // set hidden inputs
         $('input[name=cust_id_for_print]').val(cid);
         $('input[name=invoice_id_for_print]').val(invoiceID);

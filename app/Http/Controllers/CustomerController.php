@@ -49,15 +49,25 @@ class CustomerController extends Controller
         if ($request->get('query')) {
             $query = $request->get('query');
             $data = DB::table('customers')
-                ->where('comp_id', Auth::user()->comp_id)
                 ->where('cust_name', 'LIKE', "%$query%")
-                ->orWhere('cust_phone', 'LIKE', "%$query%")
+                ->where(function ($q) use ($query) {
+                    $q->where('cust_phone', 'LIKE', "%$query%");
+                    $q->orWhere('comp_id', Auth::user()->comp_id);
+                })
                 ->get();
 
             $output = '<ul class="dropdown-menu col-md-12"
                             style="display:block;position: relative;box-shadow:1px 2px 3px lightgrey">';
             foreach ($data as $row) {
-                $output .= '<li><a href="#" data-li-id="'.$row->cust_id.'"  class="cust_search_li">'.$row->cust_name.'</a></li>';
+                $output .= '<li><a href="#" data-li-id="'.$row->cust_id.'" 
+                        class="cust_search_li"> 
+                        <img src="uploads/user_photos/user.png" alt="Customer_photo" class="img-circle img-md" style="margin:auto 15px auto 10px;">
+                        <input type="hidden" name="spn_cust_name" value="'.$row->cust_name.'">
+                        <input type="hidden" name="spn_cust_lastname" value="'.$row->cust_lastname.'">
+                        <input type="hidden" name="spn_seller_permit" value="'.$row->SellerPermitNumber. '">
+                        <span class="hidden-xs username" style="font-size: 12px;color: #79b0d3">' .$row->business_name.'</span><br>
+                        <span class="hidden-xs description" style="font-size: 10px">'.$row->cust_phone.'</span><br>
+                        <span class="hidden-xs description" style="font-size: 10px">'.$row->cust_name.' &nbsp;'.$row->cust_lastname.' ('.$row->SellerPermitNumber.')</span></a></li>';
             }
             $output .= '</ul>';
              /*return response()->json([
@@ -196,8 +206,7 @@ class CustomerController extends Controller
     public function edit(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'cust_firstname' => 'required|string|min:5|max:64',
-            'cust_lastname' => 'nullable|string|min:5|max:64',
+            'seller_permit_number' => 'required|numeric|min:4|unique:customers,SellerPermitNumber,'.$request->cust_id.',cust_id',
             'business_name' => 'nullable|string|min:5|max:64',
             'cust_phone' => 'required|string|min:10|max:64',
             'cust_email' => 'nullable|email|min:6|max:64',
@@ -212,8 +221,7 @@ class CustomerController extends Controller
         if ($v->passes()) {
             $editCustomer = Customer::findOrfail($request->cust_id);
             $editCustomer->business_name = $request->business_name;
-            $editCustomer->cust_name = $request->cust_firstname;
-            $editCustomer->cust_lastname = $request->cust_lastname;
+            $editCustomer->SellerPermitNumber = $request->seller_permit_number;
             $editCustomer->cust_phone = $request->cust_phone;
             $editCustomer->cust_email = $request->cust_email;
             $editCustomer->cust_state = $request->cust_state;
