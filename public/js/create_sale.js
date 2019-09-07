@@ -119,17 +119,19 @@ $(document).ready(function () {
     });*/
     // To remove an item from the cart
     $('.btn_remove_sale').click(function () {
+        var rowId = $(this).data('item-rid');
         var itemId = $(this).data('item-id');
+        var qty = $(this).data('item-qty');
         $.ajax({
             type: "GET",
-            url: "/cart/removeItem",
-            data: {'itemID': itemId},
+            url: "cart/removeItem",
+            data: {'rowId': rowId, 'itemQty': qty, 'itemId':itemId},
             success: function (response) {
-                console.log(response);
                 // $('#sale_section').load(' #sale_section');
-                setTimeout(function () {
+                /*setTimeout(function () {
                     location.reload();
-                }, 5);
+                }, 5);*/
+
             },
             error: function (error) {
                 console.log(error);
@@ -201,14 +203,28 @@ function selectPayment() {
         $('#chk_area').css('display', 'none');
 
     } else if (st.val() == 'Cash') {
-        $('button#btn_print').prop('disabled', false);
-        $('button#btn_print').removeClass('btn btn-default');
-        $('button#btn_print').addClass('btn btn-primary');
+
         $('#chk_area').css('display', 'block');
         if (!$('#paid_all').is(':checked')) {
             $('div#rvable').show();
             $('div#rvd').show();
             $('div#trans_area').hide();
+            $('#recieved').css('border', '2px dotted darkred');
+            $('#recieved').prop('placeholder', 'Required');
+            // $('#recieved::placeholder').css('color', 'darkred');
+            $('#recieved').blur(function () {
+               if ($(this).val() == '') {
+                   alert('Required');
+               } else if (parseInt($('#recieved').val()) <= parseInt($('#payable').val())) {
+                   $(this).css('border', '');
+                   $(this).prop('placeholder', '');
+                   $('button#btn_print').prop('disabled', false);
+                   $('button#btn_print').removeClass('btn btn-default');
+                   $('button#btn_print').addClass('btn btn-primary');
+               } else {
+
+               }
+            });
         }
 
         // $('input#recieved').change(function () {
@@ -218,14 +234,34 @@ function selectPayment() {
         //   $('input#payable').val(recieveable);
         // });
     } else if (st.val() == "Master Card" || st.val() == "Debit Card") {
-        $('button#btn_print').prop('disabled', false);
-        $('button#btn_print').removeClass('btn btn-default');
-        $('button#btn_print').addClass('btn btn-primary');
         $('#chk_area').css('display', 'block');
         if (!$('#paid_all').is(':checked')) {
             $('div#trans_area').show();
             $('div#rvable').show();
             $('div#rvd').show();
+            $('#recieved').css('border', '2px dotted darkred');
+            $('#recieved').prop('placeholder', 'Required');
+            $('#transCode').css('border', '2px dotted darkred');
+            $('#transCode').prop('placeholder', 'required');
+
+            $('#recieved').blur(function () {
+                if ($(this).val() === '') {
+                    alert('Required');
+                } else if ($('#recieved').val() <= $('#payable').val()) {
+                    $(this).css('border', '');
+                    $(this).prop('placeholder', '');
+                    $('button#btn_print').prop('disabled', false);
+                    $('button#btn_print').removeClass('btn btn-default');
+                    $('button#btn_print').addClass('btn btn-primary');
+                }
+            });
+
+            $('#transCode').blur(function () {
+                if ($(this).val() !== '') {
+                    $(this).css('border', '');
+                    $(this).prop('placeholder', '');
+                }
+            });
         }
     }
 }

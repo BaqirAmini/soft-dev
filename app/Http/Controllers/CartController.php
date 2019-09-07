@@ -50,17 +50,46 @@ class CartController extends Controller
             // DB::table('items')->where('item_id', $itemID)->decrement('quantity', $itemQty);
                 DB::table('items')->where('item_id', $itemID)->update(['quantity'=>DB::raw('GREATEST(quantity - '.$itemQty.', 0)')]);
             }
-            
-           
+
+
         } else {
             return response()->json([
                 'stock_msg' => 'No '.$itemName.' existing in stock, please add first.',
             ]);
         }
-       
+
     }
     // To remove an item from the cart
     public function removeItem(Request $request) {
-        Cart::remove($request->itemID);
+//        Item::find($request->itemID)->increment('quantity', $request->itemQty);
+        $qty = $request->itemQty;
+        $itemId = $request->itemId;
+        Cart::remove($request->rowId);
+        DB::table('items')->where('item_id', $itemId)->update(['quantity'=>DB::raw('quantity + '.$qty)]);
+//        Item::where('item_id', $request->itemID)->increment('quantity', $request->itemQty);
+
+
+
+
+//        DB::table('items')->where('item_id', $request->itemID)->increment('quantity', $request->itemQty);
+    }
+
+//    Update Cart
+    public function setDiscount(Request $request) {
+        $discountValue = $request->name;
+        $product = Cart::get($request->pk);
+        $previousPrice = $product->price;
+        $deductedPrice = $previousPrice - $discountValue;
+        $discountSet = Cart::update($request->pk, $deductedPrice);
+        if ($discountSet) {
+            return response()->json([
+               'result' => 'success'
+            ]);
+        } else {
+            return response()->json([
+                'result' => 'fail'
+            ]);
+        }
+
     }
 }

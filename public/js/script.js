@@ -35,6 +35,33 @@
          url: '/post',
          title: 'Enter username'
      });
+
+     // Edit discount of items in cart
+     $('.link_discount').editable({
+         pk: $('.link_discount').data('discount-id'),
+         url: '/sale/discount',
+         name: $('.link_discount').text(),
+         title: 'Insert Discount Amount ($)',
+         headers: {
+             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         ajaxOptions: {
+           type: 'POST',
+           dataType: 'json'
+         },
+         success:function (response) {
+            if (response.result === 'success') {
+                $('#box_cart').load(' #box_cart');
+            } else if (response.result === 'fail') {
+                console.log('Something wrong!');
+            }
+         },
+         error:function (err) {
+            console.log(err);
+
+         },
+
+     });
      /* ================================ /. POPUP ================================== */
      // invoice-detail
      $('#data_tbl_invoice_detail').DataTable();

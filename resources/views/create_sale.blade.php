@@ -108,7 +108,7 @@
                         <div class="input-group col-md-12" id="choose-customer">
                             <input type="text" class="form-control" id="search_customer"
                                    placeholder="Type Customer's Name or Phone" required>
-                            <div id="customer_search_result"></div>
+                            <div id="customer_search_result" style="z-index:-9999"></div>
                             {{--<select class="form-control" id="select_customer" required
                                     style="border: 2px solid rgb(211, 75, 75);">
                                 <option value="">Select customer..</option>
@@ -176,28 +176,38 @@
                                 </div>
                                 <hr>
                                 @foreach($carts as $cart)
-                                    <div class="sale-list col-md-12 col-sm-12 col-xs-12"
-                                         style="display:block;text-align: center">
+                                    <div class="sale-list col-md-10 col-sm-12 col-xs-12"
+                                         style="display:block;">
                                         <input type="hidden" class="item_id" value="{{ $cart->id }}">
                                         <div class="col-xs-1 col-md-1">
-                                            <a href="" class="btn_remove_sale" data-item-id="{{ $cart->rowId }}"
-                                               style="padding:5px 8px;"><i class="fa fa-remove"
-                                                                           style="color:rgb(165, 22, 22)"></i></a>
+                                            <a href="" class="btn_remove_sale"
+                                               data-item-rid="{{ $cart->rowId }}"
+                                               data-item-id="{{ $cart->id }}"
+                                               data-item-qty="{{ $cart->qty }}"
+                                               style="padding:5px 8px;">
+                                                <i class="fa fa-remove"
+                                                   style="color:rgb(165, 22, 22)"></i></a>
                                         </div>
 
                                         <div class="col-xs-12 col-md-3">
                                             <a href="#"> <span>{{ $cart->name }}</span></a>
                                         </div>
-                                        <div class="col-xs-12 col-md-3">
+                                        <div class="col-xs-12 col-md-2">
                                             <a href="#" class="link_qty" id="test_n"> <span>{{ $cart->qty }}</span></a>
                                         </div>
-                                        <div class="col-xs-12 col-md-3">
+                                        <div class="col-xs-12 col-md-2">
                                             <a href="#" class="link_price"><span>${{ $cart->price }}</span></a>
                                         </div>
-                                        <div class="input-group">
-                                            <a href="#">${{ $cart->qty * $cart->price }}</a>
+                                        <div class="col-md-2 col-sm-12 col-xs-12" style="text-align: center">
+                                            <div class="input-group">
+                                                <a href="#">${{ $cart->qty * $cart->price }}</a>
+                                            </div>
+                                            <!-- discount --->
+                                            <div class="pull-right" style="margin-top: -20px;margin-right: -55px;">
+                                                <a href="#" class="link_discount" data-discount-id="{{ $cart->rowId }}">0</a>
+                                                {{ csrf_field() }}
+                                            </div>
                                         </div>
-
                                     </div>
                                 @endforeach
                             </div>
@@ -235,18 +245,18 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12" style="margin-left:-25px;margin-top:15px;">
                                     <div class="col-md-4" id="trans_area" style="display: none;">
                                         <label for="transCode" id="lbl_trans_code">Trans #</label>
-                                        <input type="number" class="form-control t-card" placeholder="Transaction Code"
-                                               id="transCode">
+                                        <input type="number" class="form-control t-card" placeholder="Transaction"
+                                               id="transCode" style="min-width: 120px;" required>
                                     </div>
                                     <div class="col-md-4" id="rvable" style="display: none;">
                                         <label for="payable" class="lbl_payment">Recievable</label>
                                         <input type="text" min="0" max="9999" class="form-control" placeholder="payable"
-                                               id="payable" value="{{$subTotal}}">
+                                               id="payable" value="{{$subTotal}}" style="margin-left: 10px;min-width: 100px;">
                                     </div>
                                     <div class="col-md-4" id="rvd" style="display: none;">
                                         <label for="recieved" class="lbl_payment">Recieved</label>
-                                        <input type="text" min="0" max="999" step="0.01" class="form-control"
-                                               placeholder="recieved" id="recieved" style="padding:0;text-align:center">
+                                        <input type="text" min="0" max="999"  class="form-control"
+                                               placeholder="recieved" id="recieved" style="padding:0;text-align:center" required>
                                     </div>
                                 </div>
                             </div>
