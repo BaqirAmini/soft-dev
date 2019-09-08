@@ -25,9 +25,9 @@ class AndroidAPIController extends Controller
     public function onLogin(Request $request) {
          $username = $request->username;
          $password = $request->password;
-         
+
         if (Auth::attempt(['username' => $username, 'password' => $password, 'status'=>1])) {
-            $users = DB::table('users')->select('*')->where('username', $username)->get(); 
+            $users = DB::table('users')->select('*')->where('username', $username)->get();
                foreach ($users as $user) {
                    $compId = $user->comp_id;
                    $userId = $user->id;
@@ -37,7 +37,7 @@ class AndroidAPIController extends Controller
                    $role = $user->role;
                    $status = $user->status;
                    $photo = $user->photo;
-                
+
                    return response()->json([
                         'compId' => $compId,
                         'userId' => $userId,
@@ -55,6 +55,7 @@ class AndroidAPIController extends Controller
     }
 
     # Load inventory-data into API
+    # This API end-point requires the client side application to send company-id with the request to get company specific data
     public function onInventory(Request $request)
     {
         $items = DB::table('items')->select('*')->where('comp_id', $request->compId)->get();
@@ -62,6 +63,7 @@ class AndroidAPIController extends Controller
     }
 
     # Load customers based on a specific company
+    # This API end-point requires the client side application to send company-id with the request to get company specific data
     public function onListCustomer(Request $request)
     {
         $customers = DB::table('customers')->select('*')->where('comp_id', $request->compId)->get();
@@ -83,7 +85,7 @@ class AndroidAPIController extends Controller
          $customer->cust_email = $request->custEmail;
          $customer->cust_state = $request->custState;
          $customer->cust_addr = $request->custAddress;
-       
+
         if ($customer->save()) {
             return "success";
         } else {
@@ -104,7 +106,7 @@ class AndroidAPIController extends Controller
          $customer->cust_addr = $request->custAddress;
 
         if ($customer->save()) {
-            return "success";       
+            return "success";
         } else {
             return "fail";
         }
@@ -117,7 +119,7 @@ class AndroidAPIController extends Controller
         $customer = Customer::findOrfail($request->custId);
         $statusValue = $request->statusValue;
         $customer->cust_status = $statusValue;
-   
+
         if ($customer->save()) {
              if ($customer->cust_status == 1) {
                  $message = "active";
@@ -169,11 +171,12 @@ class AndroidAPIController extends Controller
                     'qty_sold' => $qtySold,
                     'sell_price' => $obj['price'],
                     'tax' => 3,
+                    # This is a calculated field which is not required to be stored in database and can be calculated in application level any time.
                     'subtotal' => $obj['subtotal']
                 ]);
                 # Decrease in-stock products based on sold quantities
                 DB::table('items')->where('item_id', $productId)->update(['quantity' => DB::raw('GREATEST(quantity - ' . $qtySold . ', 0)')]);
-                
+
             }
             if ($sold) {
                 $payment = new Payment();
@@ -186,9 +189,9 @@ class AndroidAPIController extends Controller
                 if ($payment->save()) {
                     return "success!";
                 }
-            } 
+            }
         }
-           
+
     }
     # register new category
     public function onNewCategory(Request $request)
@@ -204,7 +207,7 @@ class AndroidAPIController extends Controller
         }
     }
     # load categories
-    public function onListCategory(Request $request) 
+    public function onListCategory(Request $request)
     {
         $categories = DB::table('categories')->select('*')->where('comp_id', $request->compId)->get();
         return json_encode($categories);
@@ -220,7 +223,7 @@ class AndroidAPIController extends Controller
         } else {
             return "fail";
         }
-        
+
     }
 
     # Add new product
@@ -242,7 +245,7 @@ class AndroidAPIController extends Controller
         } else {
             return "fail";
         }
-        
+
     }
     # Load products
     public function loadProduct(Request $request)
@@ -261,7 +264,7 @@ class AndroidAPIController extends Controller
         $cash = '';
         $master = '';
         $debit = '';
-      
+
         if ($time == 0) {
             $query = DB::table('payments')
                 ->select('*')
@@ -334,7 +337,7 @@ class AndroidAPIController extends Controller
             $cash = DB::table('payments')->where('comp_id', $request->compId)->where('payment_type', 'Cash')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('recieved_amount');
             $master = DB::table('payments')->where('comp_id', $request->compId)->where('payment_type', 'Master Card')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('recieved_amount');
             $debit = DB::table('payments')->where('comp_id', $request->compId)->where('payment_type', 'Debit Card')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('recieved_amount');
-           
+
         } elseif ($time == 7) {
             # LAST MONTH
             $query =  DB::table('payments')
@@ -393,7 +396,7 @@ class AndroidAPIController extends Controller
     }
 
 /* ============ /. DAILY, WEEKLY, MONTHLY, MORE... REPORTS ================= */
-    # List all users 
+    # List all users
     public function onListUser(Request $request)
     {
         $users = DB::table('users')->where('comp_id', $request->compId)->get();
@@ -468,6 +471,6 @@ class AndroidAPIController extends Controller
         } else {
             return "fail";
         }
-        
+
     }
 }

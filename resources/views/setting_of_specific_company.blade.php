@@ -4,7 +4,7 @@
  <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
        {{ Breadcrumbs::render('comp-setting') }}
  </div>
-  <div class="content">      
+  <div class="content">
     <p id="comp-setting-msg" style="text-align: center;display: none;">Message</p>
         <!-- Horizontal Form -->
         <div class="box box-primary" id="box_for_specific_company">

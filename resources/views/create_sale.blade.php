@@ -146,11 +146,6 @@
                 <div>
                     <!-- general form elements -->
                     <div class="box box-solid" id="box_cart">
-                        <div class="box-header with-border">
-                            <div class="content-header">
-                                <h6 class="box-title" style="font-size: 12px">Customer & Payment</h6>
-                            </div>
-                        </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <p id="inv_message" style="display:none;"></p>
@@ -290,80 +285,15 @@
                                 </div>
                             </div>
                             {{--=============== Search items ==================--}}
-                            <form action="{{ route('sale.search') }}" enctype="multipart/form-data" method="post"
-                                  class="pull-right col-sm-12 col-md-6 col-lg-6" id="search_item_form">
-                                {{ csrf_field() }}
-                                <div class="input-group  col-lg-offset-2">
+                                <div class="input-group col-md-6 col-lg-6 col-sm-12 col-xs-12 pull-right" style="margin-right: 30px;">
                                     <input type="text" name="search" placeholder="Search items to sell"
-                                           class="form-control" required>
-                                    <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                                <span class=" glyphicon glyphicon-search"></span>
-                            </button>
-                          </span>
+                                           class="form-control" required id="search_items">
                                 </div>
-                            </form>
                             {{--=============== /.Search items ==================--}}
                         </div>
                         <p id="stock_message" style="text-align:center;display:none"></p>
                         <div class="box-body">
-                            <ul style="width:100%;margin-left: -15px;">
-                                @foreach($items as $item)
-                                    <li style="list-style: none">
-                                        <a href="#" data-item-id="{{ $item->item_id }}"
-                                           data-item-name="{{ $item->item_name }}"
-                                           data-item-price="{{ $item->sell_price }}"
-                                           class="link_add_item">
-                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                                                <div class="info-box"
-                                                     style="background: rgb(243, 247, 248);color: black;"
-                                                     style="min-width: 250px;">
-                                                    <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
-                                                    <span class="info-box-icon" style="background: rgb(243, 247, 248)">
-                                <img src="{{ url('/uploads/product_images/'.$item->item_image) }}" alt="Item Image"
-                                     height="60" width="60" style="margin-top:-10px">
-                              </span>
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text"
-                                                              style="font-size:12px;">{{ $item->item_name }}</span>
-                                                        <span class="info-box-text">${{ $item->sell_price }}</span>
-                                                        <span class="info-box-number">{{ $item->quantity }}</span>
-                                                    </div>
-                                                    <!-- /.info-box-content -->
-                                                </div>
-                                                <!-- /.info-box -->
-                                            </div>
-                                        </a>
-                                        @if($item->quantity <= 0)
-                                            <a href="#" data-item-id="{{ $item->item_id }}"
-                                               data-item-name="{{ $item->item_name }}"
-                                               data-item-price="{{ $item->sell_price }}"
-                                               class="link_add_item" readonly>
-                                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                                    <div class="info-box"
-                                                         style="text-align: center;background: rgb(243, 247, 248);color: black;">
-                                                        <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
-                                                        <span class="info-box-icon"
-                                                              style="background: rgb(243, 247, 248)">
-                                <img src="uploads/product_images/{{ $item->item_image }}" alt="Item Image"
-                                     height="90" width="90" style="margin-top:-10px">
-                              </span>
-
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text">{{ $item->item_name }}</span>
-                                                            <span class="info-box-text">${{ $item->sell_price }}</span>
-                                                            <span class="info-box-number">{{ $item->quantity }}</span>
-                                                        </div>
-                                                        <!-- /.info-box-content -->
-                                                    </div>
-                                                    <!-- /.info-box -->
-                                                </div>
-                                            </a>
-                                        @else
-
-                                        @endif
-                                    </li>
-                                @endforeach
+                            <ul style="width:100%;margin-left: -15px;" id="list_items">
                             </ul>
                         </div>
                         <!-- /.box-body -->

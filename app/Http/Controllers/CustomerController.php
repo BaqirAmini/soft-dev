@@ -43,6 +43,26 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    # new_customer.blade.php to register a customer
+    public function registerCustomer()
+    {
+        if (Gate::allows('isSystemAdmin')) {
+            return view('new_customer');
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
+    }
+
+    public function registerCustNow(Request $request)
+    {
+        if (Gate::allows('isSystemAdmin')) {
+            return view('new_customer');
+        } else {
+            abort(403, 'This action is unauthorized.');
+        }
+    }
+
+
     # Search customers by name or phone to sell something on
     public function searchCustomer(Request $request)
     {
@@ -61,7 +81,7 @@ class CustomerController extends Controller
             foreach ($data as $row) {
                 $output .= '<li><a href="#" data-li-id="'.$row->cust_id.'" 
                         class="cust_search_li"> 
-                        <img src="uploads/user_photos/user.png" alt="Customer_photo" class="img-circle img-md" style="margin:auto 15px auto 10px;">
+                        <img src="/uploads/user_photos/user.png" alt="Customer_photo" class="img-circle img-md" style="margin:auto 15px auto 10px;">
                         <input type="hidden" name="spn_cust_name" value="'.$row->cust_name.'">
                         <input type="hidden" name="spn_cust_lastname" value="'.$row->cust_lastname.'">
                         <input type="hidden" name="spn_seller_permit" value="'.$row->SellerPermitNumber. '">

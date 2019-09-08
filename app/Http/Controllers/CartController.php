@@ -66,11 +66,8 @@ class CartController extends Controller
         $itemId = $request->itemId;
         Cart::remove($request->rowId);
         DB::table('items')->where('item_id', $itemId)->update(['quantity'=>DB::raw('quantity + '.$qty)]);
+        # 2 MORE WAYS FOR INCREASING
 //        Item::where('item_id', $request->itemID)->increment('quantity', $request->itemQty);
-
-
-
-
 //        DB::table('items')->where('item_id', $request->itemID)->increment('quantity', $request->itemQty);
     }
 
@@ -81,7 +78,7 @@ class CartController extends Controller
         $previousPrice = $product->price;
         $deductedPrice = $previousPrice - $discountValue;
         $discountSet = Cart::update($request->pk, $deductedPrice);
-        if ($discountSet) {
+        /*if ($discountSet) {
             return response()->json([
                'result' => 'success'
             ]);
@@ -89,7 +86,7 @@ class CartController extends Controller
             return response()->json([
                 'result' => 'fail'
             ]);
-        }
+        }*/
 
     }
 }

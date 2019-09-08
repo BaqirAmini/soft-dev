@@ -1,11 +1,12 @@
 $(document).ready(function () {
+    // load items in create_sale.blade.php while page is loading
     /** =================================== click btn ADD to insert items in the CART ============================= */
     var tax = $('input#tax').val();
     // $(this).prop('disabled', true);
 
 
     // when button add clicked...
-    $('.link_add_item').click(function () {
+    $(document).on('click', '.link_add_item', function () {
         // printJS('#sale_section', 'html');
 
         var itemID = $(this).data('item-id');
@@ -29,11 +30,11 @@ $(document).ready(function () {
                 console.log(response);
                 $('#stock_message').css({'display': 'block', 'text-align': 'center', 'color': 'darkred'});
                 $('#stock_message').html(response.stock_msg);
-                /*$('#sale_section').load(' #sale_section'); */
                 $('#box_cart').load(' #box_cart');
-              /*  setTimeout(function () {
-                    window.location.reload();
-                }, 5);*/
+                $('#box-items-for-sale').load(' #box-items-for-sale');
+                /*  setTimeout(function () {
+                      window.location.reload();
+                  }, 5);*/
                 // $('#payment_area').load(' #payment_area');
                 // $('.tax_value').attr('readonly', response.readonly);
 
@@ -43,6 +44,11 @@ $(document).ready(function () {
             }
         });
     });
+   /* $('a.link_add_item').click(function () {
+
+    });*/
+
+    fetch_inventory_data();
     /** =================================== /. click btn ADD to insert items in the CART ============================= */
 
     /* ===================================== SEARCH customer by name or phone ==================================*/
@@ -56,7 +62,7 @@ $(document).ready(function () {
                 },
                 url: '/customer/search',
                 method: 'POST',
-                data: {query:query},
+                data: {query: query},
                 success: function (response) {
                     $('#customer_search_result').fadeIn();
                     $('#customer_search_result').html(response);
@@ -70,8 +76,8 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('click','.cust_search_li', function () {
-       cid = $(this).data('li-id');
+    $(document).on('click', '.cust_search_li', function () {
+        cid = $(this).data('li-id');
         onCreateInvoice(cid);
         // $('#select_payment').css('display', 'block');
         $('#btn_new_customer').prop('disabled', true);
@@ -81,13 +87,13 @@ $(document).ready(function () {
         $('#search_customer').val($('input[name=spn_cust_name]').val());
         // Customer info should be set under search box
         $('.customer_chosen_info').show();
-        $('#customer_chosen #link1').text($('input[name=spn_cust_name]').val()+" "+$('input[name=spn_cust_lastname]').val());
+        $('#customer_chosen #link1').text($('input[name=spn_cust_name]').val() + " " + $('input[name=spn_cust_lastname]').val());
         $('#customer_chosen_detail').text($('input[name=spn_seller_permit]').val());
         $('#customer_search_result').fadeOut()
     });
 
     $('#customer_search_result').mouseleave(function () {
-       $(this).fadeOut();
+        $(this).fadeOut();
     });
 
     // when link-remove-customer clicked
@@ -95,28 +101,50 @@ $(document).ready(function () {
         $('.customer_chosen_info').fadeOut();
     });
     /* ===================================== .SEARCH customer by name or phone ==================================*/
+    /* ==================================== SEARCH ITEMS FOR SALE ======================================*/
+    function fetch_inventory_data(query = '') {
+        $.ajax({
+            url: '/sale/listItems',
+            type: 'GET',
+            data: {query:query},
+            dataType: 'json',
+            success: function (response) {
+                $('#list_items').html(response.item_data_list);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
 
+    // Search when keyups in searchbar
+    $(document).on('keyup', '#search_items', function () {
+        var query = $(this).val();
+        fetch_inventory_data(query);
+    });
+
+    /* ==================================== /. SEARCH ITEMS FOR SALE ======================================*/
 
     // BELOW is switched to input element to search customer.
 
 
-   /* $('#select_customer').change(function () {
-      if ($('select#select_customer option:selected').val() == "") {
-        $('#select_payment').css('display', 'none');
-      } else {
-        $(this).attr('style', '');
-        $('#select_payment').css('display', 'block');
-        $('#btn_new_customer').prop('disabled', true);
-        $('#btn_new_customer').removeClass('btn-primary');
-        $('#btn_new_customer').addClass('btn-default');
-        cid = $(this).val();
-        $('.btn_print_sale').attr('data-print', cid);
+    /* $('#select_customer').change(function () {
+       if ($('select#select_customer option:selected').val() == "") {
+         $('#select_payment').css('display', 'none');
+       } else {
+         $(this).attr('style', '');
+         $('#select_payment').css('display', 'block');
+         $('#btn_new_customer').prop('disabled', true);
+         $('#btn_new_customer').removeClass('btn-primary');
+         $('#btn_new_customer').addClass('btn-default');
+         cid = $(this).val();
+         $('.btn_print_sale').attr('data-print', cid);
 
-        // generate invoice-id with customer-selection
-        // onCreateInvoice(custID);
+         // generate invoice-id with customer-selection
+         // onCreateInvoice(custID);
 
-      }
-    });*/
+       }
+     });*/
     // To remove an item from the cart
     $('.btn_remove_sale').click(function () {
         var rowId = $(this).data('item-rid');
@@ -125,7 +153,7 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "cart/removeItem",
-            data: {'rowId': rowId, 'itemQty': qty, 'itemId':itemId},
+            data: {'rowId': rowId, 'itemQty': qty, 'itemId': itemId},
             success: function (response) {
                 // $('#sale_section').load(' #sale_section');
                 /*setTimeout(function () {
@@ -213,17 +241,17 @@ function selectPayment() {
             $('#recieved').prop('placeholder', 'Required');
             // $('#recieved::placeholder').css('color', 'darkred');
             $('#recieved').blur(function () {
-               if ($(this).val() == '') {
-                   alert('Required');
-               } else if (parseInt($('#recieved').val()) <= parseInt($('#payable').val())) {
-                   $(this).css('border', '');
-                   $(this).prop('placeholder', '');
-                   $('button#btn_print').prop('disabled', false);
-                   $('button#btn_print').removeClass('btn btn-default');
-                   $('button#btn_print').addClass('btn btn-primary');
-               } else {
+                if ($(this).val() == '') {
+                    alert('Required');
+                } else if (parseInt($('#recieved').val()) <= parseInt($('#payable').val())) {
+                    $(this).css('border', '');
+                    $(this).prop('placeholder', '');
+                    $('button#btn_print').prop('disabled', false);
+                    $('button#btn_print').removeClass('btn btn-default');
+                    $('button#btn_print').addClass('btn btn-primary');
+                } else {
 
-               }
+                }
             });
         }
 

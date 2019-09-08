@@ -73,12 +73,15 @@ Route::post('manageUser/userPhoto', 'UserManageController@changePhoto');
 Route::post('/sale', 'SaleController@store');
 Route::get('/sale', 'SaleController@index')->name('sale');
 Route::get('/deleteSale', 'SaleController@destroy');
+Route::get('/sale/listItems', 'SaleController@onListItem');
 Route::post('/sale/searchItem', 'SaleController@SearchItem')->name('sale.search');
 # /.Sales-management
 
 #Customers
 Route::post('customer', 'CustomerController@store');
 Route::get('customer', 'CustomerController@index')->name('customer');
+Route::get('customer/register', 'CustomerController@registerCustomer')->name('customer.register');
+Route::post('customer/register', 'CustomerController@registerCustNow');
 Route::get('customer/delete', 'CustomerController@destroy');
 Route::post('customer/edit', 'CustomerController@edit');
 Route::get('customer/export', 'CustomerController@exportExcel')->name('customer.export');
@@ -93,7 +96,7 @@ Route::get('customer/custDetail/invoice/detail/{invId?}', 'InvoiceController@onD
 # /.Customers
 
 #Cart routes
-Route::post('cart', 'CartController@addToCart');
+Route::post('/cart', 'CartController@addToCart');
 Route::post('/sale/discount', 'CartController@setDiscount');
 Route::get('cart/removeItem', 'CartController@removeItem');
 Route::post('cart/editQty', 'CartController@editQty');

@@ -47,8 +47,9 @@ class SaleController extends Controller
                         ->get();
 
                     $customers = Customer::all()->where('comp_id', Auth::user()->comp_id);
-                    $items = Item::all()->where('comp_id', Auth::user()->comp_id);
-                    return view('create_sale', compact(['items', 'customers', 'sales', 'carts', 'total', 'subTotal', 'tax']));
+                # Load in ajax
+//                    $items = Item::all()->where('comp_id', Auth::user()->comp_id);
+                    return view('create_sale', compact(['customers', 'sales', 'carts', 'total', 'subTotal', 'tax']));
 
             } else {
                 abort(403, 'This action is unauthorized.');
@@ -56,9 +57,9 @@ class SaleController extends Controller
 
     }
 
-    public function SearchItem(Request $request)
+    public function onListItem(Request $request)
     {
-        #cart
+        /*#cart
         $carts = Cart::content();
         $total = Cart::total(2, '.', '');
         $subTotal = Cart::subtotal(2, '.', '');
@@ -75,8 +76,55 @@ class SaleController extends Controller
             ->join('invoices', 'invoices.inv_id', '=', 'sales.inv_id')
             ->select('sales.*', 'items.item_name', 'companies.*', 'invoices.*')
             ->where('items.comp_id', Auth::user()->comp_id)
-            ->get();
-        return view('create_sale', compact(['items', 'customers', 'sales', 'carts', 'total', 'subTotal', 'tax']));
+            ->get();*/
+
+        if ($request->ajax()) {
+            $output = '';
+            $query = $request->get('query');
+            if ($query != '') {
+                $data = DB::table('items')->select('*')->where('comp_id', Auth::user()->comp_id)->where('item_name', 'LIKE', '%'.$query.'%')->get();
+            } else {
+                $data = DB::Table('items')->select('*')->where('comp_id', Auth::user()->comp_id)->orderBy('item_id', 'desc')->get();
+            }
+            $total_row = $data->count();
+            if ($total_row > 0) {
+                foreach ($data as $row) {
+                    $output .= '<li style="list-style: none" id="my_list">
+                                        <a href="#" data-item-id="'.$row->item_id .'"
+                                           data-item-name="'. $row->item_name .'"
+                                           data-item-price="'.$row->sell_price.'"
+                                           class="link_add_item">
+                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                                <div class="info-box"
+                                                     style="background: rgb(243, 247, 248);color: black;"
+                                                     style="min-width: 250px;">
+                                                    <!-- <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span> -->
+                                                    <span class="info-box-icon" style="background: rgb(243, 247, 248)">
+                                                        <img src="/uploads/product_images/'.$row->item_image.'" alt="Item Image"
+                                                             height="60" width="60" style="margin-top:-10px">
+                                                    </span>
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text"
+                                                              style="font-size:12px;">'.$row->item_name.'</span>
+                                                        <span class="info-box-text">'.$row->sell_price.'</span>
+                                                        <span class="info-box-number">'.$row->quantity.'</span>
+                                                    </div>
+                                                    <!-- /.info-box-content -->
+                                                </div>
+                                                <!-- /.info-box -->
+                                            </div>
+                                        </a>
+                                    </li>';
+                }
+            }
+            else {
+                $output = '<li style="list-style-type: none;text-align: center"><strong>No Items Found.</strong></li>';
+            }
+            $data = array('item_data_list' => $output, 'total_data' => $total_row);
+            echo json_encode($data);
+
+        }
+
     }
 
     /**
