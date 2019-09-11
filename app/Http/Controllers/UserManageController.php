@@ -430,7 +430,7 @@ class UserManageController extends Controller
                 $image->move($path, $logo_name);
                 $company->save();
                 return response()->json([
-                    'msg' => 'Logo changed successfully!',
+                    'msg' => 'Logo updated successfully!',
                     'style' => 'color:darkblue',
                     'result' => 'success'
                 ]);

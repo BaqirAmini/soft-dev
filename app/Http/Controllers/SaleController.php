@@ -254,7 +254,7 @@ class SaleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    /*public function destroy(Request $request)
     {
         if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
             $deleteSale = Sale::destroy('sale_id', $request->saleID);
@@ -266,6 +266,6 @@ class SaleController extends Controller
         } else {
             abort(403, 'This action is unauthorized.');
         }
-    }
+    }*/
 
 }

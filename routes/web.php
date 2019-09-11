@@ -80,8 +80,8 @@ Route::post('/sale/searchItem', 'SaleController@SearchItem')->name('sale.search'
 #Customers
 Route::post('customer', 'CustomerController@store');
 Route::get('customer', 'CustomerController@index')->name('customer');
-Route::get('customer/register', 'CustomerController@registerCustomer')->name('customer.register');
-Route::post('customer/register', 'CustomerController@registerCustNow');
+Route::get('/customer/register', 'CustomerController@registerCustomer')->name('customer.register');
+Route::post('/customer/register', 'CustomerController@store');
 Route::get('customer/delete', 'CustomerController@destroy');
 Route::post('customer/edit', 'CustomerController@edit');
 Route::get('customer/export', 'CustomerController@exportExcel')->name('customer.export');

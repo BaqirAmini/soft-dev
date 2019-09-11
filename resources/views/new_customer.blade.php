@@ -10,8 +10,15 @@
         <div class="box box-primary" id="box_for_specific_company">
           <div class="box-header">
             <div class="content-header">
-              <h3 class="box-title">Register New Customer</h3>
+              <h3 class="box-title">Add Customer</h3>
             </div><br>
+              <div class="col-md-offset-3 col-lg-offset-3">
+                  <div id="error_message" style="display: none">
+                  </div>
+                  <p id="success_message" style="display: none">
+                    Text2
+                  </p>
+              </div>
             <!-- ============  Company LOGO =============== -->
             <form id="specific_comp_logo_form" enctype="multipart/form-data" class="col-md-offset-1 col-sm-offset-1">
               @csrf
@@ -29,7 +36,7 @@
           <!-- /.box-header -->
           <!-- form start -->
           <div class="box-body">
-            <form class="form-horizontal" id="form_specific_company_setting" enctype="multipart/form-data">
+            <form class="form-horizontal" id="form_new_customer" enctype="multipart/form-data">
               @csrf
 {{--              <input type="hidden" name="cid" id="hidden_comp_id" value="">--}}
                 <div class="form-group">
@@ -112,14 +119,14 @@
                         <label class="limit_purchase" style="margin-right: 50px;">
                             <input type="radio" name="limit_purchase" value="1" class="status"
                                    class="form-control"
-                                   {{--@if($customers[0]->LimitPurchase === 1) checked @endif--}}>&nbsp;
+                                   {{--@if($customers[0]->LimitPurchase === 1) checked @endif--}} checked>&nbsp;
                             Yes
                         </label>
                         <label class="credit_limit">
                             <input type="radio" name="limit_purchase" value="0" class="status"
                                    class="form-control"
                                   {{-- @if($customers[0]->LimitPurchase === 0) checked
-                                   @endif checked--}}>&nbsp; No
+                                   @endif checked--}} checked>&nbsp; No
                         </label>
                     </div>
                 </div>
@@ -129,14 +136,6 @@
                     </div>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" min="0" step="0.001" name="account_balance" placeholder="Account Balance" value="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="control-label the-ast col-sm-2">
-                        <label for="credit_limit">Credit Limit</label>
-                    </div>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" min="0" step="0.001" name="credit_limit" placeholder="Credit Limit" value="">
                     </div>
                 </div>
                 <div class="form-group">
@@ -217,7 +216,7 @@
                             <input type="radio" name="employee" value="0" class="status"
                                    class="form-control"
                                 {{-- @if($customers[0]->LimitPurchase === 0) checked
-                                 @endif checked--}}>&nbsp; No
+                                 @endif checked--}} checked>&nbsp; No
                         </label>
                     </div>
                 </div>
@@ -229,12 +228,22 @@
                         <input type="text" class="form-control"  name="fax_number" placeholder="Fax Number" value="">
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="control-label the-ast col-sm-2">
-                        <label for="tax_exempt">Tax Emempt</label>
-                    </div>
+                <div class="form-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <label for="tax_exempt" class="col-sm-2 control-label">Tax Exempt</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control"  name="tax_exempt" placeholder="Tax Exempt" value="">
+                        <!-- radio -->
+                        <label class="tax_exempt" style="margin-right: 50px;">
+                            <input type="radio" name="tax_exempt" value="1" class="status"
+                                   class="form-control"
+                                {{--@if($customers[0]->LimitPurchase === 1) checked @endif--}} checked>&nbsp;
+                            Yes
+                        </label>
+                        <label class="tax_exempt">
+                            <input type="radio" name="tax_exempt" value="0" class="status"
+                                   class="form-control"
+                                {{-- @if($customers[0]->LimitPurchase === 0) checked
+                                 @endif checked--}} checked>&nbsp; No
+                        </label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -263,7 +272,7 @@
                 </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <a href="{{ route('dashboard') }}" class="btn btn-default">Cancel</a>
+                <a href="{{ route('customer') }}" class="btn btn-default">Cancel</a>
                 <button type="submit" class="btn btn-primary">Save</button>
               </div>
               <!-- /.box-footer -->

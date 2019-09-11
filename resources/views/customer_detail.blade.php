@@ -9,7 +9,15 @@
             #tlb_cust_detail td {
                 text-align: center;
             }
+
+            {{-- To set alignment into center --}}
+            #invoice_body td, #invoice_header th {
+                text-align: center;
+            }
         </style>
+
+
+
     </head>
     {{-- /.STYLES --}}
 
@@ -266,42 +274,71 @@
                                                 <h3 class="box-title">Transactions</h3>
                                             </div>
                                         </div>
-                                        <div class="box">
-                                            <div class="box-body">
-                                                <table id="data_tbl_purchase_history"
-                                                       class="table table-responsive col-md-12 col-xs-6 table-striped table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Invoice #</th>
-                                                        <th>Payment Type</th>
-                                                        <th>Paid</th>
-                                                        <th>Balance</th>
-                                                        <th>Transaction Date</th>
-                                                        <!-- <th>Action</th> -->
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @if(!empty($purchases) || count($purchases)>0)
-                                                        @foreach($purchases as $pur)
-                                                            <tr>
-                                                                <td>
-                                                                    <a href="#" class="invoice_detail"
-                                                                       data-inv-id="{{ $pur->inv_id }}">
-                                                                        {{ $pur->inv_id }}
-                                                                    </a>
-                                                                </td>
-                                                                <td>{{ $pur->payment_type }}</td>
-                                                                <td>{{ $pur->recieved_amount }}</td>
-                                                                <td>{{ $pur->recievable_amount }}</td>
-                                                                <td>{{ Carbon\carbon::parse($pur->created_at)->format('d/m/Y') }}</td>
+                                        {{--================= Two tables i.e. Invoices & Payments =================================== --}}
+                                        <!-- tabs --->
+                                        <div class="nav-tabs-custom">
+                                            <!-- tabs list -->
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a href="#tab_invoice" data-toggle="tab" >Invoices</a></li>
+                                                <li><a href="#tab_invoice" data-toggle="tab" id="">Payments</a></li>
+                                            </ul>
+                                            <!--/. tabs list -->
+                                            <!-- TAB CONTENT -->
+                                            <div class="tab-content">
+                                                <!-- Tab-invoice-->
+                                                <div class="active tab-pane" id="tab_invoice">
+                                                    <div class="box box-solid">
+                                                        <div class="box-body">
+                                                            <table id="data_tbl_purchase_history"
+                                                                   class="table table-responsive col-md-12 col-xs-6 table-striped table-bordered">
+                                                                <thead id="invoice_header">
+                                                                <tr>
+                                                                    <th>Invoice #</th>
+                                                                    <th>Payment Type</th>
+                                                                    <th>Paid</th>
+                                                                    <th>Balance</th>
+                                                                    <th>Transaction Date</th>
+                                                                    <th>Make a payment</th>
+                                                                    <!-- <th>Action</th> -->
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="invoice_body">
+                                                                @if(!empty($purchases) || count($purchases)>0)
+                                                                    @foreach($purchases as $pur)
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a href="#" class="invoice_detail"
+                                                                                   data-inv-id="{{ $pur->inv_id }}">
+                                                                                    {{ $pur->inv_id }}
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>{{ $pur->payment_type }}</td>
+                                                                            <td>{{ $pur->recieved_amount }}</td>
+                                                                            <td>{{ $pur->recievable_amount }}</td>
+                                                                            <td>{{ Carbon\carbon::parse($pur->created_at)->format('d/m/Y') }}</td>
+                                                                            <td><a href="#"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#modal-make-payment"
+                                                                                   type="button"
+                                                                                   class="btn btn-default btn-sm">
+                                                                                            <span class="glyphicon glyphicon-credit-card"></span>
+                                                                                </a>
+                                                                            </td>
 
-                                                            </tr>
-                                                        @endforeach
-                                                    @endif
-                                                    </tbody>
-                                                </table>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                @endif
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.Tab-invoice-->
                                             </div>
+                                            <!--/. TAB CONTENT -->
                                         </div>
+                                        <!--/. --->
+
                                     </div>
                                     <a href="{{ route('customer') }}" type="button" class="btn btn-primary">&lt Back</a>
                                     @if($totalTransaction ==! 0)

@@ -151,8 +151,6 @@ class ItemController extends Controller
         $validation = Validator::make($request->all(), [
             'item_name' => 'required|string|max:64',
             'item_desc' => 'nullable|string|max:128',
-            'quantity' => 'required|integer|max:64',
-            'purchase_price' => 'required|between: 0, 99.99|max:64',
             'purchase_price' => 'required|between: 0, 99.99|max:64',
             'quantity'=>'required|integer|not_in:0|regex:/[1-9][0-9]+/',
             'discount' => 'nullable|between: 0, 99.99|max:64',

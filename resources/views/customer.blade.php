@@ -24,7 +24,7 @@
             <div class="box-header">
                 @can('isSystemAdmin')
                   <section class="content-header">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-customer">Add Customer</button>
+                      <a href="{{ route('customer.register') }}" type="button" class="btn btn-primary">Add Customer</a>
                       {{--   Dropdown for Excel   --}}
                       <div class="dropdown pull-right">
                           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">More
@@ -156,7 +156,7 @@
           <!-- /.modal -->
         <!-- /.edit-customer -->
 <!-- new-customer modal -->
-<div class="modal fade" id="modal-customer">
+{{--<div class="modal fade" id="modal-customer">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -229,7 +229,7 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-</div>
+</div>--}}
       <!-- /.new-customer modal -->
 
       <!-- customer-profile -->

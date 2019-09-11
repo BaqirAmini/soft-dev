@@ -1,54 +1,41 @@
+
 $(document).ready(function () {
-    $('#modal-customer').on('click', '#btn_add_customer', function () {
+    /* ================================== Register NEW-CUSTOMER ========================================*/
+    $('#form_new_customer').on('submit', function (e) {
+       e.preventDefault();
+       var d = new FormData(this);
+       $.ajax({
+          url: '/customer/register',
+          type: 'POST',
+          data: d,
+          processData: false,
+          contentType: false,
+          cache: false,
+           dataType: 'json',
+          success: function (response) {
+            if (response.result === 'success') {
+                $('#success_message').html(response.message)
+                $('#success_message').css('display', 'block');
+                $('#success_message').attr('style',response.style);
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            } else {
+                $.each(response.message, function(i, m) {
+                    $('#error_message').append('<li>'+m+'</li>');
+                    $('#error_message').load(' #error_message');
+                });
 
-            var businessName = $('input[name=business_name]').val();
-            var custName = $('input[name=cust_name]').val();
-            var custLastName = $('input[name=cust_lastname]').val();
-            var custPhone = $('input[name=cust_phone]').val();
-            var custEmail = $('input[name=cust_email]').val();
-            var custState = $('input[name=cust_state]').val();
-            var custَAddress = $('input[name=cust_addr]').val();
-            var token = $('input[name=_token]').val();
-
-           $.ajax({
-               type: "POST",
-               url: "customer",
-               dataType: 'json',
-               data: {
-                   'cBName':businessName,
-                   'cName':custName,
-                   'cLastName':custLastName,
-                   'cPhone':custPhone,
-                   'cEmail':custEmail,
-                   'cState':custState,
-                   'cAddr':custَAddress,
-                   '_token':token
-                    },
-
-               success: function (response) {
-                   if (response.result === 'success') {
-                       $('#modal-customer').modal('hide');
-                       location.reload();
-                   } else {
-                       $('#modal-customer').modal('show');
-                   }
-                   $('#cust_message').css(
-                       {
-                           'display':'block',
-                           'margin-top':'10px',
-                           'text-align': 'center'
-                   });
-                   $('#cust_message').text(response.message);
-                   $('#cust_message').attr('style', response.style);
-                   $('#data_tbl5').load(' #data_tbl5');
-                   // location.reload();
-
-               },
-               error: function (error) {
-                   console.log(error);
-                }
-           });
-     });
+                $('#error_message').css('display', 'block');
+                $('#error_message').attr('style',response.style);
+            }
+          },
+          error: function (err) {
+              console.log(err);
+          }
+       });
+    });
+    /* ==================================/. Register NEW-CUSTOMER ========================================*/
 
      // ============================ EDIT CUSTOMER ========================
     $('#btn_enable_cust_edit').click(function () {
@@ -96,7 +83,7 @@ $(document).ready(function () {
  // Customer profile & balance
     $('#data_tbl5').on('click', '.customer-detail', function () {
             var custId = $(this).data('cust-id');
-            href = "customer/custDetail/" + custId;
+            var href = "customer/custDetail/" + custId;
             $(this).attr('data-href', href);
             window.location = $(this).data('href');
      });

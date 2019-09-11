@@ -31,7 +31,7 @@ $(document).ready(function () {
                 $('#stock_message').css({'display': 'block', 'text-align': 'center', 'color': 'darkred'});
                 $('#stock_message').html(response.stock_msg);
                 $('#box_cart').load(' #box_cart');
-                $('#box-items-for-sale').load(' #box-items-for-sale');
+                // $('#box-items-for-sale').load(' #box-items-for-sale');
                 /*  setTimeout(function () {
                       window.location.reload();
                   }, 5);*/

@@ -53,16 +53,6 @@ class CustomerController extends Controller
         }
     }
 
-    public function registerCustNow(Request $request)
-    {
-        if (Gate::allows('isSystemAdmin')) {
-            return view('new_customer');
-        } else {
-            abort(403, 'This action is unauthorized.');
-        }
-    }
-
-
     # Search customers by name or phone to sell something on
     public function searchCustomer(Request $request)
     {
@@ -107,26 +97,61 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'cBName' => 'required|string|max:128|min:5',
-            'cName' => 'required|string|max:64',
-            'cLastName' => 'nullable|string|max:64',
-            'cPhone' => 'required|string|min:10|max:16',
-            'cEmail' => 'nullable|string|email',
-            'cState' => 'required|string|max:64',
-            'cAddr' => 'required|string|max:256'
+            'business_name' => 'required|string|max:128|min:5|unique:customers,business_name',
+            'seller_permit_number' => 'required|numeric|min:4|unique:customers,SellerPermitNumber',
+            'first_name' => 'required|string|min:3|max:64',
+            'last_name' => 'nullable|string|min:3|max:64',
+            'phone' => 'required|string|min:10|max:16|unique:customers,cust_phone',
+            'email' => 'nullable|string|email|unique:customers,cust_email,'.Auth::user()->comp_id.',comp_id',
+            'account_number' => 'nullable|numeric|unique:customers,AccountNumber',
+            'account_type_ID' => 'nullable|numeric|unique:customers,AccountTypeID',
+            'limit_purchase' => 'boolean',
+            'account_balance' => 'nullable|numeric|between:0,999999.99',
+            'credit_limit' => 'nullable|numeric|between:0,999999.99',
+            'HQID' => 'nullable|numeric',
+            'country' => 'required|string|min:3',
+            'province' => 'required|string|min:3|max:64',
+            'address1' => 'required|string|min:16|max:191',
+            'address2' => 'nullable|string|min:16|max:191',
+            'city' => 'required|string|min:3|max:64',
+            'zip_code' => 'nullable|numeric|min:4',
+            'employee' => 'boolean',
+            'fax_number' => 'nullable|numeric|unique:customers,FaxNumber,'.Auth::user()->comp_id.',comp_id',
+            'tax_exempt' => 'boolean',
+            'notes' => 'nullable|string|max:256',
+            'price_level' => 'nullable|numeric|between:0,999999.99',
+            'tax_number' => 'nullable|numeric|unique:customers,TaxNumber,'.Auth::user()->comp_id.',comp_id'
         ]);
         if ($validation->passes()) {
 
             $customer = new Customer();
             $customer->comp_id = Auth::user()->comp_id;
             $customer->UserID = Auth::user()->id;
-            $customer->business_name = $request->cBName;
-            $customer->cust_name = $request->cName;
-            $customer->cust_lastname = $request->cLastName;
-            $customer->cust_phone = $request->cPhone;
-            $customer->cust_email = $request->cEmail;
-            $customer->cust_state = $request->cState;
-            $customer->cust_addr = $request->cAddr;
+            $customer->business_name = $request->business_name;
+            $customer->SellerPermitNumber = $request->seller_permit_number;
+            $customer->cust_name = $request->first_name;
+            $customer->cust_lastname = $request->last_name;
+            $customer->cust_phone = $request->phone;
+            $customer->cust_email = $request->email;
+            $customer->AccountNumber = $request->account_number;
+            $customer->AccountTypeID = $request->account_type_ID;
+            $customer->LimitPurchase = $request->limit_purchase;
+            $customer->AccountBalance = $request->account_balance;
+            $customer->CreditLimit = $request->credit_limit;
+            $customer->HQID = $request->HQID;
+            $customer->Country = $request->country;
+            $customer->cust_state = $request->province;
+            $customer->cust_addr = $request->address1;
+            $customer->Address2 = $request->address2;
+            $customer->City = $request->city;
+            $customer->zip_code = $request->zip_code;
+            $customer->Employee = $request->employee;
+            $customer->FaxNumber = $request->fax_number;
+            $customer->TaxExempt = $request->tax_exempt;
+            $customer->Notes = $request->notes;
+            $customer->PriceLevel = $request->price_level;
+            $customer->TaxNumber = $request->tax_number;
+
             $customer->save();
             return response()->json([
                 'message' => 'Customer registed successfully!',
@@ -227,13 +252,13 @@ class CustomerController extends Controller
     {
         $v = Validator::make($request->all(), [
             'seller_permit_number' => 'required|numeric|min:4|unique:customers,SellerPermitNumber,'.$request->cust_id.',cust_id',
-            'business_name' => 'nullable|string|min:5|max:64',
+            'business_name' => 'nullable|string|min:3|max:64',
             'cust_phone' => 'required|string|min:10|max:64',
             'cust_email' => 'nullable|email|min:6|max:64',
             'cust_state' => 'required|string|min:4|max:64',
             'address1' => 'required|string|min:4|max:64',
             'address2' => 'nullable|string|min:4|max:64',
-            'country' => 'required|string|min:5',
+            'country' => 'required|string|min:3',
             'city' => 'required|string|min:3',
             'zip_code' => 'nullable|numeric|min:4'
         ]);
@@ -286,7 +311,7 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     # Delete a customer from database
-    public function destroy(Request $request)
+    /*public function destroy(Request $request)
     {
         if (Gate::allows('isSystemAdmin') || Gate::allows('isCashier')) {
             $deleted = Customer::destroy('cust_id', $request->custId);
@@ -300,7 +325,7 @@ class CustomerController extends Controller
         }
 
 
-    }
+    }*/
 
     /*======================= Import/Export Excel =====================*/
     public function importExcel(Request $request)

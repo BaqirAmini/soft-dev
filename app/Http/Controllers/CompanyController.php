@@ -51,7 +51,7 @@ class CompanyController extends Controller
             'user_name' => 'required|string|max:128|min:5',
             'password' => 'required|string|min:6|confirmed'
         ]);
-        
+
         if ($validation->passes()) {
             $user = new User();
             $user->comp_id = $request->company;
@@ -62,7 +62,7 @@ class CompanyController extends Controller
             $user->role = $request->role;
             $user->username = $request->user_name;
             $user->password = Hash::make($request->password);
-            $user->save(); 
+            $user->save();
             return response()->json([
                 'user_msg' => 'System admin registered successfully!',
                 'result' => 'ok',
@@ -75,7 +75,7 @@ class CompanyController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-        
+
     }
 
     /**
@@ -117,7 +117,7 @@ class CompanyController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-        
+
     }
 
     /**
@@ -151,9 +151,9 @@ class CompanyController extends Controller
                 'label' => 'Inactive'
            ]);
            }
-           
+
         }
-        
+
     }
      /**
      * Show the form for editing the specified resource.
@@ -172,7 +172,7 @@ class CompanyController extends Controller
     public function onSaveCompanySetting(Request $request)
     {
         $company = Company::findOrfail($request->cid);
-      
+
         $validation = Validator::make($request->all(), [
             'cname' => 'required|string|max:64|min:5',
             'cstate' => 'required|string|max:64',
@@ -181,8 +181,8 @@ class CompanyController extends Controller
             'ccontact' => 'required|string|max:64',
             'cemail' => 'nullable|string|max:64',
       ]);
-        
-       
+
+
       if ($validation->passes()) {
                 $company->comp_name = $request->cname;
                 $company->comp_city = $request->ccity;
@@ -193,7 +193,7 @@ class CompanyController extends Controller
                 $company->comp_status = $request->cstatus;
                 $company->user_count = $request->ucount;
 
-               
+
             if ($company->save()) {
                 return response()->json([
                     'msg' => 'Changes saved successfully!',
@@ -209,12 +209,12 @@ class CompanyController extends Controller
             'msg' => '<ul><li>company name required</li><li>Province/State required</li><li>City required</li><li>Address required</li><li>Contact required</li></ul>',
             'style' => 'color:darkred'
           ]);
-      }    
+      }
     }
 
     # =================================== change a specific company LOGO ===========================
     public function changeLogo(Request $request)
-        { 
+        {
             $v = Validator::make($request->all(), [
                 'company_logo' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2048'
             ]);
@@ -240,11 +240,11 @@ class CompanyController extends Controller
                     'style' => 'color:darkred'
                 ]);
             }
-            
+
         }
     # =================================== /. change a specific company LOGO ===========================
 
-    #Change user-count of company
+    #==============================================Change user-count of company ================================================
     public function userCount(Request $request)
     {
         $company = Company::findOrfail($request->compId);
@@ -260,8 +260,8 @@ class CompanyController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-        
+
     }
 # ================================ /. FOR SUPER-ADMIN to do some thing for companies ===================================
-   
+
 }
