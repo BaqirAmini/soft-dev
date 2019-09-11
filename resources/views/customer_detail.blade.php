@@ -6,6 +6,7 @@
             #tlb_cust_detail th {
                 text-align: center;
             }
+
             #tlb_cust_detail td {
                 text-align: center;
             }
@@ -15,7 +16,6 @@
                 text-align: center;
             }
         </style>
-
 
 
     </head>
@@ -47,7 +47,8 @@
                         <!-- Tabs -->
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#profile" data-toggle="tab" id="tab_comp_profile">Company Profile</a></li>
+                                <li class="active"><a href="#profile" data-toggle="tab" id="tab_comp_profile">Company
+                                        Profile</a></li>
                                 <li><a href="#transaction" data-toggle="tab" id="tab_transaction">Transactions</a></li>
                             </ul>
                             <div class="tab-content">
@@ -59,11 +60,13 @@
                                         <input type="hidden" name="cust_id" value="{{ $customers[0]->cust_id }}">
                                         <!-- Seller Permit Number -->
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label" for="seller_permit_number">Seller Permit Number <span
+                                            <label class="col-sm-2 control-label" for="seller_permit_number">Seller
+                                                Permit Number <span
                                                     class="asterisk">*</span></label>
                                             <div class="col-sm-10">
                                                 <input id="seller_permit_number" type="number" class="form-control"
-                                                       value="{{ $customers[0]->SellerPermitNumber }}" name="seller_permit_number"
+                                                       value="{{ $customers[0]->SellerPermitNumber }}"
+                                                       name="seller_permit_number"
                                                        placeholder="Seller Permit Number" readonly min="0">
                                             </div>
                                         </div>
@@ -274,13 +277,14 @@
                                                 <h3 class="box-title">Transactions</h3>
                                             </div>
                                         </div>
-                                        {{--================= Two tables i.e. Invoices & Payments =================================== --}}
-                                        <!-- tabs --->
+                                    {{--================= Two tables i.e. Invoices & Payments =================================== --}}
+                                    <!-- tabs --->
                                         <div class="nav-tabs-custom">
                                             <!-- tabs list -->
                                             <ul class="nav nav-tabs">
-                                                <li class="active"><a href="#tab_invoice" data-toggle="tab" >Invoices</a></li>
-                                                <li><a href="#tab_invoice" data-toggle="tab" id="">Payments</a></li>
+                                                <li class="active"><a href="#tab_invoice" data-toggle="tab">Invoices</a>
+                                                </li>
+                                                <li><a href="#tab_payment" data-toggle="tab" >Payments</a></li>
                                             </ul>
                                             <!--/. tabs list -->
                                             <!-- TAB CONTENT -->
@@ -295,7 +299,7 @@
                                                                 <tr>
                                                                     <th>Invoice #</th>
                                                                     <th>Payment Type</th>
-                                                                    <th>Paid</th>
+                                                                    <th>Paid Amount</th>
                                                                     <th>Balance</th>
                                                                     <th>Transaction Date</th>
                                                                     <th>Make a payment</th>
@@ -320,8 +324,10 @@
                                                                                    data-toggle="modal"
                                                                                    data-target="#modal-make-payment"
                                                                                    type="button"
-                                                                                   class="btn btn-default btn-sm">
-                                                                                            <span class="glyphicon glyphicon-credit-card"></span>
+                                                                                   class="btn btn-default btn-sm link_make_payment"
+                                                                                   data-invoice-id="{{ $pur->inv_id }}">
+                                                                                    <span
+                                                                                        class="glyphicon glyphicon-credit-card"></span>
                                                                                 </a>
                                                                             </td>
 
@@ -334,6 +340,57 @@
                                                     </div>
                                                 </div>
                                                 <!-- /.Tab-invoice-->
+                                                <!-- Tab-payment -->
+                                                <div class="tab-pane" id="tab_payment">
+                                                    <div class="box box-solid">
+                                                        <div class="box-body">
+                                                            <table id="data_tbl_purchase_history"
+                                                                   class="table table-responsive col-md-12 col-xs-6 table-striped table-bordered">
+                                                                <thead id="invoice_header">
+                                                                <tr>
+                                                                    <th>Invoice #</th>
+                                                                    <th>Payment Type</th>
+                                                                    <th>Paid Amount</th>
+                                                                    <th>Balance</th>
+                                                                    <th>Transaction Date</th>
+                                                                    <th>Make a payment</th>
+                                                                    <!-- <th>Action</th> -->
+                                                                </tr>
+                                                                </thead>
+                                                               {{-- <tbody id="invoice_body">
+                                                                @if(!empty($purchases) || count($purchases)>0)
+                                                                    @foreach($purchases as $pur)
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a href="#" class="invoice_detail"
+                                                                                   data-inv-id="{{ $pur->inv_id }}">
+                                                                                    {{ $pur->inv_id }}
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>{{ $pur->payment_type }}</td>
+                                                                            <td>{{ $pur->recieved_amount }}</td>
+                                                                            <td>{{ $pur->recievable_amount }}</td>
+                                                                            <td>{{ Carbon\carbon::parse($pur->created_at)->format('d/m/Y') }}</td>
+                                                                            <td><a href="#"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#modal-make-payment"
+                                                                                   type="button"
+                                                                                   class="btn btn-default btn-sm link_make_payment"
+                                                                                   data-invoice-id="{{ $pur->inv_id }}">
+                                                                                    <span
+                                                                                        class="glyphicon glyphicon-credit-card"></span>
+                                                                                </a>
+                                                                            </td>
+
+                                                                        </tr>
+                                                                    @endforeach
+                                                                @endif
+                                                                </tbody>--}}
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/. Tab-payment -->
                                             </div>
                                             <!--/. TAB CONTENT -->
                                         </div>
@@ -354,7 +411,7 @@
                         </div>
                         <!-- /. Tabs -->
 
-                {{-- =========================================== More Details for Customer ======================================================================--}}
+                        {{-- =========================================== More Details for Customer ======================================================================--}}
                         {{--<div class="box">
                             <div class="box-header">
                                 <div class="content-header" style="text-align: center;font-size: 8px">
@@ -385,7 +442,7 @@
                                 </table>
                             </div>
                         </div>--}}
-                {{-- ===========================================/. More Details for Customer ======================================================================--}}
+                        {{-- ===========================================/. More Details for Customer ======================================================================--}}
                     </div>
                     <!-- /box-body -->
                 </div>
@@ -414,25 +471,38 @@
                         <form class="form-horizontal" id="form-make-payment">
                             <input type="hidden" name="customer_id" value="{{ $customers[0]->cust_id }}">
                             @csrf
-                            <div class="form-group" id="reciept_area">
-                                <label for="reciept_amount" class="col-sm-3 control-label">Reciept Amount <span
-                                        class="asterisk">*</span></label>
-                                <div class="col-sm-9">
-                                    <input id="cust_lastname" type="number" min="0" step="0.01" class="form-control"
-                                           name="reciept_amount"
-                                           placeholder="Receipt Amount (Paid Amount)">
-                                </div>
+                            {{------------------ Payment type -----------------------}}
+                        <!-- text input -->
+                            <div class="form-group">
+                                <label>Pay Amount</label>
+                                <input type="number" name="pay_amount" min="0" step="0.01" class="form-control" placeholder="Pay Amount">
                             </div>
+                            <div class="form-group" id="transaction_code" style="display: none">
+                                <label>Transaction Code</label>
+                                <input type="number" name="transaction_code" min="0" step="1" class="form-control" placeholder="Transaction Code">
+                            </div>
+                            <!-- select -->
+                            <div class="form-group">
+                                <label>Select Payment Type</label>
+                                <select class="form-control" name="payment_type" id="payment_type2">
+                                    <option value="">--------------- Payment Type ------------------</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="Debit Card">Debit Card</option>
+                                </select>
+                            </div>
+
+                            {{------------------ /. Payment type -----------------------}}
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel
                                 </button>
                                 <button type="submit" id="btn_make_payment" data-c-id="{{ $customers[0]->cust_id }}"
-                                        class="btn btn-primary pull-left">Save
+                                        class="btn btn-primary pull-left" disabled>Save
                                 </button>
                             </div>
                         </form>
                     </div>
-                </div>
+
                 <!-- end of modal-body div -->
             </div>
             <!-- /.modal-content -->

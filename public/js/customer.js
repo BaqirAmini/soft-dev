@@ -108,7 +108,27 @@ $(document).ready(function () {
       /** ================================/. INVOICE DETAIL ============================= */
 
     /** ================================================== Make-payment ======================================================== */
-    $('#form-make-payment').on('submit', function (e) {
+    $('#payment_type2').change(function () {
+        var selectedOption = $('#payment_type2 option:selected');
+        if (selectedOption.val() === '') {
+            $('#btn_make_payment').prop('disabled', true);
+        } else if(selectedOption.val() === 'Cash')  {
+            $('#transaction_code').prop('style', 'display:none');
+            $('#btn_make_payment').prop('disabled', false);
+        } else if(selectedOption.val() === 'Credit Card' || selectedOption.val() === 'Debit Card') {
+            $('#btn_make_payment').prop('disabled', false);
+            $('#transaction_code').prop('style', 'display:block');
+        }
+
+    });
+
+    $('.link_make_payment').click(function () {
+       var invoiceID = $(this).data('invoice-id');
+
+    });
+
+
+    /*$('#form-make-payment').on('submit', function (e) {
         e.preventDefault();
         var fData = new FormData(this);
         $.ajax({
@@ -121,8 +141,8 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.result === 'success') {
-                    /*$('#modal-make-payment').modal('hide');
-                    $('#transaction').load(' #transaction');*/
+                    /!*$('#modal-make-payment').modal('hide');
+                    $('#transaction').load(' #transaction');*!/
                     location.reload();
                 } else {
                     $('#modal-make-payment').modal('show');
@@ -136,7 +156,7 @@ $(document).ready(function () {
              }
         });
 
-     });
+     });*/
 
     /** ==================================================/. Make-payment ======================================================== */
 
