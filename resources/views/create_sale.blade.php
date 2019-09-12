@@ -129,12 +129,13 @@
                         {{--================== customer should shown here=======================--}}
                         <div class="user-block customer_chosen_info" style="display: none">
                             <img class="img-circle img-bordered-sm" src="/uploads/user_photos/user.png"
-                                     alt="user image">
+                                 alt="user image">
                             <span class="username" id="customer_chosen">
-                              <a href="#" id="link1">Jonathan Burke Jr.</a>
-                              <a href="#" class="pull-right btn-box-tool" id="link_remove_customer_chosen"><i class="fa fa-times"></i></a>
+                              <a href="#" id="link1" data-cust-id="">Jonathan Burke Jr.</a>
+                              <a href="#" class="pull-right btn-box-tool" id="link_remove_customer_chosen"><i
+                                      class="fa fa-times"></i></a>
                             </span>
-                        <span class="description" id="customer_chosen_detail">Shared publicly - 7:30 PM today</span>
+                            <span class="description" id="customer_chosen_detail"></span>
                         </div>
                         <!-- /.user-block -->
                         {{--==================/. customer should shown here=======================--}}
@@ -216,7 +217,7 @@
                                 </div>
                             </div>
                             <!-- /. Total & Tax input -->
-                            <!-- Payment -->
+                            {{--<!-- Payment -->
                             <div class="row col-sm-12" id="payment_area">
                                 <div class="col-xs-6 col-sm-6" id="select_payment">
                                     <label for="payment_type" class="lbl_payment">Payment Type</label>
@@ -254,17 +255,20 @@
                                                placeholder="recieved" id="recieved" style="padding:0;text-align:center" required>
                                     </div>
                                 </div>
-                            </div>
+                            </div>--}}
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <button id="btn_print"
+                            <button class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn btn-primary btn_payment" data-toggle="modal"
+                                    data-target="#modal-payment-type" disabled>Payment
+                            </button>
+                            {{--<button id="btn_print"
                                     class="btn btn-default pull-right btn_save_sale"
                                     data-toggle="modal"
                                     data-target="#modal-print"
                                     onclick="onSaveSale();"
                                     disabled>Save Sale
-                            </button>
+                            </button>--}}
                         </div>
                     </div>
                     <!-- /.box -->
@@ -285,10 +289,11 @@
                                 </div>
                             </div>
                             {{--=============== Search items ==================--}}
-                                <div class="input-group col-md-6 col-lg-6 col-sm-12 col-xs-12 pull-right" style="margin-right: 30px;">
-                                    <input type="text" name="search" placeholder="Search items to sell"
-                                           class="form-control" required id="search_items">
-                                </div>
+                            <div class="input-group col-md-6 col-lg-6 col-sm-10 col-xs-10 pull-right"
+                                 style="margin-right: 30px;">
+                                <input type="text" name="search" placeholder="Search items to sell"
+                                       class="form-control" required id="search_items">
+                            </div>
                             {{--=============== /.Search items ==================--}}
                         </div>
                         <p id="stock_message" style="text-align:center;display:none"></p>
@@ -392,8 +397,8 @@
                 <!-- /.row -->
             </section>
             <!-- /.content -->
+        </div>
     </section>
-
     <!-- /.Invoice -->
 
     <!-- MODAL -->
@@ -423,6 +428,105 @@
     </div>
     <!-- /.modal -->
 
+    {{--  ------------------ Modal for choosing payment-type ----------------------  --}}
+    <div class="modal fade" id="modal-payment-type">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Default Modal</h4>
+                </div>
+                <div class="modal-body" id="payment_area">
+                    <!-- Payment -->
+                    <div class="form-group" id="select_payment">
+                        <label>Payment Type</label>
+                        <select name="payment_type" id="payment_type" class="form-control"
+                                onchange="selectPayment();" required>
+                            <option value="">Select Payment...</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Master Card">Master Card</option>
+                            <option value="Debit Card">Debit Card</option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-xs-4" id="trans_area" style="display: none">
+                            <label id="lbl_trans_code">Transaction Code</label>
+                            <input type="number" min="0" step="1" class="form-control t-card" id="transCode" placeholder="Transaction Code">
+                        </div>
+                        <div class="form-group col-xs-4" style="display: none" id="rvable">
+                            <label class="lbl_payment">Receivable Amount</label>
+                            <input type="text" class="form-control" min="0" max="9999" placeholder="Receivable Amount" id="payable" value="{{$subTotal}}">
+                        </div>
+                        <div class="form-group col-xs-4" id="rvd" style="display: none">
+                            <label  class="lbl_payment">Recieved Amount</label>
+                            <input type="text" class="form-control" placeholder="Recieved Amount" min="0" max="999" id="recieved">
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 pull-left" id="chk_area" style="display: none;margin-left: -15px !important;">
+                        <strong>Paid All</strong>
+                        <div class="input-group">
+                                <span class="input-group-addon">
+                                  <input type="checkbox" id="paid_all">
+                                </span>
+                            <input type="text" class="form-control" readonly value="{{$subTotal}}">
+                        </div>
+
+                        <!-- /input-group -->
+                    </div>
+                    <br><br>
+                 {{--   <div class="col-xs-6 col-sm-6" id="select_payment">
+                        <label for="payment_type" class="lbl_payment">Payment Type</label>
+                        <select name="payment_type" id="payment_type" class="form-control pull-left"
+                                onchange="selectPayment();" required style="margin-left:-12px;">
+                            <option value="">Select Payment...</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Master Card">Master Card</option>
+                            <option value="Debit Card">Debit Card</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-xs-offset-2">
+                        <div class="checkbox pull-right" style="margin-top:20px;display: none"
+                             >
+                            <label>
+                                <input type="checkbox" > Paid All
+                            </label>
+                        </div>
+                    </div>--}}
+                    <!-- Amount Area -->
+                    {{--<div class="col-md-12 col-sm-12 col-xs-12" style="margin-left:-25px;margin-top:15px;">
+                        <div class="col-md-4" id="trans_area" style="display: none;">
+                            <label for="transCode" id="lbl_trans_code">Trans #</label>
+                            <input type="number" class="form-control t-card" placeholder="Transaction"
+                                   id="transCode" style="min-width: 120px;" required>
+                        </div>
+                        <div class="col-md-4" id="rvable" style="display: none;">
+                            <label for="payable" class="lbl_payment">Recievable</label>
+                            <input type="text" min="0" max="9999" class="form-control" placeholder="payable"
+                                   id="payable" value="{{$subTotal}}" style="margin-left: 10px;min-width: 100px;">
+                        </div>
+                        <div class="col-md-4" id="rvd" style="display: none;">
+                            <label for="recieved" class="lbl_payment">Recieved</label>
+                            <input type="text" min="0" max="999" class="form-control"
+                                   placeholder="recieved" id="recieved" style="padding:0;text-align:center" required>
+                        </div>
+                    </div>--}}
+
+                    <!--/. Payment -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary pull-left btn_save_sale"  onclick="onSaveSale();">Save Sale</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    {{--  ------------------/. Modal for choosing payment-type ----------------------  --}}
     <!-- ========================= Editable values for CREATE-SALE====================================-->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">

@@ -93,6 +93,14 @@ $(document).ready(function () {
     });
 
     $('#customer_search_result').mouseleave(function () {
+        /* =============================================== Validate Customer selection ==============================================*/
+        if ($('#customer_chosen_detail').text() === '') {
+            $('.btn_payment').prop('disabled', true);
+        } else {
+            $('.btn_payment').prop('disabled', false);
+        }
+        /* =============================================== /.Validate Customer selection ==============================================*/
+
         $(this).fadeOut();
     });
 
@@ -179,6 +187,7 @@ $(document).ready(function () {
         // set hidden inputs
         $('input[name=cust_id_for_print]').val(cid);
         $('input[name=invoice_id_for_print]').val(invoiceID);
+        onPrintInvoice(invoiceId, _invoiceID);
     });
     // /. BTN-SAVE-SALE
 });
@@ -254,13 +263,6 @@ function selectPayment() {
                 }
             });
         }
-
-        // $('input#recieved').change(function () {
-        //   var payable = $('input#payable').val();
-        //   var recieved = $('input#recieved').val();
-        //   var recieveable = parseFloat(payable) - parseFloat(recieved);
-        //   $('input#payable').val(recieveable);
-        // });
     } else if (st.val() == "Master Card" || st.val() == "Debit Card") {
         $('#chk_area').css('display', 'block');
         if (!$('#paid_all').is(':checked')) {
@@ -387,7 +389,9 @@ function onCard(pntType) {
 // Print invoice
 function onPrintInvoice(custID, invcID) {
 
-    $('#modal-print').modal('hide');
+    // $('#modal-print').modal('hide');
+    $('#modal-payment-type').modal('hide');
+
     var invoice = document.getElementById('invoice');
     $.ajax({
         type: "GET",
@@ -421,11 +425,11 @@ function onPrintInvoice(custID, invcID) {
 
 }
 
-$('button.btn_print_sale').click(function () {
+/*$('button.btn_print_sale').click(function () {
     // cid (customer-id) is globally declared.
     var invoiceId = $('input[name=invoice_id_for_print]').val();
     onPrintInvoice(cid, _invoiceID);
-});
+});*/
 
 function doPrint(i) {
     w = window.open('');

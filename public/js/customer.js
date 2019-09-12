@@ -121,12 +121,42 @@ $(document).ready(function () {
         }
 
     });
-
+    // Any payment button in invoice table of customer
     $('.link_make_payment').click(function () {
        var invoiceID = $(this).data('invoice-id');
-
+       $('.hidden_invoice_id').val(invoiceID)
     });
 
+    // To send data to server for make payment
+    $('#form-make-payment').on('submit', function (e) {
+        e.preventDefault();
+       var invData = new FormData(this);
+       $.ajax({
+           type: "POST",
+           url: "/customer/custDetail/payment",
+           data: invData,
+           contentType: false,
+           processData: false,
+           cache: false,
+           dataType: "json",
+           success: function (response) {
+               if (response.result === 'success') {
+                   $('#modal-make-payment').modal('hide');
+                   // $('#transaction').load(' #transaction');
+                   location.reload();
+               } else {
+                   $('#modal-make-payment').modal('show');
+                   $('#msg_area').html('<li>' + response.message + '</li>')
+               }
+               $('#msg_area').css('display', 'block');
+               $('#msg_area').attr('style', response.style);
+           },
+           error: function (err) {
+                console.log(err);
+           }
+       });
+
+    });
 
     /*$('#form-make-payment').on('submit', function (e) {
         e.preventDefault();

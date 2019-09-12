@@ -181,6 +181,7 @@ class CustomerController extends Controller
             // ->where('customers.cust_id', $custId)
             ->where('customers.comp_id', Auth::user()->comp_id)
             ->where('customers.cust_id', $id)
+//            ->where('payments.trans_type', 'Payment Received')
             ->get();
 
 //        customer personal-info
@@ -201,17 +202,35 @@ class CustomerController extends Controller
     # ================================ Make a payment ===================================
     public function onPayment(Request $request)
     {
-        $invoiceId = DB::table('invoices')->where('cust_id', $request->customer_id)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
+        $payment = new Payment();
+//        $invoiceId = DB::table('invoices')->where('cust_id', $request->customer_id)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
+        $receivedAmount = DB::table('payments')->where('inv_id', $request->invoice_id)->value('recieved_amount');
+        $receivableAmount = DB::table('payments')->where('inv_id', $request->invoice_id)->value('recievable_amount');
         $v = Validator::make($request->all(), [
-            'reciept_amount' => 'required|numeric|between:0,999999999999.99'
+            'pay_amount' => 'required|numeric|between:0,999999999999.99',
+            'transaction_code' => 'nullable|numeric|between:0,999999999999'
         ]);
         if ($v->passes()) {
-            $recAmount = $request->reciept_amount;
+            /*$recAmount = $request->reciept_amount;
             $pay = Payment::where('inv_id', '=', $invoiceId)->first();
             $pay->recieved_amount += $recAmount;
             $pay->recievable_amount -= $recAmount;
-            $pay->trans_type = "Credit";
-            if ($pay->save()) {
+            $pay->trans_type = "Credit";*/
+
+//            Save payment in to table payments
+
+            $payment->inv_id = $request->invoice_id;
+            $payment->comp_id = Auth::user()->comp_id;
+            $payment->trans_type = "Payment Received";
+            if ($request->has('transaction_code')) {
+                $payment->trans_code = $request->transaction_code;
+            }
+            $payment->payment_type = $request->payment_type;
+            $receivedAmount += $request->pay_amount;
+            $receivableAmount -= $request->pay_amount;
+            $payment->recieved_amount = $receivedAmount;
+            $payment->recievable_amount = $receivableAmount;
+            if ($payment->save()) {
                 return response()->json([
                     'result' => 'success',
                     'style' => 'color:darkblue',

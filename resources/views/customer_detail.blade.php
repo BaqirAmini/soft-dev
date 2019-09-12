@@ -469,13 +469,14 @@
                     </ul>
                     <div class="register-box-body">
                         <form class="form-horizontal" id="form-make-payment">
-                            <input type="hidden" name="customer_id" value="{{ $customers[0]->cust_id }}">
+{{--                            <input type="hidden" name="customer_id" value="{{ $customers[0]->cust_id }}">--}}
+                            <input type="hidden" name="invoice_id" class="hidden_invoice_id">
                             @csrf
                             {{------------------ Payment type -----------------------}}
                         <!-- text input -->
                             <div class="form-group">
                                 <label>Pay Amount</label>
-                                <input type="number" name="pay_amount" min="0" step="0.01" class="form-control" placeholder="Pay Amount">
+                                <input type="number" name="pay_amount" min="0" step="0.01" class="form-control" placeholder="Pay Amount" autofocus>
                             </div>
                             <div class="form-group" id="transaction_code" style="display: none">
                                 <label>Transaction Code</label>
