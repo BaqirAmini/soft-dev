@@ -103,7 +103,7 @@ Route::post('cart/editQty', 'CartController@editQty');
 # /.Cart
 
 #Invoice-routes
-Route::post('invoice', 'InvoiceController@store');
+//Route::post('invoice', 'InvoiceController@store');
 // Route::post('invoice/delete', 'InvoiceController@index');
 // Route::delete('invoice/delete', 'InvoiceController@destroy');
 // Route::get('invoice/delete', ['as'=>'invoice.delete', 'uses'=>'InvoiceController@destroy']);

@@ -131,7 +131,7 @@
                             <img class="img-circle img-bordered-sm" src="/uploads/user_photos/user.png"
                                  alt="user image">
                             <span class="username" id="customer_chosen">
-                              <a href="#" id="link1" data-cust-id="">Jonathan Burke Jr.</a>
+                              <a href="#" id="link1"></a>
                               <a href="#" class="pull-right btn-box-tool" id="link_remove_customer_chosen"><i
                                       class="fa fa-times"></i></a>
                             </span>
@@ -146,7 +146,7 @@
             <!-- left column -->
                 <div>
                     <!-- general form elements -->
-                    <div class="box box-solid" id="box_cart">
+                    <div class="box box-solid" id="box_cart" style="margin-bottom: 0">
                         <!-- /.box-header -->
                         <div class="box-body">
                             <p id="inv_message" style="display:none;"></p>
@@ -185,7 +185,7 @@
                                                    style="color:rgb(165, 22, 22)"></i></a>
                                         </div>
 
-                                        <div class="col-xs-12 col-md-3">
+                                        <div class="col-xs-12 col-md-3 item_added_in_cart">
                                             <a href="#"> <span>{{ $cart->name }}</span></a>
                                         </div>
                                         <div class="col-xs-12 col-md-2">
@@ -259,9 +259,6 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <button class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn btn-primary btn_payment" data-toggle="modal"
-                                    data-target="#modal-payment-type" disabled>Payment
-                            </button>
                             {{--<button id="btn_print"
                                     class="btn btn-default pull-right btn_save_sale"
                                     data-toggle="modal"
@@ -272,7 +269,17 @@
                         </div>
                     </div>
                     <!-- /.box -->
-
+                </div>
+                <div>
+                    <!-- Box for btn Payment -->
+                    <div class="box box-solid">
+                        <div class="box-body">
+                            <button class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn btn-default btn_payment" data-toggle="modal"
+                                    data-target="#modal-payment-type" disabled>Payment
+                            </button>
+                        </div>
+                    </div>
+                    <!--/. Box for btn Payment -->
                 </div>
             </div>
         {{-- ==================================/. Container of two-boxes ================== --}}
@@ -402,7 +409,8 @@
     <!-- /.Invoice -->
 
     <!-- MODAL -->
-    <div class="modal fade" id="modal-print">
+{{--    modal print now is useless   --}}
+  {{--  <div class="modal fade" id="modal-print">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -427,7 +435,7 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-
+--}}
     {{--  ------------------ Modal for choosing payment-type ----------------------  --}}
     <div class="modal fade" id="modal-payment-type">
         <div class="modal-dialog">
@@ -445,7 +453,7 @@
                                 onchange="selectPayment();" required>
                             <option value="">Select Payment...</option>
                             <option value="Cash">Cash</option>
-                            <option value="Master Card">Master Card</option>
+                            <option value="Credit Card">Credit Card</option>
                             <option value="Debit Card">Debit Card</option>
                         </select>
                     </div>
@@ -457,7 +465,7 @@
                         </div>
                         <div class="form-group col-xs-4" style="display: none" id="rvable">
                             <label class="lbl_payment">Receivable Amount</label>
-                            <input type="text" class="form-control" min="0" max="9999" placeholder="Receivable Amount" id="payable" value="{{$subTotal}}">
+                            <input type="text" class="form-control" min="0" max="9999" placeholder="Receivable Amount" id="payable">
                         </div>
                         <div class="form-group col-xs-4" id="rvd" style="display: none">
                             <label  class="lbl_payment">Recieved Amount</label>
@@ -471,7 +479,7 @@
                                 <span class="input-group-addon">
                                   <input type="checkbox" id="paid_all">
                                 </span>
-                            <input type="text" class="form-control" readonly value="{{$subTotal}}">
+                            <input type="text" class="form-control" id="chk_value" readonly>
                         </div>
 
                         <!-- /input-group -->

@@ -31,7 +31,7 @@ $(document).ready(function () {
                $('#atc_total').text('$' + response.total);
                $('#atc_recieved').text('$' + response.recieved);
                $('#atc_cash').text('$' + response.cash);
-               $('#atc_master').text('$' + response.master);
+               $('#atc_credit').text('$' + response.credit);
                $('#atc_debit').text('$' + response.debit);
                $('#atc_recievable').text('$' + response.recievable);
            }

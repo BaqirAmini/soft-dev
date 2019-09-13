@@ -66,9 +66,9 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Master Card</td>
+                            <td>Credit Card</td>
                             <td>
-                              ${{ $master }}
+                              ${{ $credit }}
                             </td>
                           </tr>
                           <tr>
@@ -92,7 +92,7 @@
                   <button class="btn btn-primary pull-right" id="btn_print_reports"><i class="glyphicon glyphicon-print"></i></button>
                 </div>
               </div>
-             
+
            </div>
           </div>
       </div>

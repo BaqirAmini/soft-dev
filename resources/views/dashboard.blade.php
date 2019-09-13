@@ -245,8 +245,8 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Master Card</td>
-                            <td id="atc_master">
+                            <td>Credit Card</td>
+                            <td id="atc_credit">
                               $0
                             </td>
                           </tr>

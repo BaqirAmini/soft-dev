@@ -1,4 +1,15 @@
 $(document).ready(function () {
+
+    /* =================================== btn Payment should take subtotal into modal payment ======================================*/
+    $('.btn_payment').click(function () {
+       var subTotal = $('#sub_total').data('sub-total');
+        $('#modal-payment-type #payable').val(subTotal);
+        $('#modal-payment-type #chk_value').val(subTotal);
+    });
+    /* =================================== /.btn Payment should take subtotal into modal payment ======================================*/
+
+
+
     // load items in create_sale.blade.php while page is loading
     /** =================================== click btn ADD to insert items in the CART ============================= */
     var tax = $('input#tax').val();
@@ -31,6 +42,9 @@ $(document).ready(function () {
                 $('#stock_message').css({'display': 'block', 'text-align': 'center', 'color': 'darkred'});
                 $('#stock_message').html(response.stock_msg);
                 $('#box_cart').load(' #box_cart');
+
+                /* modal payment to get refresh*/
+                // $('#payment_area').load(' #payment_area');
                 // $('#box-items-for-sale').load(' #box-items-for-sale');
                 /*  setTimeout(function () {
                       window.location.reload();
@@ -47,7 +61,7 @@ $(document).ready(function () {
    /* $('a.link_add_item').click(function () {
 
     });*/
-
+    // Load products into create_sale.blade.php from server
     fetch_inventory_data();
     /** =================================== /. click btn ADD to insert items in the CART ============================= */
 
@@ -94,10 +108,15 @@ $(document).ready(function () {
 
     $('#customer_search_result').mouseleave(function () {
         /* =============================================== Validate Customer selection ==============================================*/
-        if ($('#customer_chosen_detail').text() === '') {
+        if ($('#link1').text() === '') {
             $('.btn_payment').prop('disabled', true);
+            $('.btn_payment').removeClass('btn-primary');
+            $('.btn_payment').addClass('btn-default');
+
         } else {
             $('.btn_payment').prop('disabled', false);
+            $('.btn_payment').removeClass('btn-default');
+            $('.btn_payment').addClass('btn-primary');
         }
         /* =============================================== /.Validate Customer selection ==============================================*/
 
@@ -107,6 +126,9 @@ $(document).ready(function () {
     // when link-remove-customer clicked
     $('#link_remove_customer_chosen').click(function () {
         $('.customer_chosen_info').fadeOut();
+        $('.btn_payment').removeClass('btn-primary');
+        $('.btn_payment').addClass('btn-default');
+        $('.btn_payment').prop('disabled', true);
     });
     /* ===================================== .SEARCH customer by name or phone ==================================*/
     /* ==================================== SEARCH ITEMS FOR SALE ======================================*/
@@ -332,6 +354,7 @@ function onSaveSale() {
             $('#inv_message').html(response.sale_msg);
             $('#inv_message').fadeOut(4000);
             _invoiceID = response.invoice_id;
+            onPrintInvoice(cid, _invoiceID);
             // $('#sale_section').load(' #sale_section');
             // setTimeout(function () { location.reload(); }, 5000);
 
@@ -419,6 +442,7 @@ function onPrintInvoice(custID, invcID) {
             });
             $('#inv_total').html('&nbsp; $' + total);
             doPrint(invoice);
+            location.reload();
         }
     });
 
