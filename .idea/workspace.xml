@@ -4,6 +4,7 @@
     <list default="true" id="37bd1d65-e9de-4c59-835b-0dba81b8b165" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/create_sale.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create_sale.js" afterDir="false" />
@@ -215,7 +216,7 @@
       <workItem from="1568257877249" duration="19785000" />
       <workItem from="1568340742290" duration="788000" />
       <workItem from="1568349142624" duration="2128000" />
-      <workItem from="1568365988626" duration="7926000" />
+      <workItem from="1568365988626" duration="9117000" />
     </task>
     <servers />
   </component>

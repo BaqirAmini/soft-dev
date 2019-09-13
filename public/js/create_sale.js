@@ -67,6 +67,8 @@ $(document).ready(function () {
 
     /* ===================================== SEARCH customer by name or phone ==================================*/
     $('#search_customer').keyup(function () {
+        // The button beside searchbox should disappear
+        $('#btn_new_customer').hide();
         var query = $(this).val();
         if (query !== '') {
             var _token = $('input[name="_token"]').val();
@@ -107,6 +109,8 @@ $(document).ready(function () {
     });
 
     $('#customer_search_result').mouseleave(function () {
+        // The button beside searchbox should appear back
+        $('#btn_new_customer').show();
         /* =============================================== Validate Customer selection ==============================================*/
         if ($('#link1').text() === '') {
             $('.btn_payment').prop('disabled', true);

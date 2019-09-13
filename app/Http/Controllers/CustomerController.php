@@ -59,10 +59,10 @@ class CustomerController extends Controller
         if ($request->get('query')) {
             $query = $request->get('query');
             $data = DB::table('customers')
-                ->where('cust_name', 'LIKE', "%$query%")
+                ->where('comp_id', Auth::user()->comp_id)
                 ->where(function ($q) use ($query) {
                     $q->where('cust_phone', 'LIKE', "%$query%");
-                    $q->orWhere('comp_id', Auth::user()->comp_id);
+                    $q->orWhere('cust_name', 'LIKE', "%$query%");
                 })
                 ->get();
 
