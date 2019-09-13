@@ -149,6 +149,7 @@ class SaleController extends Controller
         $paymentType = $request->payment;
         $recieved = $request->recieved;
         $recievable = $request->recieveable;
+        $totalToPay = $request->totalToPay;
         # current company-id
         $compId = Auth::user()->comp_id;
         # currend user-id to define who sells
@@ -181,6 +182,7 @@ class SaleController extends Controller
                 $payment->payment_type = $paymentType;
                 $payment->recieved_amount = $recieved;
                 $payment->recievable_amount = $recievable;
+                $payment->total_to_pay = $totalToPay;
                 if ($payment->save()) {
                     foreach ($carts as $data) {
                         $sold = Sale::create([

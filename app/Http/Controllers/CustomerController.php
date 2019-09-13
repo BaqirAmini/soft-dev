@@ -65,25 +65,31 @@ class CustomerController extends Controller
                     $q->orWhere('cust_name', 'LIKE', "%$query%");
                 })
                 ->get();
+            $total_row = $data->count();
 
-            $output = '<ul class="dropdown-menu col-md-12"
+            if ($total_row > 0) {
+                $output = '<ul class="dropdown-menu col-md-12"
                             style="display:block;position: relative;box-shadow:1px 2px 3px lightgrey">';
-            foreach ($data as $row) {
-                $output .= '<li><a href="#" data-li-id="'.$row->cust_id.'" 
+                foreach ($data as $row) {
+                    $output .= '<li><a href="#" data-li-id="' . $row->cust_id . '" 
                         class="cust_search_li"> 
                         <img src="/uploads/user_photos/user.png" alt="Customer_photo" class="img-circle img-md" style="margin:auto 15px auto 10px;">
-                        <input type="hidden" name="spn_cust_name" value="'.$row->cust_name.'">
-                        <input type="hidden" name="spn_cust_lastname" value="'.$row->cust_lastname.'">
-                        <input type="hidden" name="spn_seller_permit" value="'.$row->SellerPermitNumber. '">
-                        <span class="hidden-xs username" style="font-size: 12px;color: #79b0d3">' .$row->business_name.'</span><br>
-                        <span class="hidden-xs description" style="font-size: 10px">'.$row->cust_phone.'</span><br>
-                        <span class="hidden-xs description" style="font-size: 10px">'.$row->cust_name.' &nbsp;'.$row->cust_lastname.' ('.$row->SellerPermitNumber.')</span></a></li>';
+                        <input type="hidden" name="spn_cust_name" value="' . $row->cust_name . '">
+                        <input type="hidden" name="spn_cust_lastname" value="' . $row->cust_lastname . '">
+                        <input type="hidden" name="spn_seller_permit" value="' . $row->SellerPermitNumber . '">
+                        <span class="hidden-xs username" style="font-size: 12px;color: #79b0d3">' . $row->business_name . '</span><br>
+                        <span class="hidden-xs description" style="font-size: 10px">' . $row->cust_phone . '</span><br>
+                        <span class="hidden-xs description" style="font-size: 10px">' . $row->cust_name . ' &nbsp;' . $row->cust_lastname . ' (' . $row->SellerPermitNumber . ')</span></a></li>';
+                }
+                $output .= '</ul>';
+            } else {
+                  $output = '<ul class="dropdown-menu col-md-12"
+                            style="display:block;position: relative;box-shadow:1px 2px 3px lightgrey;text-align: center">No Customer Found.</ul>';
             }
-            $output .= '</ul>';
-             /*return response()->json([
-               'result' => $output
-            ]); */
-             echo $output;
+            /*return response()->json([
+              'result' => $output
+           ]); */
+            echo $output;
         }
     }
 
@@ -102,7 +108,7 @@ class CustomerController extends Controller
             'first_name' => 'required|string|min:3|max:64',
             'last_name' => 'nullable|string|min:3|max:64',
             'phone' => 'required|string|min:10|max:16|unique:customers,cust_phone',
-            'email' => 'nullable|string|email|unique:customers,cust_email,'.Auth::user()->comp_id.',comp_id',
+            'email' => 'nullable|string|email|unique:customers,cust_email,' . Auth::user()->comp_id . ',comp_id',
             'account_number' => 'nullable|numeric|unique:customers,AccountNumber',
             'account_type_ID' => 'nullable|numeric|unique:customers,AccountTypeID',
             'limit_purchase' => 'boolean',
@@ -116,11 +122,11 @@ class CustomerController extends Controller
             'city' => 'required|string|min:3|max:64',
             'zip_code' => 'nullable|numeric|min:4',
             'employee' => 'boolean',
-            'fax_number' => 'nullable|numeric|unique:customers,FaxNumber,'.Auth::user()->comp_id.',comp_id',
+            'fax_number' => 'nullable|numeric|unique:customers,FaxNumber,' . Auth::user()->comp_id . ',comp_id',
             'tax_exempt' => 'boolean',
             'notes' => 'nullable|string|max:256',
             'price_level' => 'nullable|numeric|between:0,999999.99',
-            'tax_number' => 'nullable|numeric|unique:customers,TaxNumber,'.Auth::user()->comp_id.',comp_id'
+            'tax_number' => 'nullable|numeric|unique:customers,TaxNumber,' . Auth::user()->comp_id . ',comp_id'
         ]);
         if ($validation->passes()) {
 
@@ -177,7 +183,7 @@ class CustomerController extends Controller
         $purchases = DB::table('customers')
             ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
             ->join('payments', 'invoices.inv_id', '=', 'payments.inv_id')
-            ->select( 'invoices.*', 'payments.*')
+            ->select('invoices.*', 'payments.*')
             // ->where('customers.cust_id', $custId)
             ->where('customers.comp_id', Auth::user()->comp_id)
             ->where('customers.cust_id', $id)
@@ -192,10 +198,10 @@ class CustomerController extends Controller
         $recievable = $purchases->sum('recievable_amount');
         $totalTransaction = $recievable + $recieved;
         if (count($purchases) > 0) {
-            return view('customer_detail', compact(['customers','purchases', 'recieved', 'recievable', 'totalTransaction']));
+            return view('customer_detail', compact(['customers', 'purchases', 'recieved', 'recievable', 'totalTransaction']));
         } else {
 //           return back()->with('no_purchase', 'Sorry, this customer has not done any transaction yet.');
-            return view('customer_detail', compact(['customers','purchases', 'recieved', 'recievable', 'totalTransaction']));
+            return view('customer_detail', compact(['customers', 'purchases', 'recieved', 'recievable', 'totalTransaction']));
         }
     }
 
@@ -270,7 +276,7 @@ class CustomerController extends Controller
     public function edit(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'seller_permit_number' => 'required|numeric|min:4|unique:customers,SellerPermitNumber,'.$request->cust_id.',cust_id',
+            'seller_permit_number' => 'required|numeric|min:4|unique:customers,SellerPermitNumber,' . $request->cust_id . ',cust_id',
             'business_name' => 'nullable|string|min:3|max:64',
             'cust_phone' => 'required|string|min:10|max:64',
             'cust_email' => 'nullable|email|min:6|max:64',

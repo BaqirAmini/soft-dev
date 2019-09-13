@@ -7,6 +7,7 @@
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SaleController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SaleController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/create_sale.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create_sale.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/reports.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/reports.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/analytics.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/analytics.blade.php" afterDir="false" />
@@ -216,7 +217,7 @@
       <workItem from="1568257877249" duration="19785000" />
       <workItem from="1568340742290" duration="788000" />
       <workItem from="1568349142624" duration="2128000" />
-      <workItem from="1568365988626" duration="9117000" />
+      <workItem from="1568365988626" duration="13677000" />
     </task>
     <servers />
   </component>

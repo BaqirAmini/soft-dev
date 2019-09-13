@@ -5,6 +5,7 @@ $(document).ready(function () {
        var subTotal = $('#sub_total').data('sub-total');
         $('#modal-payment-type #payable').val(subTotal);
         $('#modal-payment-type #chk_value').val(subTotal);
+        $('#modal-payment-type #total_to_pay').val(subTotal);
     });
     /* =================================== /.btn Payment should take subtotal into modal payment ======================================*/
 
@@ -223,15 +224,27 @@ $('#paid_all').change(function () {
 
     if ($(this).is(':checked')) {
         if ($('select#payment_type option:selected').val() == "Cash") {
+            $('button.btn_save_sale').prop('disabled', false);
+            $('button.btn_save_sale').removeClass('btn btn-default');
+            $('button.btn_save_sale').addClass('btn btn-primary');
+
             $('div#rvable').css('display', 'none');
             $('div#rvd').css('display', 'none');
             $('div#trans_area').css('display', 'none');
-        } else if ($('select#payment_type option:selected').val() == "Master Card" || $('select#payment_type option:selected').val() == "Debit Card") {
+        } else if ($('select#payment_type option:selected').val() == "Credit Card" || $('select#payment_type option:selected').val() == "Debit Card") {
+            $('button.btn_save_sale').prop('disabled', false);
+            $('button.btn_save_sale').removeClass('btn btn-default');
+            $('button.btn_save_sale').addClass('btn btn-primary');
+
             $('div#rvable').css('display', 'none');
             $('div#rvd').css('display', 'none');
             $('div#trans_area').css('display', 'block');
         }
     } else {
+        $('button.btn_save_sale').prop('disabled', true);
+        $('button.btn_save_sale').removeClass('btn btn-primary');
+        $('button.btn_save_sale').addClass('btn btn-default');
+
         if ($('select#payment_type option:selected').val() == "Cash") {
             $('div#rvable').css('display', 'block');
             $('div#rvd').css('display', 'block');
@@ -274,22 +287,30 @@ function selectPayment() {
             $('div#trans_area').hide();
             $('#recieved').css('border', '2px dotted darkred');
             $('#recieved').prop('placeholder', 'Required');
+            $('#recieved::placeholder').css('color', 'darkred');
             // $('#recieved::placeholder').css('color', 'darkred');
             $('#recieved').blur(function () {
                 if ($(this).val() == '') {
-                    alert('Required');
-                } else if (parseInt($('#recieved').val()) <= parseInt($('#payable').val())) {
+                    // Set default value inside receivable input
+                    var subTotal = $('#sub_total').data('sub-total');
+                    $('#modal-payment-type #payable').val(subTotal);
+                    $('#modal-payment-type #chk_value').val(subTotal);
+                    // btn-save-sale
+                    $('.btn_save_sale').removeClass('btn-primary');
+                    $('.btn_save_sale').addClass('btn-default');
+                    $('.btn_save_sale').prop('disabled', true);
+                } else if (parseInt($('#recieved').val()) !== '') {
                     $(this).css('border', '');
                     $(this).prop('placeholder', '');
-                    $('button#btn_print').prop('disabled', false);
-                    $('button#btn_print').removeClass('btn btn-default');
-                    $('button#btn_print').addClass('btn btn-primary');
+                    $('button.btn_save_sale').prop('disabled', false);
+                    $('button.btn_save_sale').removeClass('btn btn-default');
+                    $('button.btn_save_sale').addClass('btn btn-primary');
                 } else {
 
                 }
             });
         }
-    } else if (st.val() == "Master Card" || st.val() == "Debit Card") {
+    } else if (st.val() == "Credit Card" || st.val() == "Debit Card") {
         $('#chk_area').css('display', 'block');
         if (!$('#paid_all').is(':checked')) {
             $('div#trans_area').show();
@@ -297,18 +318,27 @@ function selectPayment() {
             $('div#rvd').show();
             $('#recieved').css('border', '2px dotted darkred');
             $('#recieved').prop('placeholder', 'Required');
+            $('#recieved::placeholder').css('color', 'darkred');
             $('#transCode').css('border', '2px dotted darkred');
             $('#transCode').prop('placeholder', 'required');
 
             $('#recieved').blur(function () {
                 if ($(this).val() === '') {
-                    alert('Required');
-                } else if ($('#recieved').val() <= $('#payable').val()) {
+                    // Set default value inside receivable input
+                    var subTotal = $('#sub_total').data('sub-total');
+                    $('#modal-payment-type #payable').val(subTotal);
+                    $('#modal-payment-type #chk_value').val(subTotal);
+
+                    // btn-save-sale
+                    $('.btn_save_sale').removeClass('btn-primary');
+                    $('.btn_save_sale').addClass('btn-default');
+                    $('.btn_save_sale').prop('disabled', true);
+                } else if ($('#recieved').val() !== '') {
                     $(this).css('border', '');
                     $(this).prop('placeholder', '');
-                    $('button#btn_print').prop('disabled', false);
-                    $('button#btn_print').removeClass('btn btn-default');
-                    $('button#btn_print').addClass('btn btn-primary');
+                    $('button.btn_save_sale').prop('disabled', false);
+                    $('button.btn_save_sale').removeClass('btn btn-default');
+                    $('button.btn_save_sale').addClass('btn btn-primary');
                 }
             });
 
@@ -316,6 +346,10 @@ function selectPayment() {
                 if ($(this).val() !== '') {
                     $(this).css('border', '');
                     $(this).prop('placeholder', '');
+                } else if ($(this).val() === '') {
+                    $('.btn_save_sale').removeClass('btn-primary');
+                    $('.btn_save_sale').addClass('btn-default');
+                    $('.btn_save_sale').prop('disabled', true);
                 }
             });
         }
@@ -324,6 +358,7 @@ function selectPayment() {
 
 // When btn-print clicked; two actions are done 1- print the cart 2- data is edited into db.
 function onSaveSale() {
+    var totalToPay = $('input#total_to_pay').val();
     var recieved_amount = 0;
     var recieveable_amount = 0;
     if ($('#paid_all').is(':checked')) {
@@ -348,6 +383,7 @@ function onSaveSale() {
             'payment': pntType,
             'recieved': recieved_amount,
             'recieveable': recieveable_amount,
+            'totalToPay': totalToPay,
             'transCode': transCode,
             'tax': tax,
             '_token': $('input[name=_token]').val()

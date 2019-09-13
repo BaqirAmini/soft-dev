@@ -465,6 +465,7 @@
                         </div>
                         <div class="form-group col-xs-4" style="display: none" id="rvable">
                             <label class="lbl_payment">Receivable Amount</label>
+                            <input type="hidden" name="total_to_pay" id="total_to_pay">
                             <input type="text" class="form-control" min="0" max="9999" placeholder="Receivable Amount" id="payable">
                         </div>
                         <div class="form-group col-xs-4" id="rvd" style="display: none">
@@ -526,7 +527,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary pull-left btn_save_sale"  onclick="onSaveSale();">Save Sale</button>
+                    <button type="button" class="btn btn-default pull-left btn_save_sale"  onclick="onSaveSale();" disabled>Save Sale</button>
                 </div>
             </div>
             <!-- /.modal-content -->
