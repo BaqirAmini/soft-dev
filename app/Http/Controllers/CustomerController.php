@@ -108,12 +108,12 @@ class CustomerController extends Controller
             'first_name' => 'required|string|min:3|max:64',
             'last_name' => 'nullable|string|min:3|max:64',
             'phone' => 'required|string|min:10|max:16|unique:customers,cust_phone',
-            'email' => 'nullable|string|email|unique:customers,cust_email,' . Auth::user()->comp_id . ',comp_id',
+            'email' => 'nullable|string|email|unique:customers,cust_email',
             'account_number' => 'nullable|numeric|unique:customers,AccountNumber',
             'account_type_ID' => 'nullable|numeric|unique:customers,AccountTypeID',
             'limit_purchase' => 'boolean',
-            'account_balance' => 'nullable|numeric|between:0,999999.99',
-            'credit_limit' => 'nullable|numeric|between:0,999999.99',
+            'account_balance' => 'nullable|numeric|between:0,999999999.99',
+            'credit_limit' => 'nullable|numeric|between:0,999999999.99',
             'HQID' => 'nullable|numeric',
             'country' => 'required|string|min:3',
             'province' => 'required|string|min:3|max:64',
@@ -122,11 +122,11 @@ class CustomerController extends Controller
             'city' => 'required|string|min:3|max:64',
             'zip_code' => 'nullable|numeric|min:4',
             'employee' => 'boolean',
-            'fax_number' => 'nullable|numeric|unique:customers,FaxNumber,' . Auth::user()->comp_id . ',comp_id',
+            'fax_number' => 'nullable|numeric|unique:customers,FaxNumber',
             'tax_exempt' => 'boolean',
             'notes' => 'nullable|string|max:256',
-            'price_level' => 'nullable|numeric|between:0,999999.99',
-            'tax_number' => 'nullable|numeric|unique:customers,TaxNumber,' . Auth::user()->comp_id . ',comp_id'
+            'price_level' => 'nullable|numeric|between:0,999999999.99',
+            'tax_number' => 'nullable|numeric|unique:customers,TaxNumber'
         ]);
         if ($validation->passes()) {
 
@@ -160,7 +160,7 @@ class CustomerController extends Controller
 
             $customer->save();
             return response()->json([
-                'message' => 'Customer registed successfully!',
+                'message' => 'Customer registered successfully!',
                 'result' => 'success',
                 'style' => 'color:grey'
             ]);

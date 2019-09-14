@@ -5,7 +5,7 @@
         {{ Breadcrumbs::render('new-sale') }}
     </div>
     <!-- new-customer modal -->
-    <div class="modal fade" id="modal-customer">
+    {{--<div class="modal fade" id="modal-customer">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -88,7 +88,7 @@
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-    </div>
+    </div>--}}
     <!-- /.new-customer modal -->
 
     <!-- Main content -->
@@ -118,9 +118,8 @@
                                 @endforeach
                             </select>--}}
                             <span class="input-group-btn" style="padding-left: 20px;">
-                          <button class="btn btn-primary" id="btn_new_customer" type="button" data-toggle="modal"
-                                  data-target="#modal-customer"><i class="fa fa-user-plus"
-                                                                   style="padding:3px;"></i></button>
+                          <a href="{{ route('customer.register') }}" class="btn btn-primary" id="btn_new_customer" type="button"><i class="fa fa-user-plus"
+                                                                   style="padding:3px;"></i></a>
                         </span>
                             {{ csrf_field() }}
                         </div>
@@ -298,7 +297,7 @@
                             {{--=============== Search items ==================--}}
                             <div class="input-group col-md-6 col-lg-6 col-sm-10 col-xs-10 pull-right"
                                  style="margin-right: 30px;">
-                                <input type="text" name="search" placeholder="Search items to sell"
+                                <input type="text" name="search" placeholder="Search items or scan a barcode"
                                        class="form-control" required id="search_items">
                             </div>
                             {{--=============== /.Search items ==================--}}
