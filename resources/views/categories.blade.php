@@ -39,10 +39,10 @@
                               <td>{{ $ctg->ctg_desc }}</td>
                               <td>{{ Carbon\carbon::parse($ctg->created_at)->format('m-d-Y') }}</td>
                               <td>
-                                <button class="btn btn-danger btn-sm btn-delete-ctg" data-ctg-id="{{ $ctg->ctg_id }}" data-toggle="modal"
+                                {{--<button class="btn btn-danger btn-sm btn-delete-ctg" data-ctg-id="{{ $ctg->ctg_id }}" data-toggle="modal"
                                   data-target="#modal-delete-category">
                                   <i class="fa fa-trash"></i>
-                                </button>
+                                </button>--}}
                                 <button class="btn btn-primary btn-sm btn-edit-ctg" data-ctg-id="{{ $ctg->ctg_id }}"
                                   data-ctg-name="{{ $ctg->ctg_name }}" data-ctg-desc="{{ $ctg->ctg_desc }}" data-toggle="modal"
                                   data-target="#modal-edit-category">

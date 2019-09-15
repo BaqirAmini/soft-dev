@@ -184,22 +184,22 @@
                                                    style="color:rgb(165, 22, 22)"></i></a>
                                         </div>
 
-                                        <div class="col-xs-12 col-md-3 item_added_in_cart">
-                                            <a href="#"> <span>{{ $cart->name }}</span></a>
+                                        <div class="col-xs-12 col-md-3">
+                                            <a href="#" id="item_added_in_cart" style="font-size: 12px"> <span>{{ $cart->name }}</span></a>
                                         </div>
-                                        <div class="col-xs-12 col-md-2">
+                                        <div class="col-xs-12 col-md-2" style="font-size: 12px">
                                             <a href="#" class="link_qty" id="test_n"> <span>{{ $cart->qty }}</span></a>
                                         </div>
-                                        <div class="col-xs-12 col-md-2">
+                                        <div class="col-xs-12 col-md-2" style="font-size: 12px">
                                             <a href="#" class="link_price"><span>${{ $cart->price }}</span></a>
                                         </div>
                                         <div class="col-md-2 col-sm-12 col-xs-12" style="text-align: center">
                                             <div class="input-group">
-                                                <a href="#">${{ $cart->qty * $cart->price }}</a>
+                                                <a href="#" style="font-size: 12px">${{ $cart->qty * $cart->price }}</a>
                                             </div>
                                             <!-- discount --->
                                             <div class="pull-right" style="margin-top: -20px;margin-right: -55px;">
-                                                <a href="#" class="link_discount" data-discount-id="{{ $cart->rowId }}">0</a>
+                                                <a href="#" class="link_discount" data-discount-id="{{ $cart->rowId }}" style="font-size: 12px">0</a>
                                                 {{ csrf_field() }}
                                             </div>
                                         </div>

@@ -20,17 +20,17 @@
                   </p>
               </div>
             <!-- ============  Company LOGO =============== -->
-            <form id="specific_comp_logo_form" enctype="multipart/form-data" class="col-md-offset-1 col-sm-offset-1">
+            {{--<form id="form_cust_upload_photo" enctype="multipart/form-data" class="col-md-offset-1 col-sm-offset-1">
               @csrf
-              <input type="hidden" name="cid" id="hidden_comp_id" value="">
+              <input type="hidden" name="cid" id="hidden_cust_id" value="">
               <div class="form-group pull-left" style="text-align:center" id="uploaded_image">
-                <label class="company-logo pull-left">
+                <label class="pull-left">
                   <img class="img-circle img-bordered pull-left" @if(Auth::check()) src="/uploads/user_photos/user.png" @endif
-                    alt="Logo" id="specific_company_logo">
-                  <input type="file" id="clogo" class="upload form-control" name="company_logo">
+                    alt="Logo" id="img_customer">
+                  <input type="file" id="customer_photo" class="upload form-control" name="customer_photo">
                 </label>
               </div>
-            </form>
+            </form>--}}
             <!-- ============= /. Company LOGO ================= -->
           </div>
           <!-- /.box-header -->
@@ -39,6 +39,13 @@
             <form class="form-horizontal" id="form_new_customer" enctype="multipart/form-data">
               @csrf
 {{--              <input type="hidden" name="cid" id="hidden_comp_id" value="">--}}
+                <div class="form-group col-md-12 col-lg-12 col-sm-12 col-xs-12" style="text-align:center;margin-left: 100px;margin-bottom: 20px !important;" id="uploaded_image">
+                    <label class="pull-left">
+                        <img class="img-circle img-bordered pull-left" @if(Auth::check()) src="/uploads/user_photos/user.png" @endif
+                        alt="Logo" id="img_customer">
+                        <input type="file" id="customer_photo" class="upload form-control" name="customer_photo">
+                    </label>
+                </div>
                 <div class="form-group">
                   <div class="control-label the-ast col-sm-2">
                     <label for="business_name">Business Name</label>

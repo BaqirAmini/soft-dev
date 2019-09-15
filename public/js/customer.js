@@ -209,6 +209,43 @@ $(document).ready(function () {
         $('#btn_enable_cust_edit').show();
     });
     /* ================================================ /. While tab button clicked the edit button on the top whould hide ============================== */
+
+
+    /* ========================== UPLOAD customer photo ================ */
+    $('#customer_photo').change(function () {
+        photo = $('input[name=customer_photo]').val();
+        var img = new FormData($('#form_cust_upload_photo')[0]);
+        /*$.ajax({
+            type: "POST",
+            url: "/customer/photo",
+            data: img,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (response) {
+                $('#success_message').html(response.msg);
+                $('#success_message').attr('style', 'display:block');
+                // $('#user-profile-photo-form').load(' #user-profile-photo-form');
+                location.reload();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });*/
+        readURL(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img_customer').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    /* ===========================/. UPLOAD customer photo ===================== */
 });
 
 

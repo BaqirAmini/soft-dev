@@ -89,7 +89,7 @@ h5 {
     padding: 30px;
 }
 /* profile-image */
-#user_profile_img, #company_logo_img, #specific_company_logo, #any_user_img, #any_system_admin_img{
+#user_profile_img, #company_logo_img, #specific_company_logo, #any_user_img, #any_system_admin_img, #img_customer{
     width: 80px;
     height: 80px;
     margin-right: 20px;
@@ -111,7 +111,7 @@ h5 {
 
 
 /* =========================================== LOGO of company ==================================== */
-.modal-body input[type="file"], #company_logo, #clogo {
+.modal-body input[type="file"], #company_logo, #clogo, #customer_photo {
     display: none;
 }
 #form_company_logo {

@@ -131,6 +131,17 @@ class CustomerController extends Controller
         if ($validation->passes()) {
 
             $customer = new Customer();
+
+            /* ----------- Upload customer photo -----------------*/
+            if ($request->hasFile('customer_photo')) {
+                $image = $request->file('customer_photo');
+                $path = "uploads/customer_photos/";
+                $imageName = rand() . '.' . $image->getClientOriginalExtension();
+                $customer->cust_photo = $imageName;
+                $image->move($path, $imageName);
+            }
+            /* ----------- /.Upload customer photo ----------------- */
+
             $customer->comp_id = Auth::user()->comp_id;
             $customer->UserID = Auth::user()->id;
             $customer->business_name = $request->business_name;
@@ -517,4 +528,37 @@ class CustomerController extends Controller
         }
     }
     /* ============================= Import/Export Excel ========================*/
+
+    /* ========================================= Upload Customer Photo =======================================*/
+    # This is moved into function store above
+    /*public function onUploadPhoto(Request $request) {
+        $v = Validator::make($request->all(), [
+            'customer_photo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048'
+        ]);
+
+        if ($v->passes()) {
+            $customer = new Customer();
+            if ($request->hasFile('customer_photo')) {
+                $image = $request->file('customer_photo');
+                $path = "uploads/customer_photos/";
+                $logo_name = rand() . '.' . $image->getClientOriginalExtension();
+                $customer->comp_logo = $logo_name;
+                $image->move($path, $logo_name);
+                $customer->save();
+                return response()->json([
+                    'msg' => 'Customer photo updated successfully!',
+                    'style' => 'color:darkblue',
+                    'result' => 'success'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'msg' => $v->errors()->all(),
+                'style' => 'color:darkred',
+                'result' => 'fail'
+            ]);
+        }
+
+    }*/
+    /* ========================================= /. Upload Customer Photo =======================================*/
 }

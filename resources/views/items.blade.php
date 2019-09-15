@@ -61,14 +61,14 @@
                             <thead>
                                 <tr>
                                     <th>Image</th>
+                                    <th>Barcode #</th>
                                     <th>Category</th>
                                     <th>Item</th>
                                     <th>Description</th>
                                     <th>In Stock</th>
-                                    <th>Barcode #</th>
                                     <th>Taxable</th>
                                     <th>Supplier</th>
-                                    <th>Purchase Price</th>
+                                    <th>Cost</th>
                                     <th>Sell Price</th>
                                     <th>Reg. Date</th>
                                     <th>Action</th>
@@ -80,21 +80,21 @@
                                 <tr>
                                     <td><img src="uploads/product_images/{{ $item->item_image }}" alt="Image" class="img-circle img-bordered-sm" height="30"
                                             width="30"></td>
+                                    <td>{{ $item->barcode_number }}</td>
                                     <td>{{ $item->ctg_name }}</td>
                                     <td>{{ $item->item_name }}</td>
                                     <td>{{ $item->item_desc }}</td>
                                     <td> @if($item->quantity > 5) <button class="btn-sm btn btn-info">{{ $item->quantity }}</button> @else
                                         <button class="btn-sm btn btn-danger">{{ $item->quantity }}</button> @endif </td>
-                                    <td>{{ $item->barcode_number }}</td>
                                     <td>{{ $item->taxable }}</td>
                                     <td></td>
                                     <td>{{ $item->purchase_price }}</td>
                                     <td>{{ $item->sell_price }}</td>
                                     <td>{{ Carbon\carbon::parse($item->created_at)->format('d M Y') }}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm btn_delete_product" data-toggle="modal"
+                                        {{--<button class="btn btn-danger btn-sm btn_delete_product" data-toggle="modal"
                                             data-target="#modal-delete-item" data-product-id="{{ $item->item_id }}"><i
-                                                class="fa fa-trash"></i></button>
+                                                class="fa fa-trash"></i></button>--}}
                                         <button class="btn btn-primary btn-sm btn_edit_item" data-toggle="modal" data-target="#modal-edit-item"
                                             data-item-id="{{ $item->item_id }}" data-item-name="{{ $item->item_name }}"
                                             data-item-desc="{{ $item->item_desc }}" data-item-qty="{{ $item->quantity }}"
