@@ -146,7 +146,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {   $customerId = $request->custID;
         $tCode = $request->transCode;
-        $paymentType = $request->payment;
+        $paymentMethod = $request->payment;
         $recieved = $request->recieved;
         $recievable = $request->recieveable;
         $totalToPay = $request->totalToPay;
@@ -177,12 +177,12 @@ class SaleController extends Controller
                 $payment = new Payment();
                 $payment->inv_id = $invoiceId;
                 $payment->comp_id = $compId;
-                $payment->trans_type = "Debit";
+                $payment->trans_method = "New Sale";
                 $payment->trans_code = $tCode;
-                $payment->payment_type = $paymentType;
-                $payment->recieved_amount = $recieved;
-                $payment->recievable_amount = $recievable;
-                $payment->total_to_pay = $totalToPay;
+                $payment->payment_method = $paymentMethod;
+                $payment->amount_paid = $recieved;
+                $payment->amount_due = $recievable;
+                $payment->total_invoice = $totalToPay;
                 if ($payment->save()) {
                     foreach ($carts as $data) {
                         $sold = Sale::create([

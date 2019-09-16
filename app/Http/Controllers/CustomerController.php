@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Invoice;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Customer;
@@ -16,6 +17,7 @@ use DB;
 
 class CustomerController extends Controller
 {
+    public $totalDue = 0;
     public function __construct()
     {
         $this->middleware('auth');
@@ -190,29 +192,58 @@ class CustomerController extends Controller
     # Show balance of a specific customer
     public function onPurchaseHistory($id = null)
     {
-//        Customers' transactions
-        $purchases = DB::table('customers')
+        $transMethod = 'payments.trans_method';
+        $due = DB::table('customers')
             ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
             ->join('payments', 'invoices.inv_id', '=', 'payments.inv_id')
-            ->select('invoices.*', 'payments.*')
+            ->select('payments.amount_due')
+            ->where('payments.comp_id', Auth::user()->comp_id)
+            ->where('invoices.cust_id', $id)
+            ->where(function ($q) use($transMethod) {
+                $q->where($transMethod, 'New Sale');
+                $q->orWhere($transMethod, 'Payment Received');
+            })
+            ->orderBy('payments.payment_id', 'DESC')
+            ->get();
+//        Customers' transactions
+        $newSaleObject = DB::table('customers')
+            ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
+            ->join('payments', 'invoices.inv_id', '=', 'payments.inv_id')
+            ->where('payments.comp_id', Auth::user()->comp_id)
+            ->where('invoices.cust_id', $id)
+            ->where('payments.trans_method', 'New Sale')
+            ->orderBy('payments.payment_id', 'DESC')
+            ->get();
+
+
+//        List all invoices that contain Payment Received for customer transactions history
+       $paymentReceived = DB::table('customers')
+            ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
+            ->join('payments', 'invoices.inv_id', '=', 'payments.inv_id')
             // ->where('customers.cust_id', $custId)
-            ->where('customers.comp_id', Auth::user()->comp_id)
-            ->where('customers.cust_id', $id)
-//            ->where('payments.trans_type', 'Payment Received')
+            ->where('payments.comp_id', Auth::user()->comp_id)
+            ->where('invoices.cust_id', $id)
+            ->where('payments.trans_method', 'Payment Received')
+            ->orderBy('payments.payment_id', 'DESC')
             ->get();
 
 //        customer personal-info
         $customers = DB::table('customers')->select('*')->where('comp_id', Auth::user()->comp_id)->where('cust_id', $id)->get();
 
-        // return view('customer_purchase_history', compact('purchases'));
-        $recieved = $purchases->sum('recieved_amount');
-        $recievable = $purchases->sum('recievable_amount');
-        $totalTransaction = $recievable + $recieved;
-        if (count($purchases) > 0) {
-            return view('customer_detail', compact(['customers', 'purchases', 'recieved', 'recievable', 'totalTransaction']));
+//        Total Amount Paid
+        $totalAmountPaid = $newSaleObject->sum('amount_paid') + $paymentReceived->sum('amount_paid');
+
+//        Total Amount Due
+        $totalAmountDue = $due[0]->amount_due;
+
+//        $totalAmountDue = 23;
+//        New Sale
+        $totalTransaction = $newSaleObject->sum('total_invoice');
+        if (count($newSaleObject) >= 0) {
+            return view('customer_detail', compact(['customers', 'newSaleObject','totalTransaction', 'totalAmountPaid', 'due', 'totalAmountDue', 'paymentReceived']));
         } else {
 //           return back()->with('no_purchase', 'Sorry, this customer has not done any transaction yet.');
-            return view('customer_detail', compact(['customers', 'purchases', 'recieved', 'recievable', 'totalTransaction']));
+            return view('customer_detail', compact(['customers', 'newSaleObject', 'totalTransaction', 'totalAmountPaid', 'due','totalAmountDue', 'paymentReceived']));
         }
     }
 
@@ -221,8 +252,9 @@ class CustomerController extends Controller
     {
         $payment = new Payment();
 //        $invoiceId = DB::table('invoices')->where('cust_id', $request->customer_id)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
-        $receivedAmount = DB::table('payments')->where('inv_id', $request->invoice_id)->value('recieved_amount');
-        $receivableAmount = DB::table('payments')->where('inv_id', $request->invoice_id)->value('recievable_amount');
+//        $amountPaid = DB::table('payments')->where('inv_id', $request->invoice_id)->value('amount_paid');
+        $amountDue = DB::table('payments')->where('inv_id', $request->invoice_id)->orderBy('payment_id', 'desc')->limit(1)->value('amount_due');
+        $totalInvoice = DB::table('payments')->where('inv_id', $request->invoice_id)->value('total_invoice');
         $v = Validator::make($request->all(), [
             'pay_amount' => 'required|numeric|between:0,999999999999.99',
             'transaction_code' => 'nullable|numeric|between:0,999999999999'
@@ -230,23 +262,25 @@ class CustomerController extends Controller
         if ($v->passes()) {
             /*$recAmount = $request->reciept_amount;
             $pay = Payment::where('inv_id', '=', $invoiceId)->first();
-            $pay->recieved_amount += $recAmount;
-            $pay->recievable_amount -= $recAmount;
+            $pay->amount_paid += $recAmount;
+            $pay->amount_due -= $recAmount;
             $pay->trans_type = "Credit";*/
 
 //            Save payment in to table payments
 
             $payment->inv_id = $request->invoice_id;
             $payment->comp_id = Auth::user()->comp_id;
-            $payment->trans_type = "Payment Received";
+            $payment->trans_method = "Payment Received";
             if ($request->has('transaction_code')) {
                 $payment->trans_code = $request->transaction_code;
             }
-            $payment->payment_type = $request->payment_type;
-            $receivedAmount += $request->pay_amount;
-            $receivableAmount -= $request->pay_amount;
-            $payment->recieved_amount = $receivedAmount;
-            $payment->recievable_amount = $receivableAmount;
+            $payment->payment_method = $request->payment_method;
+//            $receivedAmount += $request->pay_amount;
+            $amountDue -= $request->pay_amount;
+            $payment->amount_paid = $request->pay_amount;
+            $payment->amount_due = $amountDue;
+            $this->totalDue = $amountDue;
+            $payment->total_invoice = $totalInvoice;
             if ($payment->save()) {
                 return response()->json([
                     'result' => 'success',

@@ -42,9 +42,9 @@ class ReportController extends Controller
                     ->whereDate('created_at',  DB::raw('CURDATE()'))
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash of today
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereDate('created_at',  DB::raw('CURDATE()'))->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereDate('created_at',  DB::raw('CURDATE()'))->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereDate('created_at',  DB::raw('CURDATE()'))->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereDate('created_at',  DB::raw('CURDATE()'))->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereDate('created_at',  DB::raw('CURDATE()'))->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereDate('created_at',  DB::raw('CURDATE()'))->sum('amount_paid');
                 # YESTERDAY'S SALES
             } elseif ($time == 'yesterday') {
                 $schedule = "Yesterday's";
@@ -54,9 +54,9 @@ class ReportController extends Controller
                     ->whereDate('created_at',  Carbon::now()->subDays(1))
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash of Yerterday
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereDate('created_at',  Carbon::now()->subDays(1))->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereDate('created_at',  Carbon::now()->subDays(1))->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereDate('created_at',  Carbon::now()->subDays(1))->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereDate('created_at',  Carbon::now()->subDays(1))->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereDate('created_at',  Carbon::now()->subDays(1))->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereDate('created_at',  Carbon::now()->subDays(1))->sum('amount_paid');
                 #LAST 7 DAYS
             } elseif ($time == 'last7days') {
                 $schedule = "Last 7 Days'";
@@ -66,9 +66,9 @@ class ReportController extends Controller
                     ->whereDate('created_at', '>=', Carbon::now()->subDays(7))
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash of LAST 7 DAYS
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereDate('created_at', '>=', Carbon::now()->subDays(7))->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereDate('created_at', '>=', Carbon::now()->subDays(7))->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereDate('created_at', '>=', Carbon::now()->subDays(7))->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereDate('created_at', '>=', Carbon::now()->subDays(7))->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereDate('created_at', '>=', Carbon::now()->subDays(7))->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereDate('created_at', '>=', Carbon::now()->subDays(7))->sum('amount_paid');
                 # THIS WEEK'S SALES
             } elseif ($time == 'thisWeek') {
                 $schedule = "This Week's";
@@ -79,9 +79,9 @@ class ReportController extends Controller
                     ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash for THIS WEEK
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('amount_paid');
             } elseif ($time == 'lastWeek') {
                 $schedule = "Last Week's";
                 # LAST WEEK'S SALES
@@ -91,9 +91,9 @@ class ReportController extends Controller
                     ->where('created_at', '<=',  Carbon::now()->subDays(7)->startOfDay())
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash for LAST WEEK
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereDate('created_at',  Carbon::now()->subDays(7))->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereDate('created_at',  Carbon::now()->subDays(7))->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereDate('created_at',  Carbon::now()->subDays(7))->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereDate('created_at',  Carbon::now()->subDays(7))->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereDate('created_at',  Carbon::now()->subDays(7))->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereDate('created_at',  Carbon::now()->subDays(7))->sum('amount_paid');
             } elseif ($time == 'last30days') {
                 $schedule = "Last 30 Day's";
                 # LAST 30 DAYS' SALES
@@ -103,9 +103,9 @@ class ReportController extends Controller
                     ->whereDate('created_at', '>=', Carbon::now()->subDays(30))
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash of LAST 30 DAYS
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereDate('created_at', '>=', Carbon::now()->subDays(30)->startOfDay())->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereDate('created_at', '>=', Carbon::now()->subDays(30)->startOfDay())->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereDate('created_at', '>=', Carbon::now()->subDays(30)->startOfDay())->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereDate('created_at', '>=', Carbon::now()->subDays(30)->startOfDay())->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereDate('created_at', '>=', Carbon::now()->subDays(30)->startOfDay())->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereDate('created_at', '>=', Carbon::now()->subDays(30)->startOfDay())->sum('amount_paid');
             } elseif ($time == 'thisMonth') {
                 $schedule = "This Month's";
                 # THIS MONTH
@@ -115,9 +115,9 @@ class ReportController extends Controller
                     ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash for THIS MONTH
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('amount_paid');
             } elseif ($time == 'lastMonth') {
                 $schedule = "Last Month's";
                 # LAST MONTH
@@ -127,9 +127,9 @@ class ReportController extends Controller
                     ->whereDate('created_at', '<=', Carbon::now()->subDays(30))
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash for LAST MONTH
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereDate('created_at', '<=', Carbon::now()->subDays(30))->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereDate('created_at', '<=', Carbon::now()->subDays(30))->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereDate('created_at', '<=', Carbon::now()->subDays(30))->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereDate('created_at', '<=', Carbon::now()->subDays(30))->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereDate('created_at', '<=', Carbon::now()->subDays(30))->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereDate('created_at', '<=', Carbon::now()->subDays(30))->sum('amount_paid');
             } elseif ($time == 'thisYear') {
                 $schedule = "This Year's";
                 # THIS YEAR
@@ -139,9 +139,9 @@ class ReportController extends Controller
                     ->whereBetween('created_at',  [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash for THIS YEAR
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->whereBetween('created_at',  [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->whereBetween('created_at',  [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->whereBetween('created_at',  [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->whereBetween('created_at',  [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->whereBetween('created_at',  [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->whereBetween('created_at',  [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->sum('amount_paid');
             } elseif ($time == 'lastYear') {
                 $schedule = "Last Year's";
                 # LAST YEAR
@@ -151,9 +151,9 @@ class ReportController extends Controller
                     ->whereDate('created_at', '<=', Carbon::now()->subDays(365))
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash for LAST YEAR
-                $cash = DB::table('payments')->where('comp_id', $compId)->whereDate('payment_type', 'Cash')->whereDate('created_at', '<=', Carbon::now()->subDays(365))->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->whereDate('payment_type', 'Credit Card')->whereDate('created_at', '<=', Carbon::now()->subDays(365))->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->whereDate('payment_type', 'Debit Card')->whereDate('created_at', '<=', Carbon::now()->subDays(365))->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->whereDate('payment_method', 'Cash')->whereDate('created_at', '<=', Carbon::now()->subDays(365))->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->whereDate('payment_method', 'Credit Card')->whereDate('created_at', '<=', Carbon::now()->subDays(365))->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->whereDate('payment_method', 'Debit Card')->whereDate('created_at', '<=', Carbon::now()->subDays(365))->sum('amount_paid');
             } elseif ($time == 'allTime') {
                 $schedule = "All The Time's";
                 # ALL TIME
@@ -162,12 +162,12 @@ class ReportController extends Controller
                     ->where('comp_id', $compId)
                     ->get();
                 # to calculate total of credit-card, debit-card, or cash for ALL TIME
-                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Cash')->sum('recieved_amount');
-                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Credit Card')->sum('recieved_amount');
-                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_type', 'Debit Card')->sum('recieved_amount');
+                $cash = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Cash')->sum('amount_paid');
+                $credit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Credit Card')->sum('amount_paid');
+                $debit = DB::table('payments')->where('comp_id', $compId)->where('payment_method', 'Debit Card')->sum('amount_paid');
             }
-            $recieved = $query->sum('recieved_amount');
-            $recievable = $query->sum('recievable_amount');
+            $recieved = $query->sum('amount_paid');
+            $recievable = $query->sum('amount_due');
             $total = $recievable + $recieved;
             return view('analytics', compact('schedule', 'cash', 'credit', 'debit', 'total', 'recieved', 'recievable'));
         } else {

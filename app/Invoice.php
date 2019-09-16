@@ -13,7 +13,7 @@ class Invoice extends Model
     protected $primaryKey = "inv_id";
     // Customer...
     public function customer() {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'cust_id');
     }
 
     // Sale...
@@ -23,6 +23,6 @@ class Invoice extends Model
     // Payment
     public function payment()
     {
-        return $this->hasOne(Payment::class);
+        return $this->hasMany(Payment::class, 'inv_id');
     }
 }

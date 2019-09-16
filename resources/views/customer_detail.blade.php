@@ -248,24 +248,26 @@
                                                 {{-- ==========================   Balance related ===================--}}
                                                 <tr>
                                                     <th>Total Sales</th>
-                                                    @if(!empty($purchases) || count($purchases)>0)
+                                                    @if(!empty($newSaleObject) || count($newSaleObject)>0)
                                                         <th>${{  $totalTransaction }}</th>
                                                     @endif
                                                 </tr>
                                                 <tr>
-                                                    <td>Total Paid Amount</td>
-                                                    @if(!empty($purchases) || count($purchases)>0)
+                                                    <td>Total Amount Paid</td>
+
                                                         <td>
-                                                            ${{ $recieved }}
+                                                            ${{ $totalAmountPaid }}
                                                         </td>
-                                                    @endif
+
                                                 </tr>
                                                 <tr>
-                                                    <td>Total Balance Amount</td>
-                                                    @if(!empty($purchases) || count($purchases)>0)
+                                                    <td>Total Amount Due</td>
+                                                    @if(!empty($due[0]) || count($due) > 0)
                                                         <td>
-                                                            ${{ $recievable }}
+                                                            {{ $totalAmountDue }}
                                                         </td>
+                                                    @else
+                                                        <td>0</td>
                                                     @endif
                                                 </tr>
                                             </table>
@@ -298,34 +300,36 @@
                                                                 <thead id="invoice_header">
                                                                 <tr>
                                                                     <th>Invoice #</th>
-                                                                    <th>Payment Type</th>
-                                                                    <th>Paid Amount</th>
-                                                                    <th>Balance</th>
+                                                                    <th>Payment Method</th>
+                                                                    <th>Trans. Method</th>
+                                                                    <th>Amount Paid</th>
+                                                                    <th>Amount Due</th>
                                                                     <th>Transaction Date</th>
-                                                                    <th>Make a payment</th>
+                                                                    <th>Receive payment</th>
                                                                     <!-- <th>Action</th> -->
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody id="invoice_body">
-                                                                @if(!empty($purchases) || count($purchases)>0)
-                                                                    @foreach($purchases as $pur)
+                                                                @if(!empty($newSaleObject) || count($newSaleObject)>0)
+                                                                    @foreach($newSaleObject as $ns)
                                                                         <tr>
                                                                             <td>
                                                                                 <a href="#" class="invoice_detail"
-                                                                                   data-inv-id="{{ $pur->inv_id }}">
-                                                                                    {{ $pur->inv_id }}
+                                                                                   data-inv-id="{{ $ns->inv_id }}">
+                                                                                    {{ $ns->inv_id }}
                                                                                 </a>
                                                                             </td>
-                                                                            <td>{{ $pur->payment_type }}</td>
-                                                                            <td>{{ $pur->recieved_amount }}</td>
-                                                                            <td>{{ $pur->recievable_amount }}</td>
-                                                                            <td>{{ Carbon\carbon::parse($pur->created_at)->format('d/m/Y') }}</td>
+                                                                            <td>{{ $ns->payment_method }}</td>
+                                                                            <td>{{ $ns->trans_method }}</td>
+                                                                            <td>${{ $ns->amount_paid }}</td>
+                                                                            <td>${{ $ns->amount_due }}</td>
+                                                                            <td>{{ Carbon\carbon::parse($ns->created_at)->format('m/d/Y') }}</td>
                                                                             <td><a href="#"
                                                                                    data-toggle="modal"
                                                                                    data-target="#modal-make-payment"
                                                                                    type="button"
                                                                                    class="btn btn-default btn-sm link_make_payment"
-                                                                                   data-invoice-id="{{ $pur->inv_id }}">
+                                                                                   data-invoice-id="{{ $ns->inv_id }}">
                                                                                     <span
                                                                                         class="glyphicon glyphicon-credit-card"></span>
                                                                                 </a>
@@ -349,43 +353,33 @@
                                                                 <thead id="invoice_header">
                                                                 <tr>
                                                                     <th>Invoice #</th>
-                                                                    <th>Payment Type</th>
-                                                                    <th>Paid Amount</th>
-                                                                    <th>Balance</th>
-                                                                    <th>Transaction Date</th>
-                                                                    <th>Make a payment</th>
+                                                                    <th>Payment Method</th>
+                                                                    <th>Trans. Method</th>
+                                                                    <th>Amount Paid</th>
+                                                                    <th>Amount Due</th>
+                                                                    <th>Date</th>
                                                                     <!-- <th>Action</th> -->
                                                                 </tr>
                                                                 </thead>
-                                                               {{-- <tbody id="invoice_body">
-                                                                @if(!empty($purchases) || count($purchases)>0)
-                                                                    @foreach($purchases as $pur)
+                                                                <tbody id="invoice_body">
+                                                                @if(!empty($paymentReceived) || count($paymentReceived)>0)
+                                                                    @foreach($paymentReceived as $pr)
                                                                         <tr>
                                                                             <td>
                                                                                 <a href="#" class="invoice_detail"
-                                                                                   data-inv-id="{{ $pur->inv_id }}">
-                                                                                    {{ $pur->inv_id }}
+                                                                                   data-inv-id="{{ $pr->inv_id }}">
+                                                                                    {{ $pr->inv_id }}
                                                                                 </a>
                                                                             </td>
-                                                                            <td>{{ $pur->payment_type }}</td>
-                                                                            <td>{{ $pur->recieved_amount }}</td>
-                                                                            <td>{{ $pur->recievable_amount }}</td>
-                                                                            <td>{{ Carbon\carbon::parse($pur->created_at)->format('d/m/Y') }}</td>
-                                                                            <td><a href="#"
-                                                                                   data-toggle="modal"
-                                                                                   data-target="#modal-make-payment"
-                                                                                   type="button"
-                                                                                   class="btn btn-default btn-sm link_make_payment"
-                                                                                   data-invoice-id="{{ $pur->inv_id }}">
-                                                                                    <span
-                                                                                        class="glyphicon glyphicon-credit-card"></span>
-                                                                                </a>
-                                                                            </td>
-
+                                                                            <td>{{ $pr->payment_method }}</td>
+                                                                            <td>{{ $pr->trans_method }}</td>
+                                                                            <td>${{ $pr->amount_paid }}</td>
+                                                                            <td>${{ $pr->amount_due }}</td>
+                                                                            <td>{{ Carbon\carbon::parse($pr->created_at)->format('m/d/Y') }}</td>
                                                                         </tr>
                                                                     @endforeach
                                                                 @endif
-                                                                </tbody>--}}
+                                                                </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
@@ -398,11 +392,11 @@
 
                                     </div>
                                     <a href="{{ route('customer') }}" type="button" class="btn btn-primary">&lt Back</a>
-                                    @if($totalTransaction ==! 0)
+                                    {{--@if($totalTransaction ==! 0)
                                         <button class="btn btn-primary pull-right btn_make_payment" data-toggle="modal"
                                                 data-target="#modal-make-payment">Make a payment
                                         </button>
-                                    @endif
+                                    @endif--}}
                                 </div>
                             {{--                            @endif--}}
                             <!-- /.tab-pane -->
@@ -484,9 +478,9 @@
                             </div>
                             <!-- select -->
                             <div class="form-group">
-                                <label>Select Payment Type</label>
-                                <select class="form-control" name="payment_type" id="payment_type2">
-                                    <option value="">--------------- Payment Type ------------------</option>
+                                <label>Select Payment Method</label>
+                                <select class="form-control" name="payment_method" id="payment_method2">
+                                    <option value="">------------------------------------------ Payment Method ------------------------------------------</option>
                                     <option value="Cash">Cash</option>
                                     <option value="Credit Card">Credit Card</option>
                                     <option value="Debit Card">Debit Card</option>

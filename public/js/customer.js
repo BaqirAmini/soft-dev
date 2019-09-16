@@ -109,8 +109,8 @@ $(document).ready(function () {
     /** ================================/. INVOICE DETAIL ============================= */
 
     /** ================================================== Make-payment ======================================================== */
-    $('#payment_type2').change(function () {
-        var selectedOption = $('#payment_type2 option:selected');
+    $('#payment_method2').change(function () {
+        var selectedOption = $('#payment_method2 option:selected');
         if (selectedOption.val() === '') {
             $('#btn_make_payment').prop('disabled', true);
         } else if (selectedOption.val() === 'Cash') {

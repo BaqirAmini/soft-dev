@@ -11,7 +11,7 @@ class Customer extends Model
     protected $table = "customers";
     // Invoice
     public function invoice() {
-        return $this->belongsTo(Customer::class, 'cust_id');
+        return $this->hasMany(Invoice::class, 'cust_id');
     }
 
     // Company

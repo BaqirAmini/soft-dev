@@ -10,7 +10,7 @@ class Payment extends Model
     protected $primaryKey = "payment_id";
     public function invoice()
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(Invoice::class, 'inv_id');
     }
     //
 }
