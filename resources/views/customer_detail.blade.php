@@ -191,8 +191,8 @@
                                                 </button>
                                             </div>
                                         </div>
-
                                     </form>
+                                    <a href="{{ route('customer') }}" type="button" class="btn btn-primary">&lt Back</a>
                                 </div>
                                 <!-- /.tab-pane -->
                                 {{--                        @if(!empty($purchases) || count($purchases)>0)--}}
@@ -511,8 +511,8 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
 
+                    </div>
                 <!-- end of modal-body div -->
             </div>
             <!-- /.modal-content -->
