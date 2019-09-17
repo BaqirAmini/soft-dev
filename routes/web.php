@@ -91,7 +91,7 @@ Route::post('/customer/photo', 'CustomerController@onUploadPhoto');
 #Purchase-history
 Route::get('customer/custDetail/{id?}', 'CustomerController@onPurchaseHistory');
 Route::post('customer/custDetail/payment', 'CustomerController@onPayment');
-Route::get('customer/custDetail/invoice/detail/{invId?}', 'InvoiceController@onDetail');
+Route::get('customer/custDetail/invoice/detail/{invId?}', 'InvoiceController@onDetail')->name('invoice.detail');
 // Route::get('customer/purHistory', 'CustomerController@onPurchaseHistory')->name('history');
 
 # /.Customers

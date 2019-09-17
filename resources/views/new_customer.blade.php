@@ -1,8 +1,8 @@
 
 @extends('layouts.master')
 @section('content')
- <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-{{--       {{ Breadcrumbs::render('comp-setting') }}--}}
+ <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+       {{ Breadcrumbs::render('new-customer') }}
  </div>
   <div class="content">
     <p id="new_customer_message" style="text-align: center;display: none;">Message</p>

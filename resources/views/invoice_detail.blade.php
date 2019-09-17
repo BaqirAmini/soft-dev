@@ -1,6 +1,11 @@
 @extends('layouts.master')
 @section('content')
 <section class="content">
+{{--  path or breadcrumbs  --}}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: -55px;position: relative">
+        {{ Breadcrumbs::render('invoice-detail') }}
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">

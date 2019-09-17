@@ -6,6 +6,10 @@
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/customer.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/customer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/customer_detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer_detail.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/invoice_detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/invoice_detail.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/new_customer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/new_customer.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/breadcrumbs.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/breadcrumbs.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -217,7 +221,7 @@
       <workItem from="1568537619932" duration="12309000" />
       <workItem from="1568604094998" duration="13823000" />
       <workItem from="1568622390155" duration="10695000" />
-      <workItem from="1568691244478" duration="6651000" />
+      <workItem from="1568691244478" duration="8528000" />
     </task>
     <servers />
   </component>

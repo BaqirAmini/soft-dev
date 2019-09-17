@@ -15,11 +15,22 @@ Breadcrumbs::for('customer', function ($trail) {
    $trail->parent('dashboard');
    $trail->push('Customers', route('customer'));
 });
+//
+Breadcrumbs::for('new-customer', function ($trail) {
+    $trail->parent('customer');
+    $trail->push('New Customer', route('customer.register'));
+});
 
 // Dashboard > Customers > Customer Detail
 Breadcrumbs::for('customer_detail', function ($trail) {
     $trail->parent('customer');
-    $trail->push('Customer Detail', route('customer'));
+    $trail->push('Customer Details', route('customer'));
+});
+
+// Dashboard > Customers > Customer Details > Invoice Details
+Breadcrumbs::for('invoice-detail', function ($trail) {
+    $trail->parent('customer_detail');
+    $trail->push('Invoice Details', route('invoice.detail'));
 });
 
 // Dashboard > Inventories
