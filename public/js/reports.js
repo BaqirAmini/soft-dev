@@ -1,11 +1,12 @@
 $(document).ready(function () {
-    $('#btn_print_reports').click(function () {
-        var printContents = document.getElementById('report_print_area').innerHTML;
+    $('.btn_print_reports').click(function () {
+        // var printContents = document.getElementsByClassName('report_print_area').innerHTML;
+        var printContents = $('.report_print_area').html();
         w = window.open();
         w.document.write('<html><head><title>' + document.title  + '</title>');
-        w.document.write("<link rel=\"stylesheet\" href=\"css/bootstrap.css\" type=\"text/css\"/>");
-        w.document.write("<link rel=\"stylesheet\" href=\"css/bootstrap-theme.css\" type=\"text/css\"/>");
-        w.document.write("<link rel=\"stylesheet\" href=\"css/styles.css\" type=\"text/css\"/>");
+        w.document.write("<link rel=\"stylesheet\" href=\"/css/bootstrap.css\" type=\"text/css\"/>");
+        w.document.write("<link rel=\"stylesheet\" href=\"/css/bootstrap-theme.css\" type=\"text/css\"/>");
+        w.document.write("<link rel=\"stylesheet\" href=\"/css/styles.css\" type=\"text/css\"/>");
         w.document.write('</head><body onload="window.print();window.close()">');
         // w.document.write('<h1>' + document.title  + '</h1>');
         w.document.write(printContents);

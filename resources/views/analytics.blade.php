@@ -41,7 +41,7 @@
                 <div class="box-header">
                 </div>
                 <div class="box-body">
-                  <div class="col-md-6 col-md-offset-3" id="report_print_area">
+                  <div class="col-md-6 col-md-offset-3 report_print_area">
                     <div class="box">
                       <div class="box-header">
                         <h3 class="box-title"> {{ $schedule }} Sales</h3>
@@ -89,7 +89,7 @@
                     </div>
                     <!-- /.box -->
                   </div>
-                  <button class="btn btn-primary pull-right" id="btn_print_reports"><i class="glyphicon glyphicon-print"></i></button>
+                  <button class="btn btn-primary pull-right btn_print_reports"><i class="glyphicon glyphicon-print"></i></button>
                 </div>
               </div>
 
