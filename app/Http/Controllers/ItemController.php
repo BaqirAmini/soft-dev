@@ -151,7 +151,7 @@ class ItemController extends Controller
         $validation = Validator::make($request->all(), [
             'item_name' => 'required|string|max:64',
             'item_desc' => 'nullable|string|max:128',
-            'purchase_price' => 'required|between: 0, 99.99|max:64',
+            'cost' => 'required|between: 0, 99.99|max:64',
             'quantity'=>'required|integer|not_in:0|regex:/[1-9][0-9]+/',
             'discount' => 'nullable|between: 0, 99.99|max:64',
             'barcode_number' => 'nullable|integer|min:10',
@@ -178,9 +178,10 @@ class ItemController extends Controller
                     $item->comp_id = $compId;
                     $item->ctg_id = $request->item_category;
                     $item->item_name = $request->item_name;
+                    $item->item_desc = $request->description;
                     $item->quantity = $request->quantity;
                     $item->barcode_number = $request->barcode_number;
-                    $item->purchase_price = $request->purchase_price;
+                    $item->purchase_price = $request->cost;
                     $item->sell_price = $request->sell_price;
                     $item->discount = $request->discount;
                     $item->taxable = $request->taxable;
@@ -241,18 +242,20 @@ class ItemController extends Controller
         $validation = Validator::make($request->all(), [
             'item_name' => 'required|string|max:64',
             'item_desc' => 'nullable|string|max:128',
-            'quantity' => 'required|integer|max:64',
-            'purchase_price' => 'required|between: 0, 99.99|max:64',
+            'quantity'=>'required|integer|not_in:0|regex:/[1-9][0-9]+/',
+            'cost' => 'required|between: 0, 99.99|max:64',
             'barcode_number' => 'nullable|integer|min:10',
         ]);
         if ($validation->passes()) {
             $editItem = Item::findOrfail($request->item_id);
-            $editItem->ctg_id = $request->item_category;
+            if ($request->item_category) {
+                $editItem->ctg_id = $request->item_category;
+            }
             $editItem->item_name = $request->item_name;
             $editItem->item_desc = $request->item_desc;
             $editItem->quantity = $request->quantity;
             $editItem->barcode_number = $request->barcode_number;
-            $editItem->purchase_price = $request->purchase_price;
+            $editItem->purchase_price = $request->cost;
             $editItem->sell_price = $request->sell_price;
             $editItem->discount = $request->discount;
             $editItem->taxable = $request->taxable;

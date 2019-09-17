@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // New Category
-    $('#new_ctg_form').on('submit', function (e) { 
+    $('#new_ctg_form').on('submit', function (e) {
         e.preventDefault();
         var ctgData = new FormData(this);
         $.ajax({
@@ -16,15 +16,15 @@ $(document).ready(function () {
                     $('#data_tbl4').load(' #data_tbl4');
                 } else if (response.result === 'fail') {
                     $('#modal-category').modal('show');
-                } 
+                }
                 $('#ctg_message').css('display', 'block');
                 $('#ctg_message').html('<li>'+response.ctg_msg+'</li>');
                 $('#ctg_message li').attr('style', response.style);
                 $('input[name=ctg_name]').val('');
                 $('input[name=ctg_desc]').val('');
-                
-            }, 
-            error: function (error) { 
+
+            },
+            error: function (error) {
                 console.log(error);
              }
         });
@@ -32,7 +32,7 @@ $(document).ready(function () {
     // New Category
 
     // Edit Category
-    $('#data_tbl4').on('click', '.btn-edit-ctg', function () { 
+    $('#data_tbl4').on('click', '.btn-edit-ctg', function () {
             var ctgId = $(this).data('ctg-id');
             var ctgName = $(this).data('ctg-name');
             var ctgDesc = $(this).data('ctg-desc');
@@ -42,20 +42,20 @@ $(document).ready(function () {
              modal.find('#ctg_desc').val(ctgDesc);
      });
     // Delete Category
-    $('#data_tbl4').on('click', '.btn-delete-ctg', function (param) { 
+    $('#data_tbl4').on('click', '.btn-delete-ctg', function (param) {
         var ctgId = $(this).data('ctg-id');
         var modal = $('#modal-delete-category');
         modal.find('input#ctg_id').val(ctgId);
-        
+
      });
-     $('#modal-delete-category').on('click', '#btn-delete-ctg', function () { 
+     $('#modal-delete-category').on('click', '#btn-delete-ctg', function () {
             var id = $('input#ctg_id').val();
             $.ajax({
                 type: "GET",
                 url: "category/delete",
                 data: {'cid': id},
                 dataType: "json",
-                
+
                 success: function (response) {
                     $('#modal-delete-category').modal('hide');
                     $('span#msg').text(response.msg);
@@ -64,8 +64,22 @@ $(document).ready(function () {
                 }
             });
       });
+
+     // category DROPDOWN
+    $('.item_category').change(function () {
+       var selectedValue = $('.item_category option:selected');
+        if (selectedValue.val() === "") {
+            $('#btn_edit_item_in_modal').prop('disabled', true);
+            $('#btn_edit_item_in_modal').removeClass('btn-primary');
+            $('#btn_edit_item_in_modal').addClass('btn-default');
+        } else if (selectedValue.val() !== "") {
+            $('#btn_edit_item_in_modal').prop('disabled', false);
+            $('#btn_edit_item_in_modal').removeClass('btn-default');
+            $('#btn_edit_item_in_modal').addClass('btn-primary');
+        }
+    });
      // Now edit Category
-     $('#edit-category-form').on('submit', function (e) { 
+     $('#edit-category-form').on('submit', function (e) {
          e.preventDefault();
          $.ajax({
              type: "POST",
@@ -82,12 +96,12 @@ $(document).ready(function () {
                  } else {
                      $('#modal-edit-category').modal('show');
                  }
-                 
+
                  $('span#msg').text(response.msg);
                  $('span#msg').attr('style', response.style);
-                
+
              },
-             error: function (error) { 
+             error: function (error) {
                  console.log(error);
               }
          });
@@ -101,7 +115,7 @@ function deleteCategory(cid) {
    /* var modal = $('#modal-delete-category');
     var ctgId = modal.find('input#ctg_id').val(); */
     var ctgId = cid;
-    
+
     // send id through AJAX
     $.ajax({
         type: "GET",
@@ -116,7 +130,7 @@ function deleteCategory(cid) {
             // $('span#msg').text(response.msg);
             console.log(response.code);
         },
-        error: function (error) { 
+        error: function (error) {
             console.log(error);
          }
     });

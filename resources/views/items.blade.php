@@ -84,8 +84,8 @@
                                     <td>{{ $item->ctg_name }}</td>
                                     <td>{{ $item->item_name }}</td>
                                     <td>{{ $item->item_desc }}</td>
-                                    <td> @if($item->quantity > 5) <button class="btn-sm btn btn-info">{{ $item->quantity }}</button> @else
-                                        <button class="btn-sm btn btn-danger">{{ $item->quantity }}</button> @endif </td>
+                                    <td> @if($item->quantity > 5) <strong class="text-primary">{{ $item->quantity }}</strong> @else
+                                        <strong class="text-danger">{{ $item->quantity }}</strong> @endif </td>
                                     <td>{{ $item->taxable }}</td>
                                     <td></td>
                                     <td>{{ $item->purchase_price }}</td>
@@ -182,7 +182,8 @@
                   <div class="form-group">
                     <label for="category" class="col-sm-2 control-label">Category <span class="asterisk">*</span></label>
                     <div class="col-sm-9">
-                        <select name="item_category" id="item_category" class="form-control" required autofocus>
+                        <select name="item_category" class="form-control item_category" required autofocus>
+                            <option value="">--------------- Select a category --------------</option>
                             @foreach($ctgs as $ctg)
                             <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
                             @endforeach
@@ -194,6 +195,13 @@
                          <div class="col-sm-9">
                                 <input id="item_name" type="text" class="form-control" name="item_name" placeholder="Item Name">
                          </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity" class="col-sm-2 control-label">Description</label>
+                        <div class="col-sm-9">
+{{--                            <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">--}}
+                            <textarea name="description" id="description"  class="form-control" cols="30" rows="2" placeholder="Description"></textarea>
+                        </div>
                     </div>
                 <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">Image</label>
@@ -223,13 +231,15 @@
                             </div>
                     </div>
                     <div class="form-group">
-                            <label for="purchase-price" class="col-sm-2 control-label">Purchase Price <span class="asterisk">*</span></label>
-                            <div class="col-sm-9"><input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price"></div>
+                            <label for="cost" class="col-sm-2 control-label">Cost <span class="asterisk">*</span></label>
+                            <div class="col-sm-9">
+                                <input id="purchase_price"  min="0" step="0.001" type="number" class="form-control" name="cost" placeholder="Cost">
+                            </div>
                     </div>
                     <div class="form-group">
                         <label for="sell-price" class="col-sm-2 control-label">Sell Price <span class="asterisk">*</span></label>
                        <div class="col-sm-9">
-                            <input id="sell_price" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                            <input id="sell_price"  min="0" step="0.001" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
                        </div>
                     </div>
                 <!-- Tax -->
@@ -275,7 +285,8 @@
                     <div class="form-group">
                         <label for="product" class="col-sm-2 control-label">Category <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
-                            <select name="item_category" id="item_category" class="form-control" required autofocus>
+                            <select name="item_category" class="form-control item_category" autofocus>
+                                <option value="">---------- Select a category -----------</option>
                                @if(!empty($items) || count($items) > 0)
                                     @foreach($ctgs as $ctg)
                                         <option value="{{ $ctg->ctg_id }}" id="ctg_option" >{{ $ctg->ctg_name }}</option>
@@ -309,15 +320,15 @@
                             </div>
                     </div>
                     <div class="form-group">
-                            <label for="purchase-price" class="col-sm-2 control-label">Purchase Price <span class="asterisk">*</span></label>
+                            <label for="cost" class="col-sm-2 control-label">Cost <span class="asterisk">*</span></label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
+                                <input type="number"  min="0" step="0.001" class="form-control" name="cost" placeholder="Cost">
                             </div>
                     </div>
                     <div class="form-group">
                         <label for="sell-price" class="col-sm-2 control-label">Sell Price <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                            <input type="number"  min="0" step="0.001" class="form-control" name="sell_price" placeholder="Sell Price">
                         </div>
                     </div>
                 <!-- Tax -->
@@ -337,7 +348,7 @@
 
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                      <button type="submit" class="btn btn-primary pull-left">Change</button>
+                      <button type="submit" class="btn btn-primary pull-left" id="btn_edit_item_in_modal">Change</button>
                   </div>
             </form>
               </div>

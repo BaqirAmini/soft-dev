@@ -207,6 +207,7 @@
                   <label for="category" class="col-sm-2 control-label">Category <span class="asterisk">*</span></label>
                   <div class="col-sm-9">
                     <select name="item_category" id="item_category" class="form-control" required autofocus>
+                        <option value="">--------------- Select a category --------------</option>
                       @foreach($ctgs as $ctg)
                       <option value="{{ $ctg->ctg_id }}" id="ctg_option">{{ $ctg->ctg_name }}</option>
                       @endforeach
@@ -220,9 +221,10 @@
                         </div>
                 </div>
                 <div class="form-group">
-                    <label for="desc" class="col-sm-2 control-label">Description</label>
+                    <label for="quantity" class="col-sm-2 control-label">Description</label>
                     <div class="col-sm-9">
-                      <input id="item_desc" type="text" class="form-control" name="item_desc" placeholder="Description (Optional)">
+                        {{--                            <input id="qty" type="number" class="form-control" name="quantity" placeholder="Quantity">--}}
+                        <textarea name="description" id="description"  class="form-control" cols="30" rows="2" placeholder="Description"></textarea>
                     </div>
                 </div>
                   <div class="form-group">
@@ -252,15 +254,15 @@
                         </div>
                 </div>
                 <div class="form-group">
-                        <label for="purchase-price" class="col-sm-2 control-label">Purchase Price <span class="asterisk">*</span></label>
+                        <label for="cost" class="col-sm-2 control-label">Cost <span class="asterisk">*</span></label>
                         <div class="col-sm-9">
-                          <input id="purchase_price" type="number" class="form-control" name="purchase_price" placeholder="Purchase Price">
+                          <input id="purchase_price" type="number" min="0" step="0.001" class="form-control" name="cost" placeholder="Cost">
                         </div>
                 </div>
                 <div class="form-group">
                   <label for="sell-price" class="col-sm-2 control-label">Sell Price <span class="asterisk">*</span></label>
                   <div class="col-sm-9">
-                    <input id="sell_price" type="number" class="form-control" name="sell_price" placeholder="Sell Price">
+                    <input id="sell_price" type="number" min="0" step="0.001" class="form-control" name="sell_price" placeholder="Sell Price">
                   </div>
                 </div>
             <!-- Tax -->

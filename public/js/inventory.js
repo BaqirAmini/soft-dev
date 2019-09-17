@@ -56,7 +56,7 @@ $('#Item_data_table').on('click', '.btn_delete_product', function () {
     $('#edit_item_form_data input[name=item_desc]').val(itemDesc);
     $('#edit_item_form_data input[name=quantity]').val(itemQty);
     $('#edit_item_form_data input[name=barcode_number]').val(barcode);
-    $('#edit_item_form_data input[name=purchase_price]').val(itemPurchase);
+    $('#edit_item_form_data input[name=cost]').val(itemPurchase);
     $('#edit_item_form_data input[name=sell_price]').val(itemSell);
 
   });
