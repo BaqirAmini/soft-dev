@@ -304,6 +304,7 @@
                                                                     <th>Trans. Method</th>
                                                                     <th>Amount Paid</th>
                                                                     <th>Amount Due</th>
+                                                                    <th>Total Invoice</th>
                                                                     <th>Transaction Date</th>
                                                                     <th>Receive payment</th>
                                                                     <!-- <th>Action</th> -->
@@ -323,6 +324,7 @@
                                                                             <td>{{ $ns->trans_method }}</td>
                                                                             <td>${{ $ns->amount_paid }}</td>
                                                                             <td>${{ $ns->amount_due }}</td>
+                                                                            <td>${{ $ns->total_invoice }}</td>
                                                                             <td>{{ Carbon\carbon::parse($ns->created_at)->format('m/d/Y') }}</td>
                                                                             <td><a href="#"
                                                                                    data-toggle="modal"
