@@ -50,13 +50,13 @@
                       <div class="box-body no-padding">
                         <table class="table">
                           <tr>
-                            <th>Total</th>
-                            <th>${{ $total }}</th>
+                            <th>Total Sales</th>
+                            <th>${{ $totalSales }}</th>
                           </tr>
                           <tr>
-                            <td>Recieved Amount</td>
+                            <td>Amount Paid</td>
                             <td>
-                              ${{ $recieved }}
+                              ${{ $amountPaid }}
                             </td>
                           </tr>
                           <tr>
@@ -78,9 +78,9 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Recievable Amount</td>
+                            <td>Amound Due</td>
                             <td>
-                              ${{ $recievable }}
+                              ${{ $amountDue }}
                             </td>
                           </tr>
                         </table>
