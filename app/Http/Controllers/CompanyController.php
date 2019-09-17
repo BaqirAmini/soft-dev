@@ -184,7 +184,9 @@ class CompanyController extends Controller
 
 
       if ($validation->passes()) {
-                $company->comp_name = $request->cname;
+                if ($request->cname) {
+                    $company->comp_name = $request->cname;
+                }
                 $company->comp_city = $request->ccity;
                 $company->comp_address = $request->caddress;
                 $company->comp_state = $request->cstate;

@@ -14,7 +14,7 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body">
-                
+
             <div class="box">
               <div class="box-header">
                 <button class="btn btn-primary pull-left" data-toggle="modal" data-target="#modal-new-company" id="btn-new-company">Add Company</button>
@@ -43,12 +43,12 @@
                     <td>{{ $company->comp_address }}</td>
                     <td>{{ $company->contact_no }}</td>
                     <td>{{ $company->email }}</td>
-                    <td><button class="btn-set-status @if($company->comp_status == 0) btn-xs btn btn-danger @elseif($company->comp_status == 1) btn-xs btn btn-success @endif" 
+                    <td><button class="btn-set-status @if($company->comp_status == 0) btn-xs btn btn-danger @elseif($company->comp_status == 1) btn-xs btn btn-success @endif"
                       data-comp-status-value="{{ $company->comp_status }}"
                       data-comp-id = "{{ $company->company_id }}">@if($company->comp_status == 0) Inactive @elseif($company->comp_status == 1)Active @endif</button></td>
                     <td><button class="fa fa-pencil btn btn-default btn-set-user-count" data-comp-id="{{ $company->company_id }}" data-toggle="modal" data-target="#modal-edit-user-count"> <span class="label label-primary">{{ $company->user_count }}</span> </button></td>
                   </tr>
-                  
+
                 @endforeach
                   </tbody>
                 </table>
@@ -79,9 +79,10 @@
         <div class="form-group has-feedback">
           <input type="hidden" name="input_comp_id">
             <div class="input-group  col-md-12 com-sm-12 col-xs-6">
-                <select name="company_user_count" class="form-control">
+                <select name="company_user_count" class="form-control" id="company_user_count">
+                    <option value="">-------- Select User Count ----------</option>
                   @for($a = 1; $a <= 10; $a++)
-                      <option value="{{ $a }}" name="company_user_count" @foreach($counts as $c) @if($c == $a) selected @endif @endforeach>{{ $a }} User(s)</option>
+                      <option value="{{ $a }}" name="company_user_count" {{--@foreach($counts as $c) @if($c == $a) selected @endif @endforeach--}}>{{ $a }} User(s)</option>
                   @endfor
                 </select>
               </div>
@@ -89,7 +90,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary btn_set_user_count pull-left" onclick="onUserCount();">Save</button>
+        <button type="button" class="btn btn-default btn_set_user_count pull-left" onclick="onUserCount();" disabled="disabled">Save</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -270,7 +271,7 @@
                           <input id="comp_email" type="email" class="form-control" name="comp_email" placeholder="Email">
                         </div>
                 </div>
-                
+
                 <div class="modal-footer">
                     <!-- <button type="button" class="btn btn-success pull-left"  data-toggle="modal" data-target="#modal-new-user" id="btn_system_admin">Add System Admin</button> -->
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
@@ -284,11 +285,11 @@
 
   </div>
   <!-- /.modal-dialog -->
- 
+
 </div>
 <!-- /.modal -->
 <!-- New Compan MODAL -->
-       
+
 <!-- Modal-area -->
 
 @stop

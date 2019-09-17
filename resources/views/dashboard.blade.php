@@ -229,11 +229,11 @@
                       <div class="box-body no-padding">
                         <table class="table">
                           <tr>
-                            <th>Total</th>
+                            <th>Total Sales</th>
                             <th id="atc_total">$0</th>
                           </tr>
                           <tr>
-                            <td>Recieved Amount</td>
+                            <td>Amount Paid</td>
                             <td id="atc_recieved">
                               $0
                             </td>
@@ -257,7 +257,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Recievable Amount</td>
+                            <td>Amount Due</td>
                             <td id="atc_recievable">
                               $0
                             </td>

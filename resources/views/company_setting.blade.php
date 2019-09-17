@@ -110,11 +110,13 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label for="user-count" class="col-sm-2 control-label">Users <span class="asterisk">*</span></label>
+                                <label for="user-count" class="col-sm-2 control-label">User Count <span class="asterisk">*</span></label>
                                 <div class="col-sm-9">
-                                  <select name="ucount" class="form-control">
+                                  <select name="ucount" class="form-control" id="company_user_count" required autofocus>
+                                    <option value="" name="company">------------ Select User Count ------------</option>
                                     <option value="1" name="company">1 User</option>
                                     <option value="2" name="company">2 Users</option>
+                                    <option value="3" name="company">3 Users</option>
                                     <option value="4" name="company">4 Users</option>
                                     <option value="5" name="company">5 Users</option>
                                     <option value="6" name="company">6 Users</option>

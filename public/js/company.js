@@ -1,13 +1,13 @@
 
 $(document).ready(function () {
 // Close new-company-modal when btn-system-admin clicked inside it.
-$('#modal-new-company').on('click', '#btn_system_admin', function () { 
+$('#modal-new-company').on('click', '#btn_system_admin', function () {
     $('#modal-new-company').modal('hide');
-    
+
  });
 
     // New System Admin Reg...
-    $('#system_admin_form').on('submit', function (e) { 
+    $('#system_admin_form').on('submit', function (e) {
         e.preventDefault();
         var formValues = new FormData(this);
         // Send form values through AJAX
@@ -30,16 +30,16 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
                 $('p#status-msg').text(response.user_msg);
                 $('p#status-msg').attr(response.style);
                 $('#data_tbl_for_specific_users').load(' #data_tbl_for_specific_users');
-                
+
             },
-            error: function (error) { 
+            error: function (error) {
                 console.log(error);
              }
         });
  });
-   
+
     // Register new company
-    $('#new_company_form').on('submit', function (e) { 
+    $('#new_company_form').on('submit', function (e) {
         e.preventDefault();
         var compData = new FormData(this);
         $.ajax({
@@ -63,7 +63,7 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
                 $('#role-msg').attr('style', response.style);
                 // $('#modal-new-user').load(' #modal-new-user');
             },
-            error: function (error) { 
+            error: function (error) {
                 console.log(error);
              }
         });
@@ -71,7 +71,7 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
      // Register new company
 // =================== COMPANY SETTINGS ================== //
       // Go to company settings/configuration
-        $('#data_comp_tbl').on('click', '.company-detail-link', function () { 
+        $('#data_comp_tbl').on('click', '.company-detail-link', function () {
             var compId = $(this).data('comp-id');
             var href = "company/setting/" + compId;
             $('input #hidden_comp_id').val(compId);
@@ -79,11 +79,12 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
             $(this).attr("data-href", href);
             // Now when this link has the address so, when clicked should take us to a the defined address
             window.location = $(this).data('href');
-         });  
+
+         });
       // /. settings / configuration
 
     // Send data to server to edit/configure company
-    $('#form-company-detail').on('submit', function (e) { 
+    $('#form-company-detail').on('submit', function (e) {
         e.preventDefault();
         // var compData = new serialize(this);
         var compData = $(this).serialize();
@@ -103,9 +104,9 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
             }
         });
      })
- // =================== /. COMPANY SETTINGS ====================== //    
+ // =================== /. COMPANY SETTINGS ====================== //
         // Change logo of a company by SUPER-ADMIN
-    $('#company_logo').change(function () { 
+    $('#company_logo').change(function () {
         var logoData = new FormData($('#form_company_logo')[0]);
         $.ajax({
             type: "POST",
@@ -128,7 +129,7 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
                     location.reload();
                 }
             },
-            error: function (error) { 
+            error: function (error) {
                 console.log(error);
              }
         });
@@ -146,7 +147,7 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
         // /. change logo of a company by SUPER-USER
 
        // when status-button of company clicked
-       $('#data_comp_tbl').on('click', '.btn-set-status', function () { 
+       $('#data_comp_tbl').on('click', '.btn-set-status', function () {
            var compId = $(this).data('comp-id');
            var statusValue = $(this).data('comp-status-value');
            var r = this;
@@ -158,24 +159,46 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
                success: function (data) {
                $(r).removeClass(data.remove_class);
                $(r).addClass(data.add_class);
-               $(r).html(data.label); 
+               $(r).html(data.label);
                $('#data_comp_tbl').load(' #data_comp_tbl');
-                
+
                },
-               error: function (error) { 
+               error: function (error) {
                    console.log(error);
                 }
-           }); 
-           
+           });
+
         });
      //Company-status
+   /* /!* ------------------------------- company-setting that is configured by SUPER-ADMIN -----------------------------------*!/
+    $('#company_user_count').change(function () {
+       alert('Ok');
+    });
+    /!* -------------------------------/. company-setting that is configured by SUPER-ADMIN -----------------------------------*!/*/
+
+
+
    //UPDATE USER-COUNT OF COMPANIES
-   $('#data_comp_tbl').on('click', '.btn-set-user-count', function () { 
+   // when nothing selected in DROPDOWN
+    $('#company_user_count').change(function () {
+        var selectedVal = $('#company_user_count option:selected');
+        if (selectedVal.val() === '') {
+            $('.btn_set_user_count').prop('disabled', true);
+            $('.btn_set_user_count').removeClass('btn-primary');
+            $('.btn_set_user_count').addClass('btn-default');
+        } else if (selectedVal.val() !== '') {
+            $('.btn_set_user_count').prop('disabled', false);
+            $('.btn_set_user_count').removeClass('btn-default');
+            $('.btn_set_user_count').addClass('btn-primary');
+        }
+    });
+
+   $('#data_comp_tbl').on('click', '.btn-set-user-count', function () {
        var compID = $(this).data('comp-id');
        $('input[name=input_comp_id]').val(compID);
-    });   
-    
-    
+    });
+
+
     /* ================================== Settings of A SPECIFIC COMPANY ============================== */
     // note: if contentType & processData is not set false, it gives error in jquery
     $('#form_specific_company_setting').on('submit', function (e) {
@@ -190,17 +213,17 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
             dataType: "json",
             success: function (response) {
                 if (response.result == "success") {
-                    setTimeout(function () { 
+                    setTimeout(function () {
                         location.reload();
                      }, 3000);
-                } 
+                }
                     $('#comp-setting-msg').css({ 'display': 'block', 'text-align': 'center' });
                     $('#comp-setting-msg').html(response.msg);
                     $('#comp-setting-msg').attr('style', response.style);
-                
-                
+
+
             },
-            error:function (error) { 
+            error:function (error) {
                 console.log(error);
              }
         });
@@ -218,27 +241,27 @@ $('#modal-new-company').on('click', '#btn_system_admin', function () {
             dataType: "json",
             success: function (response) {
                 if (response.result === 'success') {
-                    setTimeout(function () { 
+                    setTimeout(function () {
                         location.reload();
                      }, 3000);
-                } 
+                }
                     $('#comp-setting-msg').css('display', 'block');
                     $('#comp-setting-msg').attr('style', response.style);
                     $('#comp-setting-msg').html(response.msg);
-                
+
             }
         });
         readLogoURL(this);
      });
      function readLogoURL(input) {
          if (input.files && input.files[0]) {
-             var reader = new FileReader(); 
-             reader.onload = function (e) { 
+             var reader = new FileReader();
+             reader.onload = function (e) {
                  $('#specific_company_logo').attr('src', e.target.result);
               }
             reader.readAsDataURL(input.files[0]);
          }
-         
+
      }
     /* ===================================== /. settings of A SPECIFIC COMPANY ============================= */
 });
@@ -258,9 +281,9 @@ function onUserCount() {
             $('#status-msg').attr('style', response.style);
             $('#status-msg').html(response.count_msg);
             $('#data_comp_tbl').load(' #data_comp_tbl');
-            
+
         },
-        error: function (error) { 
+        error: function (error) {
             console.log(error);
          }
     });
