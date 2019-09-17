@@ -44,6 +44,10 @@
                         </tbody>
                     </table>
                 </div>
+                {{-- BOX FOOTER --}}
+                {{--<div class="box-footer">
+                    <a href="#" type="button" class="btn btn-primary">&lt Back</a>
+                </div>--}}
             </div>
         </div>
     </div>

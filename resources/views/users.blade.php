@@ -23,6 +23,7 @@
                 <label for="role" class="col-sm-2 control-label">Role</label>
                 <div class="col-sm-10">
                     <select name="role" id="select_role" class="col-sm-10 form-control">
+                      <option value="">-------- Select Role --------</option>
                       <option value="System Admin">System Admin</option>
                       <option value="Stock Manager">Stock Manager</option>
                       <option value="Cashier">Cashier</option>
@@ -31,7 +32,7 @@
               </div>
               <div class="modal-footer">
                 <input type="button" value="Cancel" class="btn btn-default pull-left" data-dismiss="modal">
-                <input type="submit" value="Save" class="btn btn-primary pull-left">
+                <input type="submit" id="btn_save_in_modal_user" value="Save" class="btn btn-default pull-left" disabled>
               </div>
             </form>
           </div>
@@ -49,7 +50,9 @@
           <div class="col-lg-12 col-xs-12">
             <div class="box">
               <div class="box-header">
-                <h3 class="box-title">User Management</h3>
+                <div class="content-header">
+                    <h3 class="box-title">User Management</h3>
+                </div>
               </div>
               <!-- /.box-header -->
               <div class="box-body">

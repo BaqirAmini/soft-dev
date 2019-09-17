@@ -1,12 +1,29 @@
-$(document).ready(function () { 
-    $('.btn_role').click(function () {  
+
+$(document).ready(function () {
+    /* --------------------------- DROPDOWN of modal-user------------------------------*/
+    $('#select_role').change(function () {
+       var selectedVal = $('#select_role option:selected');
+        if (selectedVal.val() === '') {
+            $('#btn_save_in_modal_user').prop('disabled', true);
+            $('#btn_save_in_modal_user').removeClass('btn-primary');
+            $('#btn_save_in_modal_user').addClass('btn-default');
+        } else if (selectedVal.val() !== '') {
+            $('#btn_save_in_modal_user').prop('disabled', false);
+            $('#btn_save_in_modal_user').removeClass('btn-default');
+            $('#btn_save_in_modal_user').addClass('btn-primary');
+        }
+    });
+    /* --------------------------- /. DROPDOWN of modal-user------------------------------*/
+
+    // Set user-id inside modal-user
+    $('.btn_role').click(function () {
         var userID = $(this).data('user-id');
          var modalUser = $('#modal-user');
-         modalUser.find('input#role_id').val(userID);   
+         modalUser.find('input#role_id').val(userID);
     });
 
     // When status-button clicked
-    $('#data_tbl1').on('click', '.btn-user-set-status', function () { 
+    $('#data_tbl1').on('click', '.btn-user-set-status', function () {
         var userId = $(this).data('user-id');
         var statusValue = $(this).data('user-status-value');
         var ref = this;
@@ -30,23 +47,23 @@ $(document).ready(function () {
                     $('button#new_user').attr(response.style);
                     $('#status_msg').html('<li>' + response.user_msg + '</li>');
                     $('#status_msg').attr(response.style);
-                } 
+                }
                 setTimeout(function () {
                     location.reload();
                 }, 2000);
             },
-            error: function (error) { 
+            error: function (error) {
                 console.log(error);
              }
         });
      });
-    
+
     /*=====  End of User Status __ enabling or disabling  ======*/
-    
+
  });
 
 /** ======================= CHANGE USER-ROLE =============== */
-$('#user_role_form').on('submit', function (e) { 
+$('#user_role_form').on('submit', function (e) {
     e.preventDefault();
     var roleData = new FormData(this);
     $.ajax({
@@ -60,7 +77,7 @@ $('#user_role_form').on('submit', function (e) {
         success: function (response) {
             location.reload();
         },
-        error: function (error) { 
+        error: function (error) {
             console.log(error);
          }
     });
