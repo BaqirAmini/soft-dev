@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    /* =========================== btn to show message for no due ====================================*/
+    $('.link_btn_no_due').click(function () {
+       $('.no-due-message').text('No Due Amount For This Invoice To Pay.');
+       $('.no-due-message').addClass('text-primary');
+    });
+    /* =========================== /.btn to show message for no due ====================================*/
     /* ================================== Register NEW-CUSTOMER ========================================*/
     $('#form_new_customer').on('submit', function (e) {
         e.preventDefault();

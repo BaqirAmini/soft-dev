@@ -192,19 +192,7 @@ class CustomerController extends Controller
     # Show balance of a specific customer
     public function onPurchaseHistory($id = null)
     {
-        $transMethod = 'payments.trans_method';
-        $due = DB::table('customers')
-            ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
-            ->join('payments', 'invoices.inv_id', '=', 'payments.inv_id')
-            ->select('payments.amount_due')
-            ->where('payments.comp_id', Auth::user()->comp_id)
-            ->where('invoices.cust_id', $id)
-            ->where(function ($q) use($transMethod) {
-                $q->where($transMethod, 'New Sale');
-                $q->orWhere($transMethod, 'Payment Received');
-            })
-            ->orderBy('payments.payment_id', 'DESC')
-            ->get();
+
 //        Customers' transactions
         $newSaleObject = DB::table('customers')
             ->join('invoices', 'customers.cust_id', '=', 'invoices.cust_id')
@@ -233,17 +221,17 @@ class CustomerController extends Controller
 //        Total Amount Paid
         $totalAmountPaid = $newSaleObject->sum('amount_paid') + $paymentReceived->sum('amount_paid');
 
-//        Total Amount Due
-        $totalAmountDue = $due[0]->amount_due;
-
 //        $totalAmountDue = 23;
 //        New Sale
-        $totalTransaction = $newSaleObject->sum('total_invoice');
+        $totalSales = $newSaleObject->sum('total_invoice');
+
+        //        Total Amount Due
+        $totalAmountDue = $totalSales - $totalAmountPaid;
         if (count($newSaleObject) >= 0) {
-            return view('customer_detail', compact(['customers', 'newSaleObject','totalTransaction', 'totalAmountPaid', 'due', 'totalAmountDue', 'paymentReceived']));
+            return view('customer_detail', compact(['customers', 'newSaleObject','totalSales', 'totalAmountPaid', 'totalAmountDue', 'paymentReceived']));
         } else {
 //           return back()->with('no_purchase', 'Sorry, this customer has not done any transaction yet.');
-            return view('customer_detail', compact(['customers', 'newSaleObject', 'totalTransaction', 'totalAmountPaid', 'due','totalAmountDue', 'paymentReceived']));
+            return view('customer_detail', compact(['customers', 'newSaleObject', 'totalSales', 'totalAmountPaid', 'totalAmountDue', 'paymentReceived']));
         }
     }
 

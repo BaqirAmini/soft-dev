@@ -35,6 +35,7 @@
                     </ul>
                     <!-- box-header 1 -->
                     <div class="box-header">
+                        <strong class="col-md-offset-5 no-due-message"></strong>
                         <div class="content-header">
                             <h3 class="box-title">Customer Detail</h3>
                             <button type="button" class="btn btn-primary pull-right" id="btn_enable_cust_edit"><i
@@ -249,7 +250,7 @@
                                                 <tr>
                                                     <th>Total Sales</th>
                                                     @if(!empty($newSaleObject) || count($newSaleObject)>0)
-                                                        <th>${{  $totalTransaction }}</th>
+                                                        <th>${{  $totalSales }}</th>
                                                     @endif
                                                 </tr>
                                                 <tr>
@@ -262,12 +263,12 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Total Amount Due</td>
-                                                    @if(!empty($due[0]) || count($due) > 0)
+                                                    @if(!empty($totalAmountDue))
                                                         <td>
-                                                            {{ $totalAmountDue }}
+                                                            ${{ $totalAmountDue }}
                                                         </td>
                                                     @else
-                                                        <td>0</td>
+                                                        <td>$0</td>
                                                     @endif
                                                 </tr>
                                             </table>
@@ -326,15 +327,27 @@
                                                                             <td>${{ $ns->amount_due }}</td>
                                                                             <td>${{ $ns->total_invoice }}</td>
                                                                             <td>{{ Carbon\carbon::parse($ns->created_at)->format('m/d/Y') }}</td>
-                                                                            <td><a href="#"
-                                                                                   data-toggle="modal"
-                                                                                   data-target="#modal-make-payment"
-                                                                                   type="button"
-                                                                                   class="btn btn-default btn-sm link_make_payment"
-                                                                                   data-invoice-id="{{ $ns->inv_id }}">
-                                                                                    <span
-                                                                                        class="glyphicon glyphicon-credit-card"></span>
-                                                                                </a>
+                                                                            <td>
+                                                                                @if($ns->amount_due > 0)
+                                                                                    <a href="#"
+                                                                                       data-toggle="modal"
+                                                                                       data-target="#modal-make-payment"
+                                                                                       type="button"
+                                                                                       class="btn btn-default btn-sm link_make_payment"
+                                                                                       data-invoice-id="{{ $ns->inv_id }}">
+                                                                                        <span class="glyphicon glyphicon-credit-card text-primary"></span>
+                                                                                    </a>
+                                                                                @else
+                                                                                    <a href="#"
+                                                                                       data-toggle="modal"
+                                                                                       data-target="#"
+                                                                                       type="button"
+                                                                                       class="btn btn-default btn-sm link_btn_no_due"
+                                                                                       data-invoice-id="{{ $ns->inv_id }}"
+                                                                                        disabled>
+                                                                                        <span class="glyphicon glyphicon-credit-card text-default"></span>
+                                                                                    </a>
+                                                                                @endif
                                                                             </td>
 
                                                                         </tr>
