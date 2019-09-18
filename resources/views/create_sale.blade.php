@@ -364,8 +364,9 @@
                         <table class="table table-responsive table-striped" id="print_table">
                             <thead>
                             <tr style="border-bottom: 1px darkgray dashed">
-                                <th style="text-align: center;border-bottom: 1px darkgray dashed">Qty</th>
                                 <th style="text-align: center;border-bottom: 1px darkgray dashed">Product</th>
+                                <th style="text-align: center;border-bottom: 1px darkgray dashed">Qty</th>
+                                <th style="text-align: center;border-bottom: 1px darkgray dashed">Price</th>
                                 <th style="text-align: center;border-bottom: 1px darkgray dashed">Sub Total</th>
                             </tr>
                             </thead>

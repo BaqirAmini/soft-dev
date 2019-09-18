@@ -475,8 +475,9 @@ function onPrintInvoice(custID, invcID) {
             $('#print_table > #invoice_body').empty();
             $.each(data, function (i, elem) {
                 $('#print_table > #invoice_body').append('<tr style="border-bottom: 1px darkgray dashed"><td style="text-align: center">'
-                    + elem.qty_sold + '</td><td style="text-align: center">'
-                    + elem.item_name + '</td><td style="text-align: center">$'
+                    + elem.item_name + '</td><td style="text-align: center">'
+                    + elem.qty_sold + '</td><td style="text-align: center">$'
+                    + elem.sell_price + '</td><td style="text-align: center">$'
                     + elem.subtotal + '</td></tr>')
                 total = parseFloat(total) + parseFloat(elem.subtotal);
             });
