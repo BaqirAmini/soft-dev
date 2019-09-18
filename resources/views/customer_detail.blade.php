@@ -209,7 +209,7 @@
                                                     <td>Account Opened At</td>
                                                     @if(!empty($customers) || count($customers)>0)
                                                         <td>
-                                                            {{  Carbon\carbon::parse($customers[0]->created_at)->format('m-d-Y') }}
+                                                            {{  Carbon\carbon::parse($customers[0]->created_at)->format('m/d/Y') }}
                                                         </td>
                                                     @endif
                                                 </tr>
@@ -217,7 +217,7 @@
                                                     <td>Account Number</td>
                                                     @if(!empty($customers) || count($customers)>0)
                                                         <td>
-                                                            {{ $customers[0]->AccountNumber }}
+                                                            {{ $customers[0]->cust_id }}
                                                         </td>
                                                     @endif
                                                 </tr>
@@ -229,14 +229,14 @@
                                                         </td>
                                                     @endif
                                                 </tr>
-                                                <tr>
+                                                {{--<tr>
                                                     <td>Account Balance</td>
                                                     @if(!empty($customers) || count($customers)>0)
                                                         <td>
                                                             {{ $customers[0]->AccountBalance }}
                                                         </td>
                                                     @endif
-                                                </tr>
+                                                </tr>--}}
                                                 <tr>
                                                     <td>Fax Number</td>
                                                     @if(!empty($customers) || count($customers)>0)

@@ -128,11 +128,16 @@
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li class="treeview"><a href="#"><i class="fa fa-circle-o"></i> Tabular
+                <li>
+                    <a href="{{ route('dashboard') }}">
+                        <i class="fa fa-circle-o"></i>
+                        Tabular
+                    </a>
+                   {{-- <a href="{{ route('dashboard') }}"><i class="fa fa-circle-o"></i> Tabular
                     <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span></a>
-                  <ul class="treeview-menu">
+                     --}}{{-- <i class="fa fa-angle-left pull-right"></i>--}}{{--
+                    </span></a>--}}
+                  {{--<ul class="treeview-menu">
                     <li><a href="{{ route('report', ['id'=>'today']) }}"><i class="fa fa-check"></i> Today</a></li>
                     <li><a href="{{ route('report', ['id'=>'yesterday']) }}"><i class="fa fa-check"></i> Yesterday</a></li>
                     <li><a href="{{ route('report', ['id' => 'last7days']) }}"><i class="fa fa-check"></i> Last 7 days</a></li>
@@ -144,10 +149,11 @@
                     <li><a href="{{ route('report', ['id' => 'thisYear']) }}"><i class="fa fa-check"></i> This Year</a></li>
                     <li><a href="{{ route('report', ['id' => 'lastYear']) }}"><i class="fa fa-check"></i> Last Year</a></li>
                     <li><a href="{{ route('report', ['id' => 'allTime']) }}"><i class="fa fa-check"></i> All The Time</a></li>
-                  </ul>
+                  </ul>--}}
                 </li>
                 <li>
-                  <a href="{{ route('graph') }}"><i class="fa fa-circle-o"></i> Charts</a></li>
+                  <a href="{{ route('graph') }}"><i class="fa fa-circle-o"></i> Charts</a>
+                </li>
               </ul>
             </li>
            @endif

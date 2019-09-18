@@ -274,7 +274,7 @@
                     <div class="box box-solid">
                         <div class="box-body">
                             <button class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn btn-default btn_payment" data-toggle="modal"
-                                    data-target="#modal-payment-type" disabled>Payment
+                                    data-target="#modal-payment-type" disabled>Pay
                             </button>
                         </div>
                     </div>
