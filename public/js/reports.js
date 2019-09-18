@@ -1,18 +1,16 @@
 $(document).ready(function () {
     /* ----------------------------- Print any invoice of a customer ----------------------------------*/
     $('.print_invoice').click(function () {
-        var printContents = $('.invoice_print_area').html();
+        var printContents = document.getElementById('data_tbl_invoice_detail');
         w = window.open();
         w.document.write('<html lang="en"><head><title>' + document.title  + '</title>');
         w.document.write("<link rel=\"stylesheet\" href=\"/css/bootstrap.css\" type=\"text/css\"/>");
         w.document.write("<link rel=\"stylesheet\" href=\"/css/bootstrap-theme.css\" type=\"text/css\"/>");
         w.document.write("<link rel=\"stylesheet\" href=\"/css/styles.css\" type=\"text/css\"/>");
-        w.document.write("<link rel=\"stylesheet\" href=\"/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css\" type=\"text/css\">");
-        w.document.write("<script src=\"/bower_components/datatables.net/js/jquery.dataTables.min.js\"></script>");
         w.document.write("<script src=\"/js/script.js\"></script>");
         w.document.write('</head><body onload="window.print();window.close()">');
-        // w.document.write('<h1>' + document.title  + '</h1>');
-        w.document.write(printContents);
+        // Remember OUTERHTML for tables
+        w.document.write(printContents.outerHTML);
         w.document.write('</body></html>');
         w.document.close(); // necessary for IE >= 10
         w.focus(); // necessary for IE >= 10
