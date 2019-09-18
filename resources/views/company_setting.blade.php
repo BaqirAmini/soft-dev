@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 @section('content')
   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -22,14 +21,18 @@
                 <div class="box-header">
                   <ul style="display:none" id="conf_msg">
                   </ul>
-                  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-new-user"
-                    id="btn_system_admin" style="margin-left:10px;">Add System Admin</button>
+                    <button
+                        type="button" class="btn btn-primary pull-right" data-toggle="modal"
+                        data-target="#modal-new-user"
+                        id="btn_system_admin" style="margin-left:10px;display: none">
+                        Add System Admin
+                    </button>
                 </div>
                 <div class="nav-tabs-custom">
                   <!-- ======================= TABS links ====================== -->
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#configure-company" data-toggle="tab">Configure</a></li>
-                    <li><a href="#user-of-specific-company" data-toggle="tab">Users</a></li>
+                    <li class="active"><a href="#configure-company" data-toggle="tab" id="tab_configure">Configure</a></li>
+                    <li><a href="#user-of-specific-company" data-toggle="tab" id="tab_users">Users</a></li>
                   </ul>
                   <!-- =====================/. TABS links =========================== -->
                      <div class="tab-content">
@@ -157,6 +160,7 @@
                               </tr>
                             </thead>
                             <tbody>
+                           <div style="display: none">{{ $counter = 0 }}</div>
                               @foreach($users as $user)
                               <tr>
                                 <td><a  @if($user->role === 'System Admin') href="#" class="any_system_admin_link" data-sa-id="{{ $user->id }}" @endif>
@@ -175,7 +179,12 @@
                                     @if($user->role !== "System Admin") disabled @endif>@if($user->status == 0) Inactive @elseif($user->status == 1) Active @endif</button>
                                 </td>
                               </tr>
+
+                              <div style="display: none">
+                                  {{ $counter++ }}
+                              </div>
                               @endforeach
+                           <input type="hidden" name="index" value="{{ $counter }}" data-user-count="{{ $companies[0]->user_count }}">
                             </tbody>
                           </table>
                         </div>
@@ -297,3 +306,4 @@
   <!-- /. System-admin-modal -->
   <!-- =============================== /. MODALS ================================== -->
 @stop
+<?php ?>

@@ -1,5 +1,21 @@
 
 $(document).ready(function () {
+ var index = $('input[name=index]').val();
+ // alert(index + " Existing user counts: " + $('input[name=index]').data('user-count'));
+// While clicking on tab Users btn add system admin should get displayed
+    $('#tab_users').click(function () {
+        var numOfRows = $('input[name=index]').val();
+        var numOfRegisteredUsers = $('input[name=index]').val();
+       /* if (numOfRows <= numOfRegisteredUsers) {
+            $('#btn_system_admin').prop('disabled', true);
+        }*/
+        $('#btn_system_admin').show();
+    });
+//  while clicking tab Configure btn add system admin should get hidden
+    $('#tab_configure').click(function () {
+        $('#btn_system_admin').hide();
+    });
+
 // Close new-company-modal when btn-system-admin clicked inside it.
 $('#modal-new-company').on('click', '#btn_system_admin', function () {
     $('#modal-new-company').modal('hide');
