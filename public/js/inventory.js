@@ -73,7 +73,10 @@ $('#Item_data_table').on('click', '.btn_delete_product', function () {
         success: function (response) {
             if (response.result === 'success') {
                 $('#modal-edit-item').modal('hide');
-                $('#Item_data_table').load(' #Item_data_table');
+                // $('#Item_data_table').load(' #Item_data_table');
+                setTimeout(function () {
+                    location.reload();
+                }, 500);
             } else if(response.result === 'fail') {
                 $('#modal-edit-item').modal('show');
             }

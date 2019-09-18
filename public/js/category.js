@@ -66,7 +66,7 @@ $(document).ready(function () {
       });
 
      // category DROPDOWN
-    $('.item_category').change(function () {
+/*    $('.item_category').change(function () {
        var selectedValue = $('.item_category option:selected');
         if (selectedValue.val() === "") {
             $('#btn_edit_item_in_modal').prop('disabled', true);
@@ -77,7 +77,7 @@ $(document).ready(function () {
             $('#btn_edit_item_in_modal').removeClass('btn-default');
             $('#btn_edit_item_in_modal').addClass('btn-primary');
         }
-    });
+    });*/
      // Now edit Category
      $('#edit-category-form').on('submit', function (e) {
          e.preventDefault();

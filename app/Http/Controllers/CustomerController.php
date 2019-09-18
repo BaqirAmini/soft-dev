@@ -238,9 +238,11 @@ class CustomerController extends Controller
     # ================================ Make a payment ===================================
     public function onPayment(Request $request)
     {
+//        $newSale = Payment::findOrfail($request->invoice_id);
         $payment = new Payment();
 //        $invoiceId = DB::table('invoices')->where('cust_id', $request->customer_id)->orderBy('inv_id', 'desc')->limit(1)->value('inv_id');
 //        $amountPaid = DB::table('payments')->where('inv_id', $request->invoice_id)->value('amount_paid');
+//        $newSale = Payment::findorfail('inv_id', $request->invoice_id);?
         $amountDue = DB::table('payments')->where('inv_id', $request->invoice_id)->orderBy('payment_id', 'desc')->limit(1)->value('amount_due');
         $totalInvoice = DB::table('payments')->where('inv_id', $request->invoice_id)->value('total_invoice');
         $v = Validator::make($request->all(), [
@@ -267,6 +269,7 @@ class CustomerController extends Controller
             $amountDue -= $request->pay_amount;
             $payment->amount_paid = $request->pay_amount;
             $payment->amount_due = $amountDue;
+            DB::table('payments')->where('inv_id', $request->invoice_id)->where('trans_method', 'New Sale')->update(['amount_due' => $amountDue]);
             $this->totalDue = $amountDue;
             $payment->total_invoice = $totalInvoice;
             if ($payment->save()) {
@@ -419,7 +422,6 @@ class CustomerController extends Controller
                             'Address2' => $row['address2'],
                             'City' => $row['city'],
                             'zip_code' => $row['zip_code'],
-                            'StoreID' => $row['store_id'],
                             'Title' => $row['title'],
                             'Employee' => $row['employee'],
                             'cust_name' => $row['first_name'],
@@ -430,13 +432,11 @@ class CustomerController extends Controller
                             'TaxExempt' => $row['tax_exempt'],
                             'Notes' => $row['notes'],
                             'cust_email' => $row['email'],
-                            'DBTimeStamp' => $row['db_time_stamp'],
                             'TaxNumber' => $row['tax_number'],
                             'UserID' => Auth::user()->id,
                             'SalesRepID' => $row['sales_rep_id'],
                             'PriceLevel' => $row['price_level'],
                             'TotalSavings' => $row['total_savings'],
-                            'AssessFinanceCharges' => $row['assess_finance_charges'],
                         );
                     }
                     if (!empty($insert_customer)) {
@@ -489,13 +489,11 @@ class CustomerController extends Controller
                 'tax_exempt',
                 'notes',
                 'email',
-                'db_time_stamp',
                 'tax_number',
                 'user_id',
                 'sales_rep_id',
                 'price_level',
                 'total_savings',
-                'assess_finance_charges',
             );
             foreach ($customers as $customer) {
                 $customers_array[] = array(
@@ -529,13 +527,11 @@ class CustomerController extends Controller
                     'tax_exempt' => $customer->TaxExempt,
                     'notes' => $customer->Notes,
                     'email' => $customer->cust_email,
-                    'db_time_stamp' => $customer->DBTimeStamp,
                     'tax_number' => $customer->TaxNumber,
                     'user_id' => $customer->UserID,
                     'sales_rep_id' => $customer->SalesRepID,
                     'price_level' => $customer->PriceLevel,
                     'total_savings' => $customer->TotalSavings,
-                    'assess_finance_charges' => $customer->AssessFinanceCharges,
                 );
             }
             Excel::create('Customer', function ($excel) use ($customers_array) {

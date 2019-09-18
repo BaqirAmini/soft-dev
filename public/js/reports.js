@@ -1,4 +1,28 @@
 $(document).ready(function () {
+    /* ----------------------------- Print any invoice of a customer ----------------------------------*/
+    $('.print_invoice').click(function () {
+        var printContents = $('.invoice_print_area').html();
+        w = window.open();
+        w.document.write('<html lang="en"><head><title>' + document.title  + '</title>');
+        w.document.write("<link rel=\"stylesheet\" href=\"/css/bootstrap.css\" type=\"text/css\"/>");
+        w.document.write("<link rel=\"stylesheet\" href=\"/css/bootstrap-theme.css\" type=\"text/css\"/>");
+        w.document.write("<link rel=\"stylesheet\" href=\"/css/styles.css\" type=\"text/css\"/>");
+        w.document.write("<link rel=\"stylesheet\" href=\"/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css\" type=\"text/css\">");
+        w.document.write("<script src=\"/bower_components/datatables.net/js/jquery.dataTables.min.js\"></script>");
+        w.document.write("<script src=\"/js/script.js\"></script>");
+        w.document.write('</head><body onload="window.print();window.close()">');
+        // w.document.write('<h1>' + document.title  + '</h1>');
+        w.document.write(printContents);
+        w.document.write('</body></html>');
+        w.document.close(); // necessary for IE >= 10
+        w.focus(); // necessary for IE >= 10
+        setTimeout(function () {
+            w.print();
+        }, 500);
+        return false;
+    });
+    /* ----------------------------- Print any invoice of a customer ----------------------------------*/
+
     $('.btn_print_reports').click(function () {
         // var printContents = document.getElementsByClassName('report_print_area').innerHTML;
         var printContents = $('.report_print_area').html();
