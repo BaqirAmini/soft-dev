@@ -402,12 +402,10 @@ class CustomerController extends Controller
                 if ($data->count() > 0) {
                     foreach ($value as $row) {
                         $insert_customer[] = array(
-                            'AccountNumber' => $row['account_number'],
                             'AccountTypeID' => $row['account_type_id'],
                             'created_at' => carbon::now(),
                             'updated_at' => carbon::now(),
                             'LimitPurchase' => $row['limit_purchase'],
-                            'AccountBalance' => $row['account_balance'],
                             'CreditLimit' => $row['credit_limit'],
                             'TotalSales' => $row['total_sales'],
                             'last_visit' => $row['last_visit'],
@@ -459,7 +457,6 @@ class CustomerController extends Controller
             $c = Company::where('company_id', $compId)->get(['comp_name']);
             $customers = Customer::where('comp_id', $compId)->get();
             $customers_array[] = array(
-                'account_number',
                 'account_type_id',
                 'account_opened',
                 'limit_purchase',
@@ -497,7 +494,6 @@ class CustomerController extends Controller
             );
             foreach ($customers as $customer) {
                 $customers_array[] = array(
-                    'account_number' => $customer->AccountNumber,
                     'account_type_id' => $customer->AccountTypeID,
                     'account_opened' => carbon::parse($customer->created_at)->format('m-D-Y'),
                     'limit_purchase' => $customer->LimitPurchase,

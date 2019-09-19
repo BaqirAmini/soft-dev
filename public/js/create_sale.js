@@ -209,13 +209,13 @@ $(document).ready(function () {
     });
 
     // when BTN-SAVE-SALE clicked
-    $('.btn_save_sale').click(function () {
-        var invoiceID = $(this).data('invoice-id');
-        // set hidden inputs
-        $('input[name=cust_id_for_print]').val(cid);
-        $('input[name=invoice_id_for_print]').val(invoiceID);
-        onPrintInvoice(invoiceId, _invoiceID);
-    });
+    // $('.btn_save_sale').click(function () {
+    //     var invoiceID = $(this).data('invoice-id');
+    //     // set hidden inputs
+    //     $('input[name=cust_id_for_print]').val(cid);
+    //     $('input[name=invoice_id_for_print]').val(invoiceID);
+    //     onPrintInvoice(invoiceId, _invoiceID);
+    // });
     // /. BTN-SAVE-SALE
 });
 
@@ -262,7 +262,7 @@ $('input#recieved').change(function () {
     var payable = $('input#payable').val();
     var recieved = $('input#recieved').val();
     var recieveable = parseFloat(payable) - parseFloat(recieved);
-    $('input#payable').val(recieveable);
+    $('input#payable').val(recieveable.toFixed(2));
 });
 
 /** ============================================ /. If ALL AMOUNT is not paid (Is in DEBT) ==================================== */
@@ -289,12 +289,14 @@ function selectPayment() {
             $('#recieved').prop('placeholder', 'Required');
             $('#recieved::placeholder').css('color', 'darkred');
             // $('#recieved::placeholder').css('color', 'darkred');
-            $('#recieved').blur(function () {
+            $('#recieved').keyup(function () {
                 if ($(this).val() == '') {
                     // Set default value inside receivable input
                     var subTotal = $('#sub_total').data('sub-total');
                     $('#modal-payment-type #payable').val(subTotal);
                     $('#modal-payment-type #chk_value').val(subTotal);
+                    $(this).prop('placeholder', 'Required');
+                    $(this).css('border', '2px dotted darkred');
                     // btn-save-sale
                     $('.btn_save_sale').removeClass('btn-primary');
                     $('.btn_save_sale').addClass('btn-default');
@@ -322,12 +324,14 @@ function selectPayment() {
             $('#transCode').css('border', '2px dotted darkred');
             $('#transCode').prop('placeholder', 'required');
 
-            $('#recieved').blur(function () {
+            $('#recieved').keyup(function () {
                 if ($(this).val() === '') {
                     // Set default value inside receivable input
                     var subTotal = $('#sub_total').data('sub-total');
                     $('#modal-payment-type #payable').val(subTotal);
                     $('#modal-payment-type #chk_value').val(subTotal);
+                    $(this).prop('placeholder', 'Required');
+                    $(this).css('border', '2px dotted darkred');
 
                     // btn-save-sale
                     $('.btn_save_sale').removeClass('btn-primary');
@@ -342,7 +346,7 @@ function selectPayment() {
                 }
             });
 
-            $('#transCode').blur(function () {
+            $('#transCode').keyup(function () {
                 if ($(this).val() !== '') {
                     $(this).css('border', '');
                     $(this).prop('placeholder', '');
@@ -350,6 +354,8 @@ function selectPayment() {
                     $('.btn_save_sale').removeClass('btn-primary');
                     $('.btn_save_sale').addClass('btn-default');
                     $('.btn_save_sale').prop('disabled', true);
+                    $(this).prop('placeholder', 'Required');
+                    $(this).css('border', '2px dotted darkred');
                 }
             });
         }
@@ -508,7 +514,7 @@ function doPrint(i) {
     w.setTimeout(function () {
         w.print();
         w.close();
-    }, 500);
+    }, 1000);
     w.document.close(); // necessary for IE >= 10
     w.focus(); // necessary for IE >= 10
     return true;

@@ -22,8 +22,8 @@ class CompanyMiddleware
                return $next($request);
           } else {
                Auth::logout();
-               return redirect('login')->with('inactive', 'Sorry, this company is not active...!');
+               return redirect()->route('login')->with('inactive', 'Sorry, this company is not active...!');
           }
-       
+
     }
 }

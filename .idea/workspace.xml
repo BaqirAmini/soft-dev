@@ -3,18 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="37bd1d65-e9de-4c59-835b-0dba81b8b165" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CategoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CategoryController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Payment.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Payment.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/category.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/category.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/company.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/company.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ItemController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ItemController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/CompanyMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/CompanyMiddleware.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/create_sale.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/create_sale.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/inventory.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/inventory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/reports.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/reports.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/company_setting.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company_setting.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/create_sale.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/create_sale.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/customer_detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer_detail.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inc/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inc/sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/invoice_detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/invoice_detail.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -175,7 +169,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -227,7 +221,10 @@
       <workItem from="1568604094998" duration="13823000" />
       <workItem from="1568622390155" duration="10695000" />
       <workItem from="1568691244478" duration="25449000" />
-      <workItem from="1568775836534" duration="18096000" />
+      <workItem from="1568775836534" duration="19562000" />
+      <workItem from="1568862244848" duration="969000" />
+      <workItem from="1568870195440" duration="1545000" />
+      <workItem from="1568882955414" duration="7035000" />
     </task>
     <servers />
   </component>

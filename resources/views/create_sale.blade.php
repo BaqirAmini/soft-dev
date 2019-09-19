@@ -466,11 +466,11 @@
                         <div class="form-group col-xs-4" style="display: none" id="rvable">
                             <label class="lbl_payment">Receivable Amount</label>
                             <input type="hidden" name="total_to_pay" id="total_to_pay">
-                            <input type="text" class="form-control" min="0" max="9999" placeholder="Receivable Amount" id="payable">
+                            <input type="number" class="form-control" min="0" step="0.01" max="9999" placeholder="Receivable Amount" id="payable">
                         </div>
                         <div class="form-group col-xs-4" id="rvd" style="display: none">
                             <label  class="lbl_payment">Recieved Amount</label>
-                            <input type="text" class="form-control" placeholder="Recieved Amount" min="0" max="999" id="recieved">
+                            <input type="number"  class="form-control" placeholder="Recieved Amount" min="0" step="0.001" max="999" id="recieved">
                         </div>
                         <!-- /.col-lg-6 -->
                     </div>

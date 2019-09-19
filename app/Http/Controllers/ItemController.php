@@ -149,7 +149,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'item_name' => 'required|string|max:64',
+            'item_name' => 'required|string|max:64|unique:items,item_name',
             'item_desc' => 'nullable|string|max:128',
             'cost' => 'required|between: 0, 99.99|max:64',
             'quantity'=>'required|integer|not_in:0|regex:/[1-9][0-9]+/',

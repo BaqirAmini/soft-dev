@@ -24,12 +24,12 @@ class CategoryController extends Controller
     {
         if (Gate::allows('isSystemAdmin') || Gate::allows('isStockManager')) {
             $ctgs = Category::all()->where('comp_id', Auth::user()->comp_id);
-            return view('categories', compact('ctgs')); 
+            return view('categories', compact('ctgs'));
         } else {
             abort(403, 'This action is unauthorized.');
         }
-        
-       
+
+
     }
 
     /**
@@ -39,7 +39,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        
+
 
     }
 
@@ -52,7 +52,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'ctg_name' => 'required|string|unique:categories',
+            'ctg_name' => 'required|string|unique:categories|unique:categories,ctg_name',
             'ctg_desc' => 'nullable|string|max:256'
         ]);
 
@@ -83,7 +83,7 @@ class CategoryController extends Controller
                             'style' => 'color:darkred'
                         ]);
                     }
-                    
+
         } else {
             return response()->json([
                 'ctg_msg' => $validation->errors()->all(),
@@ -91,7 +91,7 @@ class CategoryController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-         
+
     }
 
     /**
@@ -134,7 +134,7 @@ class CategoryController extends Controller
                 'style' => 'color:darkred'
             ]);
         }
-        
+
     }
 
     /**
@@ -170,12 +170,12 @@ class CategoryController extends Controller
                     'msg' => 'Sorry, the category not deleted!',
                     'style' => 'color:darkred'
                 ]);
-            } 
+            }
         } else {
             abort(403, 'This action is unauthorized.');
         }
-        
-      
-        
+
+
+
     }
 }
