@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('test', 'AndroidAPIController@test');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -48,6 +49,7 @@ Route::get('newCustomer', 'AndroidAPIController@onRegisterCustomer');
     # Add new product
     Route::post( 'newProduct', 'AndroidAPIController@onNewProduct');   
     Route::post( 'listProduct', 'AndroidAPIController@loadProduct');
+    Route::post('editProduct', 'AndroidAPIController@onEditProduct');
 # Reports
     # Today detailed-report
     Route::post('today', 'AndroidAPIController@salesReport');  
